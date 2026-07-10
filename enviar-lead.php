@@ -35,12 +35,17 @@ $payload = [
   'origen'   => $origen,
 ];
 
+// JSON_INVALID_UTF8_SUBSTITUTE: nunca falla por bytes UTF-8 invalidos (evita enviar cuerpo vacio).
+// JSON_UNESCAPED_UNICODE: los acentos llegan legibles al CRM (no como \u00xx).
+$body = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+if ($body === false) { $body = json_encode($payload, JSON_PARTIAL_OUTPUT_ON_ERROR); }
+
 $ch = curl_init($ENDPOINT);
 curl_setopt_array($ch, [
   CURLOPT_POST           => true,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_HTTPHEADER     => ['Content-Type: application/json', 'x-webhook-secret: ' . $SECRET],
-  CURLOPT_POSTFIELDS     => json_encode($payload),
+  CURLOPT_POSTFIELDS     => $body,
   CURLOPT_TIMEOUT        => 15,
 ]);
 $res  = curl_exec($ch);
