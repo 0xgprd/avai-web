@@ -6,6 +6,8 @@ FROM php:8.3-apache
 # Apache sirve desde /var/www/html; index.html es la portada por defecto.
 COPY index.html      /var/www/html/index.html
 COPY enviar-lead.php /var/www/html/enviar-lead.php
+COPY robots.txt      /var/www/html/robots.txt
+COPY sitemap.xml     /var/www/html/sitemap.xml
 COPY assets/         /var/www/html/assets/
 
 # Traefik (el reverse proxy de EasyPanel) enruta el trafico a este puerto interno.
