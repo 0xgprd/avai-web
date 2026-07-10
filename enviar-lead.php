@@ -10,12 +10,29 @@ $ENDPOINT = getenv('LEAD_ENDPOINT')  ?: ($_SERVER['LEAD_ENDPOINT']  ?? ($_ENV['L
 if ($SECRET === '') { http_response_code(500); echo json_encode(['ok'=>false,'error'=>'servidor sin WEBHOOK_SECRET']); exit; }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo json_encode(['ok'=>false]); exit; }
 
+$name     = trim($_POST['name']     ?? '');
+$email    = trim($_POST['email']    ?? '');
+$phone    = trim($_POST['phone']    ?? '');
+$empresa  = trim($_POST['empresa']  ?? '');
+$servicio = trim($_POST['servicio'] ?? '');
+$msg      = trim($_POST['message']  ?? '');
+$origen   = trim($_POST['origen']   ?? 'web-formulario');
+
+// Enriquecemos el mensaje para que EMPRESA y SERVICIO lleguen al CRM
+// aunque el SaaS todavia no tenga esas columnas en Airtable.
+$extra = [];
+if ($servicio !== '') $extra[] = 'Interes: ' . $servicio;
+if ($empresa  !== '') $extra[] = 'Empresa: ' . $empresa;
+$fullMessage = trim(implode(' | ', $extra) . ($msg !== '' ? "\n\n" . $msg : ''));
+
 $payload = [
-  'name'    => trim($_POST['name']    ?? ''),
-  'email'   => trim($_POST['email']   ?? ''),
-  'phone'   => trim($_POST['phone']   ?? ''),
-  'message' => trim($_POST['message'] ?? ''),
-  'origen'  => 'web-formulario',
+  'name'     => $name,
+  'email'    => $email,
+  'phone'    => $phone,
+  'empresa'  => $empresa,   // por si el SaaS los mapea en el futuro
+  'servicio' => $servicio,
+  'message'  => $fullMessage,
+  'origen'   => $origen,
 ];
 
 $ch = curl_init($ENDPOINT);

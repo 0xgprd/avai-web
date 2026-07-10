@@ -5,6 +5,7 @@ FROM php:8.3-apache
 
 # Apache sirve desde /var/www/html; index.html es la portada por defecto.
 COPY index.html      /var/www/html/index.html
+COPY privacidad.html /var/www/html/privacidad.html
 COPY enviar-lead.php /var/www/html/enviar-lead.php
 COPY robots.txt      /var/www/html/robots.txt
 COPY sitemap.xml     /var/www/html/sitemap.xml

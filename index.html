@@ -9,8 +9,8 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="AVAI Labs — Atlantic Vision AI">
 <meta name="theme-color" content="#04060d">
-<link rel="icon" type="image/png" href="/assets/logo-avai.png">
-<link rel="apple-touch-icon" href="/assets/logo-avai.png">
+<link rel="icon" type="image/png" href="/assets/favicon-avai.png">
+<link rel="apple-touch-icon" href="/assets/favicon-avai.png">
 <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AVAI Labs">
@@ -266,13 +266,15 @@ section.block{position:relative;padding:130px 0}
 .contact-detail a,.contact-detail span{font-size:1.02rem;color:var(--text);font-weight:500}
 .form{display:flex;flex-direction:column;gap:16px;position:relative;z-index:2}
 .field label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:7px;font-weight:500}
-.field input,.field textarea{
+.field input,.field select,.field textarea{
   width:100%;padding:14px 16px;border-radius:12px;
   background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--text);
   font-family:inherit;font-size:.97rem;transition:border-color .25s,background .25s;
 }
-.field input:focus,.field textarea:focus{outline:none;border-color:var(--neon);background:rgba(76,194,255,.05)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--neon);background:rgba(76,194,255,.05)}
 .field textarea{resize:vertical;min-height:110px}
+.field select{cursor:pointer}
+.field select option{background:#0c1322;color:var(--text)}
 .form .btn{justify-content:center;margin-top:6px}
 .form-note{font-size:.8rem;color:var(--muted);text-align:center}
 
@@ -400,7 +402,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
 <nav id="nav">
   <div class="wrap nav-inner">
     <a href="#top" class="logo">
-      <img src="assets/logo-avai.png" alt="Avai Labs" class="logo-img">
+      <img src="assets/logo-avai.png" alt="AVAI Labs — Agencia de IA y marketing digital en Canarias" class="logo-img">
     </a>
     <div class="nav-links" id="navLinks">
       <a href="#servicios">Servicios</a>
@@ -601,10 +603,26 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
         </div>
       </div>
       <form class="form" id="leadForm">
-        <div class="field"><label>Nombre</label><input type="text" name="name" required placeholder="Tu nombre"></div>
+        <div class="field"><label>Nombre completo</label><input type="text" name="name" required placeholder="Tu nombre y apellidos"></div>
         <div class="field"><label>Email</label><input type="email" name="email" required placeholder="tucorreo@empresa.com"></div>
-        <div class="field"><label>Teléfono <span style="opacity:.6">(opcional)</span></label><input type="tel" name="phone" placeholder="+34 600 00 00 00"></div>
-        <div class="field"><label>¿Qué te gustaría automatizar?</label><textarea name="message" required placeholder="Cuéntanos brevemente tu caso..."></textarea></div>
+        <div class="field"><label>Teléfono</label><input type="tel" name="phone" required placeholder="+34 600 00 00 00"></div>
+        <div class="field"><label>Empresa <span style="opacity:.6">(opcional)</span></label><input type="text" name="empresa" placeholder="Nombre de tu empresa"></div>
+        <div class="field"><label>¿Qué te gustaría automatizar o mejorar?</label>
+          <select name="servicio" required>
+            <option value="" disabled selected>Elige una opción…</option>
+            <option>Atención al cliente (chatbot / WhatsApp)</option>
+            <option>Automatización de procesos con IA</option>
+            <option>Marketing digital</option>
+            <option>Página web / Landing</option>
+            <option>Producción audiovisual (vídeo / drone)</option>
+            <option>Otro / No lo sé todavía</option>
+          </select>
+        </div>
+        <div class="field"><label>Cuéntanos más <span style="opacity:.6">(opcional)</span></label><textarea name="message" placeholder="Detalles de tu caso, objetivos, plazos..."></textarea></div>
+        <label style="display:flex;gap:9px;align-items:flex-start;font-size:.82rem;color:var(--muted);cursor:pointer;line-height:1.4">
+          <input type="checkbox" name="rgpd" required style="margin-top:3px;flex:0 0 auto;accent-color:var(--neon)">
+          <span>Acepto la <a href="/privacidad.html" target="_blank" style="color:var(--neon)">política de privacidad</a> y el tratamiento de mis datos para que AVAI Labs me contacte.</span>
+        </label>
         <button type="submit" class="btn">Enviar solicitud</button>
         <p class="form-note">También puedes escribirnos directamente a <a href="mailto:info@avai-labs.com" style="color:var(--neon)">info@avai-labs.com</a></p>
       </form>
@@ -642,7 +660,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
     <div class="foot-top">
       <div class="foot-brand">
         <a href="#top" class="logo">
-          <img src="assets/logo-avai.png" alt="Avai Labs" class="logo-img">
+          <img src="assets/logo-avai.png" alt="AVAI Labs — Agencia de IA y marketing digital en Canarias" class="logo-img">
         </a>
         <p>Agencia de inteligencia artificial y marketing digital en Canarias. IA y automatización, marketing, web y audiovisual con drones.</p>
         <div class="socials">
@@ -749,6 +767,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
   let sessionId=localStorage.getItem('avai_session')||uid();
   localStorage.setItem('avai_session',sessionId);
   let lead=null; try{lead=JSON.parse(localStorage.getItem('avai_lead')||'null')}catch(e){}
+  let transcript=[]; let convEnviada=false;
 
   function scrollDown(){body.scrollTop=body.scrollHeight}
   function showChat(){gate.style.display='none';thread.style.display='block';foot.style.display='flex'}
@@ -776,12 +795,12 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
   function addBot(text){
     const m=document.createElement('div');m.className='chat-msg';
     m.innerHTML='<span class="mini"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><div class="bubble"></div>';
-    m.querySelector('.bubble').textContent=text;thread.appendChild(m);scrollDown();
+    m.querySelector('.bubble').textContent=text;thread.appendChild(m);scrollDown();transcript.push('AVAI: '+text);
   }
   function addUser(text){
     const u=document.createElement('div');u.className='chat-msg';u.style.flexDirection='row-reverse';
     u.innerHTML='<div class="bubble" style="background:var(--grad);color:#031018;border:none;border-bottom-left-radius:14px;border-bottom-right-radius:4px"></div>';
-    u.querySelector('.bubble').textContent=text;thread.appendChild(u);scrollDown();
+    u.querySelector('.bubble').textContent=text;thread.appendChild(u);scrollDown();transcript.push('Cliente: '+text);
   }
   function typing(on){
     let t=document.getElementById('typingDots');
@@ -813,6 +832,23 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
   }
   send&&send.addEventListener('click',sendMsg);
   input&&input.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
+
+  // Al terminar la visita, manda la conversación completa al CRM (Airtable), igual que el formulario.
+  function enviarConversacionCRM(){
+    if(convEnviada||!lead)return;
+    if(!transcript.some(t=>t.indexOf('Cliente: ')===0))return; // solo si el visitante llegó a escribir
+    convEnviada=true;
+    try{
+      const fd=new FormData();
+      fd.append('name',lead.name||'');
+      fd.append('email',lead.email||'');
+      fd.append('servicio','Conversación por el chat web');
+      fd.append('message','Conversación del chat web:\n\n'+transcript.join('\n'));
+      fd.append('origen','chat-web');
+      navigator.sendBeacon('enviar-lead.php',fd);
+    }catch(_){}
+  }
+  window.addEventListener('pagehide',enviarConversacionCRM);
 })();
 </script>
 
