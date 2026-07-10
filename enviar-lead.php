@@ -18,20 +18,19 @@ $servicio = trim($_POST['servicio'] ?? '');
 $msg      = trim($_POST['message']  ?? '');
 $origen   = trim($_POST['origen']   ?? 'web-formulario');
 
-// Enriquecemos el mensaje para que EMPRESA y SERVICIO lleguen al CRM
-// aunque el SaaS todavia no tenga esas columnas en Airtable.
-$extra = [];
-if ($servicio !== '') $extra[] = 'Interes: ' . $servicio;
-if ($empresa  !== '') $extra[] = 'Empresa: ' . $empresa;
-$fullMessage = trim(implode(' | ', $extra) . ($msg !== '' ? "\n\n" . $msg : ''));
+// Mapeo a los nombres de campo que ENTIENDE el SaaS (lead-intake):
+//   interes  -> columna "negocio" del CRM
+//   mensaje  -> columna de notas
+// La EMPRESA aun no tiene columna propia en el SaaS, asi que la anteponemos al mensaje (visible en notas).
+$mensaje = ($empresa !== '' ? 'Empresa: ' . $empresa . "\n\n" : '') . $msg;
 
 $payload = [
-  'name'     => $name,
+  'nombre'   => $name,
   'email'    => $email,
-  'phone'    => $phone,
-  'empresa'  => $empresa,   // por si el SaaS los mapea en el futuro
-  'servicio' => $servicio,
-  'message'  => $fullMessage,
+  'telefono' => $phone,
+  'interes'  => $servicio,   // -> columna "negocio" del CRM
+  'empresa'  => $empresa,    // por si el SaaS mapea 'empresa' como columna en el futuro
+  'mensaje'  => $mensaje,    // -> columna de notas (incluye la empresa al principio)
   'origen'   => $origen,
 ];
 
