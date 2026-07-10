@@ -767,7 +767,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
   let sessionId=localStorage.getItem('avai_session')||uid();
   localStorage.setItem('avai_session',sessionId);
   let lead=null; try{lead=JSON.parse(localStorage.getItem('avai_lead')||'null')}catch(e){}
-  let transcript=[]; let convEnviada=false;
+  let transcript=[]; let convEnviada=false; let primerMsg=true;
 
   function scrollDown(){body.scrollTop=body.scrollHeight}
   function showChat(){gate.style.display='none';thread.style.display='block';foot.style.display='flex'}
@@ -811,11 +811,16 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
   }
 
   async function postToAvai(message){
+    let toSend=message;
+    if(primerMsg && lead){
+      toSend='(Contexto interno para el asistente — no lo repitas literalmente: el visitante ya se identificó en el chat como '+lead.name+', email '+lead.email+'. Salúdale por su nombre y NO le pidas otra vez su nombre ni su contacto.)\n\n'+message;
+    }
+    primerMsg=false;
     try{
       typing(true);
       const res=await fetch(AVAI_CHAT_URL,{
         method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ tenantId:AVAI_TENANT, sessionId, message })
+        body:JSON.stringify({ tenantId:AVAI_TENANT, sessionId, message:toSend })
       });
       const data=await res.json().catch(()=>({}));
       typing(false);
