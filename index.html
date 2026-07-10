@@ -825,6 +825,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
       const data=await res.json().catch(()=>({}));
       typing(false);
       addBot(data.reply||'Gracias, te respondemos enseguida.');
+      actualizarCRM();
     }catch(err){
       typing(false);
       addBot('Ahora mismo no puedo responder 😕 Escríbenos a info@avai-labs.com o por WhatsApp +34 624 50 40 04.');
@@ -838,21 +839,21 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
   send&&send.addEventListener('click',sendMsg);
   input&&input.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
 
-  // Al terminar la visita, manda la conversación completa al CRM (Airtable), igual que el formulario.
-  function enviarConversacionCRM(){
-    if(convEnviada||!lead)return;
-    if(!transcript.some(t=>t.indexOf('Cliente: ')===0))return; // solo si el visitante llegó a escribir
-    convEnviada=true;
-    try{
-      const fd=new FormData();
-      fd.append('name',lead.name||'');
-      fd.append('email',lead.email||'');
-      fd.append('servicio','Conversación por el chat web');
-      fd.append('message','Conversación del chat web:\n\n'+transcript.join('\n'));
-      fd.append('origen','chat-web');
-      navigator.sendBeacon('enviar-lead.php',fd);
-    }catch(_){}
+  // Envío al CRM: nombre + email (de la puerta) + conversación, en UN registro (upsert por email).
+  function payloadCRM(){
+    const fd=new FormData();
+    fd.append('name', lead ? (lead.name||'') : '');
+    fd.append('email', lead ? (lead.email||'') : '');
+    fd.append('servicio','Conversación por el chat web');
+    fd.append('message','Conversación del chat web:\n\n'+transcript.join('\n'));
+    fd.append('origen','chat-web');
+    return fd;
   }
+  function hayConversacion(){ return lead && transcript.some(t=>t.indexOf('Cliente: ')===0); }
+  // Durante la charla: mantiene el registro del CRM al día tras cada respuesta (upsert por email, no duplica).
+  function actualizarCRM(){ if(!hayConversacion())return; try{ fetch('enviar-lead.php',{method:'POST',body:payloadCRM(),keepalive:true}); }catch(_){} }
+  // Al cerrar/salir: envío final por si acaso.
+  function enviarConversacionCRM(){ if(!hayConversacion())return; try{ navigator.sendBeacon('enviar-lead.php',payloadCRM()); }catch(_){} }
   window.addEventListener('pagehide',enviarConversacionCRM);
 })();
 </script>
