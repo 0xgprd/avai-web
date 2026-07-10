@@ -1,0 +1,13 @@
+# Solo entra a la imagen lo que necesita la web publica.
+# El resto (servidor local de pruebas, docs del kit, la skill, ficheros del SO) se ignora.
+server.js
+web-atlantic-vision-ai.html
+INSTRUCCIONES.md
+CLAUDE.md
+.claude/
+.git/
+.gitignore
+.dockerignore
+Dockerfile
+**/.DS_Store
+.DS_Store

@@ -1,0 +1,9 @@
+.DS_Store
+**/.DS_Store
+
+# Ficheros que NO forman parte de la web publica (servidor local de pruebas / kit / docs):
+server.js
+web-atlantic-vision-ai.html
+INSTRUCCIONES.md
+CLAUDE.md
+.claude/

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avai Labs — Automatización Inteligente con IA</title>
+<meta name="description" content="Avai Labs · Agencia de Inteligencia Artificial y Marketing Digital en Canarias. Automatizaciones e IA, chatbots, marketing digital, webs y producción audiovisual con cámaras y drones profesionales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04060d;
+  --bg-2:#070b16;
+  --panel:#0c1322;
+  --panel-2:#0f1830;
+  --line:rgba(120,160,255,.12);
+  --text:#e8eefc;
+  --muted:#8c9bba;
+  --blue:#3b82f6;
+  --cyan:#22d3ee;
+  --neon:#4cc2ff;
+  --grad:linear-gradient(120deg,#3b82f6 0%,#22d3ee 100%);
+  --grad-soft:linear-gradient(120deg,rgba(59,130,246,.16),rgba(34,211,238,.16));
+  --shadow:0 30px 80px -30px rgba(34,150,255,.35);
+  --maxw:1200px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{
+  background:transparent;
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* Fondo animado global (red neuronal fija detrás de toda la web) */
+#bgWrap{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
+#neuralCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bg-overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(1100px 700px at 50% 12%,rgba(34,120,255,.12),transparent 60%),
+    radial-gradient(800px 600px at 85% 90%,rgba(34,211,238,.08),transparent 60%),
+    linear-gradient(180deg,rgba(4,6,13,.45),rgba(4,6,13,.72));
+}
+/* barra de progreso global de scroll (arriba del todo) */
+.top-progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:150;background:transparent}
+.top-progress .fill{height:100%;width:0;background:var(--grad);box-shadow:0 0 14px var(--cyan)}
+h1,h2,h3,h4,.display{font-family:'Space Grotesk',sans-serif;line-height:1.08;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:rgba(76,194,255,.3)}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--blue),var(--cyan));border-radius:10px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--neon);
+}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--neon);opacity:.7}
+.section-title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:700;margin:18px 0 16px}
+.section-sub{color:var(--muted);max-width:620px;font-size:1.05rem}
+.gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:100;
+  transition:background .4s ease,border-color .4s ease,padding .4s ease;
+  border-bottom:1px solid transparent;
+  padding:20px 0;
+}
+nav.scrolled{
+  background:rgba(6,9,18,.72);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+  padding:13px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center}
+.logo-img{height:60px;width:auto;display:block;transition:height .4s}
+nav.scrolled .logo-img{height:50px}
+footer .logo-img{height:76px}
+@media(max-width:680px){.logo-img{height:48px}nav.scrolled .logo-img{height:44px}}
+.nav-links{display:flex;align-items:center;gap:34px}
+.nav-links a{color:var(--muted);font-size:.95rem;font-weight:500;transition:color .25s;position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--grad);transition:width .3s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:13px 24px;border-radius:12px;font-weight:600;font-size:.95rem;
+  background:var(--grad);color:#04060d;
+  box-shadow:0 10px 30px -8px rgba(60,160,255,.6);
+  transition:transform .25s,box-shadow .25s;cursor:pointer;border:none;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 44px -10px rgba(60,160,255,.75)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.btn-ghost:hover{border-color:var(--neon);background:rgba(76,194,255,.06)}
+.nav-cta{
+  display:inline-flex;padding:11px 22px;font-size:.92rem;font-weight:700;color:#031018;
+  background:linear-gradient(120deg,#5cc8ff 0%,#22d3ee 100%);
+  box-shadow:0 8px 24px -6px rgba(60,200,255,.7),inset 0 1px 0 rgba(255,255,255,.4);
+}
+.nav-cta svg{width:15px;height:15px;stroke:#031018;stroke-width:2.6;transition:transform .25s}
+.nav-cta:hover svg{transform:translateX(3px)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
+.burger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+
+/* ===== HERO (sobre el fondo animado global) ===== */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center}
+.hero-content{
+  position:relative;z-index:3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 22px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:8px 16px;border-radius:999px;
+  background:rgba(76,194,255,.08);border:1px solid var(--line);
+  font-size:.82rem;color:var(--neon);font-weight:600;letter-spacing:.04em;
+  margin-bottom:26px;backdrop-filter:blur(6px);
+}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-content h1{font-size:clamp(2.6rem,7.5vw,5.6rem);font-weight:700;max-width:14ch}
+.hero-content h1 .gradient-text{display:inline-block}
+.hero-content p{color:#c6d2ec;font-size:clamp(1.05rem,2vw,1.32rem);max-width:600px;margin:24px auto 0;font-weight:400}
+.hero-actions{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap;justify-content:center}
+.scroll-progress{position:absolute;left:0;bottom:0;width:100%;height:3px;background:rgba(255,255,255,.06);z-index:4}
+.scroll-progress-fill{height:100%;width:0;background:var(--grad);box-shadow:0 0 16px var(--cyan)}
+.scroll-hint{
+  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:4;
+  color:var(--muted);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.scroll-hint .mouse{width:24px;height:38px;border:2px solid var(--muted);border-radius:14px;position:relative}
+.scroll-hint .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:4px;height:7px;border-radius:3px;background:var(--neon);animation:scrolldot 1.6s infinite}
+@keyframes scrolldot{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}80%{opacity:0;transform:translate(-50%,12px)}}
+
+/* ===== GENERIC SECTION ===== */
+section.block{position:relative;padding:130px 0}
+.head{margin-bottom:64px}
+.head.center{text-align:center}
+.head.center .section-sub{margin-left:auto;margin-right:auto}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.40s}
+
+/* ===== SERVICES ===== */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{
+  background:linear-gradient(160deg,var(--panel),var(--bg-2));
+  border:1px solid var(--line);border-radius:20px;padding:34px 30px;
+  position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s,box-shadow .4s;
+}
+.card::before{
+  content:"";position:absolute;inset:0;border-radius:20px;padding:1px;
+  background:var(--grad);opacity:0;transition:opacity .4s;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.card:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+.card:hover::before{opacity:1}
+.card-icon{
+  width:56px;height:56px;border-radius:15px;display:grid;place-items:center;margin-bottom:22px;
+  background:var(--grad-soft);border:1px solid var(--line);
+}
+.card-icon svg{width:28px;height:28px;stroke:var(--neon)}
+.card h3{font-size:1.3rem;margin-bottom:10px}
+.card p{color:var(--muted);font-size:.97rem}
+.card .tag{position:absolute;top:26px;right:26px;font-size:.72rem;color:var(--muted);font-weight:600;opacity:.5}
+
+/* ===== STATS ===== */
+.stats-band{
+  background:linear-gradient(120deg,rgba(59,130,246,.06),rgba(34,211,238,.06));
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:80px 0;
+}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center}
+.stat .num{font-family:'Space Grotesk';font-size:clamp(2.6rem,5vw,3.6rem);font-weight:700;line-height:1}
+.stat .num span{font-size:.5em}
+.stat .label{color:var(--muted);margin-top:10px;font-size:.95rem}
+
+/* ===== ABOUT ===== */
+.about{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+.about-visual{position:relative;aspect-ratio:1/1;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(circle at 30% 20%,rgba(34,120,255,.22),transparent 55%),radial-gradient(circle at 80% 80%,rgba(34,211,238,.18),transparent 55%),var(--panel)}
+.about-visual canvas{position:absolute;inset:0;width:100%;height:100%}
+.about-list{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:16px}
+.about-list li{display:flex;gap:14px;align-items:flex-start;color:#cdd8ef}
+.about-list .check{flex:none;width:24px;height:24px;border-radius:7px;background:var(--grad-soft);border:1px solid var(--line);display:grid;place-items:center}
+.about-list .check svg{width:13px;height:13px;stroke:var(--neon)}
+
+/* ===== PROCESS ===== */
+.process{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.process::before{content:"";position:absolute;top:34px;left:8%;right:8%;height:2px;background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),transparent);opacity:.4}
+.step{text-align:center;padding:0 18px;position:relative}
+.step .num-circle{
+  width:68px;height:68px;border-radius:50%;margin:0 auto 24px;
+  display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;font-size:1.4rem;
+  background:var(--bg);border:2px solid var(--neon);color:var(--neon);position:relative;z-index:2;
+  box-shadow:0 0 0 8px var(--bg),0 0 30px -6px var(--neon);
+}
+.step h4{font-size:1.15rem;margin-bottom:8px}
+.step p{color:var(--muted);font-size:.92rem}
+
+/* ===== USE CASES ===== */
+.cases-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.case{
+  display:flex;gap:22px;padding:30px;border-radius:18px;
+  background:var(--panel);border:1px solid var(--line);
+  transition:transform .35s,border-color .35s;
+}
+.case:hover{transform:translateY(-5px);border-color:rgba(76,194,255,.4)}
+.case .case-ic{flex:none;width:52px;height:52px;border-radius:13px;background:var(--grad-soft);border:1px solid var(--line);display:grid;place-items:center}
+.case .case-ic svg{width:26px;height:26px;stroke:var(--neon)}
+.case h4{font-size:1.12rem;margin-bottom:6px}
+.case p{color:var(--muted);font-size:.94rem}
+.case .result{display:inline-block;margin-top:12px;font-size:.82rem;font-weight:600;color:var(--cyan);background:rgba(34,211,238,.08);padding:5px 12px;border-radius:8px}
+
+/* ===== CTA / CONTACT ===== */
+.contact{position:relative;overflow:hidden}
+.contact-card{
+  background:linear-gradient(150deg,var(--panel-2),var(--bg-2));
+  border:1px solid var(--line);border-radius:28px;
+  padding:60px;display:grid;grid-template-columns:1fr 1fr;gap:54px;position:relative;overflow:hidden;
+}
+.contact-card::after{content:"";position:absolute;top:-120px;right:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(34,160,255,.25),transparent 70%);pointer-events:none}
+.contact-info h2{font-size:clamp(1.9rem,3.5vw,2.6rem);margin-bottom:16px}
+.contact-info p{color:var(--muted);margin-bottom:30px}
+.contact-detail{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.contact-detail .ic{width:46px;height:46px;border-radius:12px;background:var(--grad-soft);border:1px solid var(--line);display:grid;place-items:center;flex:none}
+.contact-detail .ic svg{width:21px;height:21px;stroke:var(--neon)}
+.contact-detail b{display:block;font-size:.78rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.1em}
+.contact-detail a,.contact-detail span{font-size:1.02rem;color:var(--text);font-weight:500}
+.form{display:flex;flex-direction:column;gap:16px;position:relative;z-index:2}
+.field label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:7px;font-weight:500}
+.field input,.field textarea{
+  width:100%;padding:14px 16px;border-radius:12px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--text);
+  font-family:inherit;font-size:.97rem;transition:border-color .25s,background .25s;
+}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--neon);background:rgba(76,194,255,.05)}
+.field textarea{resize:vertical;min-height:110px}
+.form .btn{justify-content:center;margin-top:6px}
+.form-note{font-size:.8rem;color:var(--muted);text-align:center}
+
+/* ===== FOOTER ===== */
+footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
+.foot-top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:44px}
+.foot-brand{max-width:320px}
+.foot-brand p{color:var(--muted);margin-top:16px;font-size:.94rem}
+.foot-cols{display:flex;gap:70px;flex-wrap:wrap}
+.foot-col h5{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:16px}
+.foot-col a{display:block;color:#c2cde3;margin-bottom:11px;font-size:.95rem;transition:color .2s}
+.foot-col a:hover{color:var(--neon)}
+.socials{display:flex;gap:12px;margin-top:20px}
+.socials a{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;transition:.3s}
+.socials a:hover{border-color:var(--neon);background:rgba(76,194,255,.08);transform:translateY(-3px)}
+.socials svg{width:18px;height:18px;fill:var(--muted);transition:fill .3s}
+.socials a:hover svg{fill:var(--neon)}
+.foot-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.86rem}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:980px){
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .about{grid-template-columns:1fr;gap:40px}
+  .process{grid-template-columns:repeat(2,1fr);gap:46px 0}
+  .process::before{display:none}
+  .cases-grid{grid-template-columns:1fr}
+  .contact-card{grid-template-columns:1fr;padding:40px 30px;gap:40px}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:42px 20px}
+}
+@media(max-width:680px){
+  .nav-links{
+    position:fixed;top:0;right:0;height:100vh;width:78%;max-width:320px;
+    flex-direction:column;align-items:flex-start;justify-content:center;gap:28px;
+    background:rgba(8,12,22,.97);backdrop-filter:blur(20px);
+    padding:0 40px;transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);
+    border-left:1px solid var(--line);
+  }
+  .nav-links.open{transform:translateX(0)}
+  .nav-links a{font-size:1.2rem}
+  .nav-cta{display:none}
+  .burger{display:flex;z-index:101}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.open span:nth-child(2){opacity:0}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  section.block{padding:90px 0}
+  .services-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .contact-card{padding:32px 22px}
+  .scroll-hero{height:100vh}
+  .hero-sticky{position:relative}
+  .scroll-hint{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .scroll-hero{height:100vh}
+  .hero-sticky{position:relative}
+  *{scroll-behavior:auto}
+}
+
+/* ===== CHATBOT FLOTANTE ===== */
+.chat-launcher{
+  position:fixed;bottom:26px;right:26px;z-index:200;
+  width:62px;height:62px;border-radius:50%;cursor:pointer;border:none;
+  background:var(--grad);
+  display:grid;place-items:center;
+  box-shadow:0 14px 40px -10px rgba(60,180,255,.8),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+.chat-launcher:hover{transform:scale(1.08) translateY(-2px)}
+.chat-launcher svg{width:28px;height:28px;stroke:#031018;stroke-width:2;fill:none}
+.chat-launcher .ic-close{display:none}
+.chat-launcher.open .ic-open{display:none}
+.chat-launcher.open .ic-close{display:block}
+.chat-launcher::after{
+  content:"";position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;
+  background:#22c55e;border:3px solid var(--bg);box-shadow:0 0 10px #22c55e;
+}
+.chat-panel{
+  position:fixed;bottom:100px;right:26px;z-index:200;
+  width:380px;max-width:calc(100vw - 40px);height:540px;max-height:calc(100vh - 140px);
+  background:linear-gradient(170deg,var(--panel-2),var(--bg-2));
+  border:1px solid var(--line);border-radius:22px;overflow:hidden;
+  box-shadow:0 40px 90px -25px rgba(0,0,0,.7);
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(20px) scale(.96);pointer-events:none;
+  transition:opacity .3s,transform .3s cubic-bezier(.16,1,.3,1);
+}
+.chat-panel.open{opacity:1;transform:none;pointer-events:auto}
+.chat-head{
+  display:flex;align-items:center;gap:12px;padding:18px 20px;
+  background:rgba(76,194,255,.06);border-bottom:1px solid var(--line);
+}
+.chat-head .avatar{width:42px;height:42px;border-radius:12px;background:var(--grad);display:grid;place-items:center;flex:none;box-shadow:0 0 18px rgba(60,160,255,.5)}
+.chat-head .avatar svg{width:22px;height:22px;stroke:#031018;stroke-width:2;fill:none}
+.chat-head h4{font-size:1.02rem;margin:0}
+.chat-head .status{font-size:.78rem;color:#22c55e;display:flex;align-items:center;gap:6px}
+.chat-head .status::before{content:"";width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
+.chat-body{flex:1;overflow-y:auto;padding:20px}
+.chat-body iframe{width:100%;height:100%;border:0;display:block}
+.chat-msg{display:flex;gap:10px;margin-bottom:16px;align-items:flex-end}
+.chat-msg .bubble{background:var(--panel);border:1px solid var(--line);padding:12px 15px;border-radius:14px;border-bottom-left-radius:4px;font-size:.93rem;max-width:80%;color:#dce6f8}
+.chat-msg .mini{width:30px;height:30px;border-radius:9px;background:var(--grad);flex:none;display:grid;place-items:center}
+.chat-msg .mini svg{width:16px;height:16px;stroke:#031018;stroke-width:2;fill:none}
+.chat-foot{padding:14px 16px;border-top:1px solid var(--line);display:flex;gap:10px}
+.chat-foot input{flex:1;padding:12px 15px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:.93rem}
+.chat-foot input:focus{outline:none;border-color:var(--neon)}
+.chat-foot button{flex:none;width:44px;height:44px;border-radius:11px;border:none;background:var(--grad);cursor:pointer;display:grid;place-items:center}
+.chat-foot button svg{width:19px;height:19px;stroke:#031018;stroke-width:2.2;fill:none}
+.chat-note{font-size:.72rem;color:var(--muted);text-align:center;padding:0 16px 12px}
+.chat-gate{display:flex;flex-direction:column;gap:12px;padding:4px 2px}
+.chat-gate .gate-title{font-size:.95rem;color:#dce6f8;margin-bottom:2px}
+.chat-gate input{padding:12px 15px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:.93rem;transition:border-color .2s}
+.chat-gate input:focus{outline:none;border-color:var(--neon)}
+.chat-gate .btn{justify-content:center;margin-top:4px}
+.chat-gate .gate-note{font-size:.72rem;color:var(--muted);text-align:center}
+.typing .bubble{letter-spacing:2px;opacity:.7}
+@media(max-width:680px){
+  .chat-launcher{bottom:18px;right:18px;width:56px;height:56px}
+  .chat-panel{bottom:84px;right:14px;left:14px;width:auto;height:70vh}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo">
+      <img src="assets/logo-avai.png" alt="Avai Labs" class="logo-img">
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#servicios">Servicios</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#casos">Casos de uso</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#contacto" class="btn nav-cta">Consulta gratis <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ===== FONDO ANIMADO GLOBAL (red neuronal en toda la web) ===== -->
+<div id="bgWrap" aria-hidden="true">
+  <canvas id="neuralCanvas"></canvas>
+  <div class="bg-overlay"></div>
+</div>
+<div class="top-progress"><div class="fill" id="progressFill"></div></div>
+
+<span id="top"></span>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <span class="hero-badge"><span class="dot"></span> Agencia de IA y Marketing Digital · Canarias</span>
+    <h1>Inteligencia Artificial y <span class="gradient-text">Marketing Digital</span></h1>
+    <p>En Avai Labs combinamos inteligencia artificial, marketing digital y producción audiovisual con drones para hacer crecer tu negocio y automatizar todo lo que te quita tiempo.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn">Solicita tu consulta gratis</a>
+      <a href="#servicios" class="btn btn-ghost">Ver servicios</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><span class="mouse"></span></div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="block" id="servicios">
+  <div class="wrap">
+    <div class="head center">
+      <span class="eyebrow reveal">Lo que hacemos</span>
+      <h2 class="section-title reveal">Todo lo que tu negocio necesita, <span class="gradient-text">en un solo sitio</span></h2>
+      <p class="section-sub reveal">Inteligencia artificial, marketing digital y producción audiovisual a medida de tu negocio: ahorra tiempo, atrae más clientes y haz crecer tu marca.</p>
+    </div>
+    <div class="services-grid">
+      <div class="card reveal d1">
+        <span class="tag">01</span>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1 0 6 3 3 0 0 1-3 3v1a3 3 0 0 1-6 0v-1a3 3 0 0 1-3-3 3 3 0 0 1 0-6 3 3 0 0 1 3-3V5a3 3 0 0 1 3-3Z"/></svg></div>
+        <h3>Automatizaciones con IA</h3>
+        <p>Flujos inteligentes que conectan tus herramientas y ejecutan tareas complejas sin intervención humana.</p>
+      </div>
+      <div class="card reveal d2">
+        <span class="tag">02</span>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg></div>
+        <h3>Chatbots con IA</h3>
+        <p>Asistentes que atienden a tus clientes 24/7, resuelven dudas, cualifican leads y reservan citas automáticamente.</p>
+      </div>
+      <div class="card reveal d3">
+        <span class="tag">03</span>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M9 21V9M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/></svg></div>
+        <h3>Páginas Web Modernas</h3>
+        <p>Webs rápidas, atractivas y optimizadas para convertir, con el diseño y la tecnología de última generación.</p>
+      </div>
+      <div class="card reveal d1">
+        <span class="tag">04</span>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg></div>
+        <h3>Automatización de Procesos</h3>
+        <p>Eliminamos las tareas manuales repetitivas de tu equipo para que dedique su tiempo a lo que de verdad importa.</p>
+      </div>
+      <div class="card reveal d2">
+        <span class="tag">05</span>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Integraciones y Optimización</h3>
+        <p>Conectamos tus sistemas existentes y afinamos cada proceso para exprimir el máximo rendimiento.</p>
+      </div>
+      <div class="card reveal d3">
+        <span class="tag">06</span>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-5v12L3 14v-3Z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
+        <h3>Marketing Digital</h3>
+        <p>Estrategias de marketing potenciadas con IA: redes sociales, campañas de publicidad, contenido y SEO que atraen clientes de verdad.</p>
+      </div>
+      <div class="card reveal d1">
+        <span class="tag">07</span>
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7Z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+        <h3>Producción Audiovisual</h3>
+        <p>Vídeo y fotografía profesional con cámaras y drones: spots, contenido para redes y tomas aéreas que hacen destacar tu marca.</p>
+      </div>
+      <div class="card reveal d2" style="display:flex;flex-direction:column;justify-content:center;background:var(--grad-soft);border-color:rgba(76,194,255,.35)">
+        <h3 style="font-size:1.45rem">¿No sabes por dónde empezar?</h3>
+        <p style="margin-bottom:20px">Analizamos tu negocio gratis y te decimos exactamente qué automatizar primero.</p>
+        <a href="#contacto" class="btn" style="align-self:flex-start">Hablemos</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<div class="stats-band">
+  <div class="wrap stats-grid">
+    <div class="stat reveal d1"><div class="num"><span>+</span><span data-count="200">0</span><span>%</span></div><div class="label">Más eficiencia operativa</div></div>
+    <div class="stat reveal d2"><div class="num"><span data-count="70">0</span><span>%</span></div><div class="label">Menos tareas manuales</div></div>
+    <div class="stat reveal d3"><div class="num"><span data-count="97">0</span><span>%</span></div><div class="label">Índice de satisfacción</div></div>
+    <div class="stat reveal d4"><div class="num">24/7</div><div class="label">Operativo sin descanso</div></div>
+  </div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section class="block" id="nosotros">
+  <div class="wrap about">
+    <div class="reveal">
+      <span class="eyebrow">Sobre nosotros</span>
+      <h2 class="section-title">Tecnología de vanguardia,<br>resultados <span class="gradient-text">reales</span></h2>
+      <p class="section-sub">Avai Labs es tu agencia de <strong style="color:var(--text)">inteligencia artificial y marketing digital</strong> en Canarias. Ayudamos a empresas de todas partes a crecer combinando IA y automatización, marketing digital y producción audiovisual con cámaras y drones — todo bajo un mismo techo para que tu negocio funcione solo, venda más y destaque.</p>
+      <ul class="about-list">
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Ahorro de tiempo inmediato</b> — automatizamos lo repetitivo desde el primer día.</span></li>
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Soluciones a medida</b> — nada de plantillas: diseñamos para tu negocio concreto.</span></li>
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Implementación rápida</b> — del análisis a funcionando en tiempo récord.</span></li>
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><b>Escalabilidad garantizada</b> — sistemas que crecen contigo sin fricción.</span></li>
+      </ul>
+    </div>
+    <div class="about-visual reveal d2"><canvas id="orbCanvas"></canvas></div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="block" id="proceso">
+  <div class="wrap">
+    <div class="head center">
+      <span class="eyebrow reveal">Cómo trabajamos</span>
+      <h2 class="section-title reveal">Un proceso claro en <span class="gradient-text">4 pasos</span></h2>
+      <p class="section-sub reveal">Sin complicaciones. Desde la primera reunión hasta la mejora continua, te acompañamos en todo el camino.</p>
+    </div>
+    <div class="process">
+      <div class="step reveal d1"><div class="num-circle">1</div><h4>Análisis</h4><p>Estudiamos tu negocio y detectamos las oportunidades de automatización con mayor impacto.</p></div>
+      <div class="step reveal d2"><div class="num-circle">2</div><h4>Desarrollo</h4><p>Diseñamos y construimos la solución de IA a medida de tus necesidades reales.</p></div>
+      <div class="step reveal d3"><div class="num-circle">3</div><h4>Implementación</h4><p>Integramos el sistema en tus herramientas y formamos a tu equipo para usarlo.</p></div>
+      <div class="step reveal d4"><div class="num-circle">4</div><h4>Optimización</h4><p>Medimos resultados y mejoramos el sistema de forma continua para maximizar el rendimiento.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USE CASES (sustituye a testimonios mientras no haya reseñas reales) ===== -->
+<!--
+  TESTIMONIOS: cuando tengas reseñas REALES de clientes, dímelo y monto aquí
+  una sección de testimonios con sus nombres. No incluimos reseñas inventadas
+  porque son engañosas y están prohibidas por la normativa española/UE de reseñas.
+-->
+<section class="block" id="casos">
+  <div class="wrap">
+    <div class="head center">
+      <span class="eyebrow reveal">Casos de uso</span>
+      <h2 class="section-title reveal">Lo que la IA puede <span class="gradient-text">hacer por tu negocio</span></h2>
+      <p class="section-sub reveal">Ejemplos reales de procesos que automatizamos para empresas como la tuya.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case reveal d1">
+        <div class="case-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg></div>
+        <div><h4>Atención al cliente automática</h4><p>Un chatbot con IA responde dudas frecuentes, reserva citas y deriva al equipo solo lo importante.</p><span class="result">Respuesta instantánea 24/7</span></div>
+      </div>
+      <div class="case reveal d2">
+        <div class="case-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div><h4>Cualificación de leads</h4><p>La IA filtra y prioriza los contactos entrantes para que tu equipo comercial hable solo con quien interesa.</p><span class="result">Más conversiones, menos esfuerzo</span></div>
+      </div>
+      <div class="case reveal d3">
+        <div class="case-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <div><h4>Gestión documental</h4><p>Extracción, clasificación y archivado automático de facturas, contratos y formularios sin tocar una tecla.</p><span class="result">Cero tareas manuales</span></div>
+      </div>
+      <div class="case reveal d4">
+        <div class="case-ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></div>
+        <div><h4>Informes y seguimiento</h4><p>Paneles e informes que se generan y envían solos, conectando todas tus fuentes de datos en tiempo real.</p><span class="result">Decisiones con datos al día</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="block contact" id="contacto">
+  <div class="wrap">
+    <div class="contact-card reveal">
+      <div class="contact-info">
+        <span class="eyebrow">Contacto</span>
+        <h2>Solicita tu <span class="gradient-text">consulta gratis</span></h2>
+        <p>Cuéntanos qué te gustaría automatizar y te diremos cómo la IA puede ayudarte. Sin compromiso.</p>
+        <div class="contact-detail">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+          <div><b>Email</b><a href="mailto:info@atlanticvisionai.com">info@atlanticvisionai.com</a></div>
+        </div>
+        <div class="contact-detail">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></span>
+          <div><b>Teléfono / WhatsApp</b><a href="tel:+34641784020">+34 641 78 40 20</a></div>
+        </div>
+        <div class="contact-detail">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div><b>Dónde estamos</b><span>C.C. Radazul Bajo, 38109 · Santa Cruz de Tenerife</span></div>
+        </div>
+        <div class="contact-detail">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span>
+          <div><b>Horario</b><span>Lunes a Viernes · 9:00 – 18:00</span></div>
+        </div>
+      </div>
+      <form class="form" id="leadForm">
+        <div class="field"><label>Nombre</label><input type="text" name="name" required placeholder="Tu nombre"></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required placeholder="tucorreo@empresa.com"></div>
+        <div class="field"><label>Teléfono <span style="opacity:.6">(opcional)</span></label><input type="tel" name="phone" placeholder="+34 600 00 00 00"></div>
+        <div class="field"><label>¿Qué te gustaría automatizar?</label><textarea name="message" required placeholder="Cuéntanos brevemente tu caso..."></textarea></div>
+        <button type="submit" class="btn">Enviar solicitud</button>
+        <p class="form-note">También puedes escribirnos directamente a <a href="mailto:info@atlanticvisionai.com" style="color:var(--neon)">info@atlanticvisionai.com</a></p>
+      </form>
+      <script>
+      (function(){
+        var f = document.getElementById('leadForm');
+        if(!f) return;
+        f.addEventListener('submit', async function(e){
+          e.preventDefault();
+          var btn = f.querySelector('.btn');
+          btn.disabled = true; btn.textContent = 'Enviando…';
+          try{
+            var res = await fetch('enviar-lead.php', { method:'POST', body: new FormData(f) });
+            var d = {}; try{ d = await res.json(); }catch(_){}
+            if(res.ok && d.ok !== false){
+              btn.textContent = '✓ ¡Gracias! Te contactamos pronto';
+              btn.style.background = 'linear-gradient(120deg,#22c55e,#22d3ee)';
+              f.reset();
+            } else {
+              btn.textContent = 'No se pudo enviar — reinténtalo'; btn.disabled = false;
+            }
+          }catch(_){
+            btn.textContent = 'No se pudo enviar — reinténtalo'; btn.disabled = false;
+          }
+        });
+      })();
+      </script>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="logo">
+          <img src="assets/logo-avai.png" alt="Avai Labs" class="logo-img">
+        </a>
+        <p>Agencia de inteligencia artificial y marketing digital en Canarias. IA y automatización, marketing, web y audiovisual con drones.</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/people/Atlantic-Vision-AI/61581415241156/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
+          <a href="https://www.instagram.com/atlantic_vision_ai/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1 0-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1C2.6 8.5 2.6 8.9 2.6 12s0 3.5.1 4.7c0 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1 0 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1Zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Zm0 8.1a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm6.2-8.3a1.15 1.15 0 1 1-2.3 0 1.15 1.15 0 0 1 2.3 0Z"/></svg></a>
+          <a href="https://www.youtube.com/@atlanticvisionai" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 0 0 1 7.5 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 23.5 12 31 31 0 0 0 23 7.5ZM9.8 15.3V8.7l5.7 3.3-5.7 3.3Z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h5>Servicios</h5>
+          <a href="#servicios">Automatizaciones con IA</a>
+          <a href="#servicios">Chatbots con IA</a>
+          <a href="#servicios">Marketing digital</a>
+          <a href="#servicios">Producción audiovisual y drones</a>
+          <a href="#servicios">Páginas web modernas</a>
+          <a href="#servicios">Integraciones</a>
+        </div>
+        <div class="foot-col">
+          <h5>Empresa</h5>
+          <a href="#nosotros">Sobre nosotros</a>
+          <a href="#proceso">Proceso</a>
+          <a href="#casos">Casos de uso</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <div class="foot-col">
+          <h5>Contacto</h5>
+          <a href="mailto:info@atlanticvisionai.com">info@atlanticvisionai.com</a>
+          <a href="tel:+34641784020">+34 641 78 40 20</a>
+          <a href="https://wa.me/34624504004" target="_blank" rel="noopener">WhatsApp +34 624 50 40 04</a>
+          <a>C.C. Radazul Bajo · Tenerife</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Avai Labs. Todos los derechos reservados.</span>
+      <span>Hecho con IA en Canarias 🌐</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== CHATBOT FLOTANTE ===== -->
+<!--
+  ⚠️ CONECTAR TU CHATBOT REAL:
+  Sustituye TODO el contenido de <div class="chat-body">...</div> por el código
+  de inserción (embed) de tu chatbot. Normalmente es algo así:
+      <iframe src="URL-DE-TU-CHATBOT" style="width:100%;height:100%;border:0"></iframe>
+  o un <script> que te dé tu proveedor (Voiceflow, Chatbase, Landbot, n8n, etc.).
+  Mientras tanto se muestra una vista previa de ejemplo.
+-->
+<button class="chat-launcher" id="chatLauncher" aria-label="Abrir asistente">
+  <svg class="ic-open" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+  <svg class="ic-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Asistente de Avai Labs">
+  <div class="chat-head">
+    <span class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2.2 2.2M16.8 16.8L19 19M19 5l-2.2 2.2M7.2 16.8L5 19"/></svg></span>
+    <div><h4>Asistente Avai Labs</h4><span class="status">En línea · responde al instante</span></div>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <!-- Captura de datos (lead) → se envía a n8n para tu CRM -->
+    <div class="chat-gate" id="chatGate">
+      <p class="gate-title">¡Hola! 👋 Para comenzar, déjanos tus datos y te ayudamos enseguida.</p>
+      <input type="text" id="leadName" placeholder="Tu nombre">
+      <input type="email" id="leadEmail" placeholder="Tu email">
+      <button class="btn" id="leadStart">Comenzar conversación</button>
+      <p class="gate-note">Usaremos tus datos solo para atenderte. Sin spam.</p>
+    </div>
+    <!-- Hilo de mensajes -->
+    <div id="chatThread" style="display:none">
+      <div class="chat-msg"><span class="mini"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><div class="bubble">¡Hola! Soy el asistente de Avai Labs 🤖 ¿En qué puedo ayudarte? Puedo contarte sobre nuestros chatbots, automatizaciones o resolver tus dudas.</div></div>
+    </div>
+  </div>
+  <div class="chat-foot" id="chatFoot" style="display:none">
+    <input type="text" id="chatInput" placeholder="Escribe tu mensaje...">
+    <button id="chatSend" aria-label="Enviar"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+  </div>
+  <p class="chat-note">Conversación registrada para darte seguimiento.</p>
+</div>
+
+<script>
+/* ===== Chatbot Atlantic Vision AI → conectado a AVAI (agente IA propio) ===== */
+(function(){
+  // El chat habla con el cerebro de AVAI (misma IA, memoria y CRM que el resto de canales).
+  // Las conversaciones y los leads que capte entran en tu Airtable automáticamente.
+  const AVAI_TENANT   = "38800cbb-5d0b-4909-bc03-c1b280343488"; // tu cuenta en AVAI
+  const AVAI_CHAT_URL = "https://avai-labs.vercel.app/api/widget/chat";
+
+  const launcher=document.getElementById('chatLauncher');
+  const panel=document.getElementById('chatPanel');
+  const gate=document.getElementById('chatGate');
+  const thread=document.getElementById('chatThread');
+  const foot=document.getElementById('chatFoot');
+  const input=document.getElementById('chatInput');
+  const send=document.getElementById('chatSend');
+  const leadName=document.getElementById('leadName');
+  const leadEmail=document.getElementById('leadEmail');
+  const leadStart=document.getElementById('leadStart');
+  const body=document.getElementById('chatBody');
+  if(!launcher)return;
+
+  /* sessionId persistente: agrupa toda la conversación de un visitante en tu CRM */
+  const uid=()=>'avai-'+Math.random().toString(36).slice(2)+Date.now().toString(36);
+  let sessionId=localStorage.getItem('avai_session')||uid();
+  localStorage.setItem('avai_session',sessionId);
+  let lead=null; try{lead=JSON.parse(localStorage.getItem('avai_lead')||'null')}catch(e){}
+
+  function scrollDown(){body.scrollTop=body.scrollHeight}
+  function showChat(){gate.style.display='none';thread.style.display='block';foot.style.display='flex'}
+  if(lead)showChat();
+
+  launcher.addEventListener('click',()=>{
+    const open=panel.classList.toggle('open');
+    launcher.classList.toggle('open',open);
+    if(open)setTimeout(()=>{(lead?input:leadName)&&(lead?input:leadName).focus()},300);
+  });
+
+  leadStart&&leadStart.addEventListener('click',()=>{
+    const n=(leadName.value||'').trim(), e=(leadEmail.value||'').trim();
+    const okEmail=/.+@.+\..+/.test(e);
+    leadName.style.borderColor=n?'':'#ef4444';
+    leadEmail.style.borderColor=okEmail?'':'#ef4444';
+    if(!n||!okEmail)return;
+    lead={name:n,email:e};
+    localStorage.setItem('avai_lead',JSON.stringify(lead));
+    // Manda el contacto (nombre+email) a AVAI → Airtable en cuanto lo da, aunque no siga chateando.
+    try{ fetch('enviar-lead.php',{method:'POST',body:new URLSearchParams({name:n,email:e,message:'Contacto desde el chat de la web'})}); }catch(_){}
+    showChat();setTimeout(()=>input.focus(),200);
+  });
+
+  function addBot(text){
+    const m=document.createElement('div');m.className='chat-msg';
+    m.innerHTML='<span class="mini"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><div class="bubble"></div>';
+    m.querySelector('.bubble').textContent=text;thread.appendChild(m);scrollDown();
+  }
+  function addUser(text){
+    const u=document.createElement('div');u.className='chat-msg';u.style.flexDirection='row-reverse';
+    u.innerHTML='<div class="bubble" style="background:var(--grad);color:#031018;border:none;border-bottom-left-radius:14px;border-bottom-right-radius:4px"></div>';
+    u.querySelector('.bubble').textContent=text;thread.appendChild(u);scrollDown();
+  }
+  function typing(on){
+    let t=document.getElementById('typingDots');
+    if(on){if(t)return;t=document.createElement('div');t.id='typingDots';t.className='chat-msg typing';
+      t.innerHTML='<span class="mini"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.4"/></svg></span><div class="bubble">● ● ●</div>';
+      thread.appendChild(t);scrollDown();}
+    else if(t)t.remove();
+  }
+
+  async function postToAvai(message){
+    try{
+      typing(true);
+      const res=await fetch(AVAI_CHAT_URL,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ tenantId:AVAI_TENANT, sessionId, message })
+      });
+      const data=await res.json().catch(()=>({}));
+      typing(false);
+      addBot(data.reply||'Gracias, te respondemos enseguida.');
+    }catch(err){
+      typing(false);
+      addBot('Ahora mismo no puedo responder 😕 Escríbenos a info@atlanticvisionai.com o por WhatsApp +34 624 50 40 04.');
+    }
+  }
+
+  function sendMsg(){
+    const v=(input.value||'').trim();if(!v)return;
+    addUser(v);input.value='';postToAvai(v);
+  }
+  send&&send.addEventListener('click',sendMsg);
+  input&&input.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
+})();
+</script>
+
+<script>
+/* ===== NAV scroll state ===== */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>30),{passive:true});
+
+/* ===== Mobile menu ===== */
+const burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');
+burger.addEventListener('click',()=>{burger.classList.toggle('open');navLinks.classList.toggle('open')});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{burger.classList.remove('open');navLinks.classList.remove('open')}));
+
+/* ===== Reveal on scroll ===== */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ===== Counters ===== */
+const counters=document.querySelectorAll('[data-count]');
+const cio=new IntersectionObserver((es)=>{es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target,target=+el.dataset.count;let cur=0;const dur=1600,t0=performance.now();
+  const tick=(t)=>{const p=Math.min((t-t0)/dur,1);const ease=1-Math.pow(1-p,3);el.textContent=Math.round(ease*target);if(p<1)requestAnimationFrame(tick)};
+  requestAnimationFrame(tick);cio.unobserve(el);
+})},{threshold:.6});
+counters.forEach(c=>cio.observe(c));
+
+/* ===== RED NEURONAL — fondo global controlado por el scroll de TODA la página ===== */
+(function(){
+  const canvas=document.getElementById('neuralCanvas');
+  const fill=document.getElementById('progressFill');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H,DPR,nodes=[],progress=0,raf;
+
+  function resize(){
+    DPR=Math.min(devicePixelRatio||1,2);
+    W=canvas.clientWidth;H=canvas.clientHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    build();
+  }
+  function build(){
+    const count=Math.round(Math.min(Math.max(W*H/14000,46),120));
+    nodes=[];
+    for(let i=0;i<count;i++){
+      nodes.push({
+        x:Math.random()*W,y:Math.random()*H,
+        z:Math.random()*1+0.3,
+        vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,
+        r:Math.random()*1.6+0.8,
+        ph:Math.random()*Math.PI*2
+      });
+    }
+  }
+  function updateProgress(){
+    const scrollable=document.documentElement.scrollHeight-innerHeight;
+    progress = scrollable>0 ? Math.min(Math.max(scrollY/scrollable,0),1) : 0;
+    if(fill)fill.style.width=(progress*100)+'%';
+  }
+  function draw(time){
+    updateProgress();
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2,cy=H*0.4;
+    // progress drives: zoom-out + rotation + connection reach (la "cámara" avanza con el scroll)
+    const zoom=1+progress*0.9;
+    const rot=progress*0.9;
+    const reach=110+progress*70;
+    const t=time*0.0004;
+    // move nodes
+    for(const n of nodes){
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<0||n.x>W)n.vx*=-1;
+      if(n.y<0||n.y>H)n.vy*=-1;
+    }
+    // projected positions
+    const pts=nodes.map(n=>{
+      const dx=(n.x-cx),dy=(n.y-cy);
+      const ca=Math.cos(rot),sa=Math.sin(rot);
+      const rx=dx*ca-dy*sa,ry=dx*sa+dy*ca;
+      const sc=zoom*n.z;
+      return{x:cx+rx*sc*0.9 + Math.sin(t+n.ph)*6, y:cy+ry*sc*0.9 + Math.cos(t+n.ph)*6, r:n.r*sc, z:n.z};
+    });
+    // connections
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const a=pts[i],b=pts[j];
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<reach){
+          const al=(1-d/reach)*0.5*(0.4+progress*0.6);
+          ctx.strokeStyle='rgba(76,170,255,'+al+')';
+          ctx.lineWidth=0.6;
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+    }
+    // nodes
+    for(const p of pts){
+      const glow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+      glow.addColorStop(0,'rgba(120,210,255,'+(0.5+progress*0.4)+')');
+      glow.addColorStop(1,'rgba(120,210,255,0)');
+      ctx.fillStyle=glow;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r*6,0,7);ctx.fill();
+      ctx.fillStyle='rgba(200,235,255,0.95)';
+      ctx.beginPath();ctx.arc(p.x,p.y,Math.max(p.r,0.7),0,7);ctx.fill();
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  resize();
+  addEventListener('resize',resize);
+  raf=requestAnimationFrame(draw);
+})();
+
+/* ===== ABOUT orb — ambient particle sphere ===== */
+(function(){
+  const canvas=document.getElementById('orbCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H,DPR,pts=[],raf;
+  function resize(){
+    DPR=Math.min(devicePixelRatio||1,2);
+    W=canvas.clientWidth;H=canvas.clientHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  const N=160,R=()=>Math.min(W,H)*0.36;
+  for(let i=0;i<N;i++){
+    const th=Math.acos(1-2*(i+0.5)/N),ph=Math.PI*(1+Math.sqrt(5))*i;
+    pts.push({th,ph});
+  }
+  function draw(time){
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2,cy=H/2,rad=R(),rot=time*0.0003;
+    const arr=pts.map(p=>{
+      const x=Math.sin(p.th)*Math.cos(p.ph+rot);
+      const y=Math.cos(p.th);
+      const z=Math.sin(p.th)*Math.sin(p.ph+rot);
+      return{x:cx+x*rad,y:cy+y*rad,z};
+    }).sort((a,b)=>a.z-b.z);
+    for(const p of arr){
+      const depth=(p.z+1)/2;
+      ctx.fillStyle='rgba(80,190,255,'+(0.15+depth*0.7)+')';
+      ctx.beginPath();ctx.arc(p.x,p.y,0.8+depth*2.4,0,7);ctx.fill();
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  resize();addEventListener('resize',resize);raf=requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
