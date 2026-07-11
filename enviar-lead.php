@@ -5,7 +5,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 $SECRET   = getenv('WEBHOOK_SECRET') ?: ($_SERVER['WEBHOOK_SECRET'] ?? ($_ENV['WEBHOOK_SECRET'] ?? ''));
-$ENDPOINT = getenv('LEAD_ENDPOINT')  ?: ($_SERVER['LEAD_ENDPOINT']  ?? ($_ENV['LEAD_ENDPOINT']  ?? 'https://avai-labs.vercel.app/api/lead-intake'));
+$ENDPOINT = getenv('LEAD_ENDPOINT')  ?: ($_SERVER['LEAD_ENDPOINT']  ?? ($_ENV['LEAD_ENDPOINT']  ?? 'https://app.avai-labs.com/api/lead-intake'));
 
 if ($SECRET === '') { http_response_code(500); echo json_encode(['ok'=>false,'error'=>'servidor sin WEBHOOK_SECRET']); exit; }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo json_encode(['ok'=>false]); exit; }
