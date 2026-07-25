@@ -409,7 +409,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
       <a href="#proceso">Proceso</a>
       <a href="#casos">Casos de uso</a>
       <a href="#contacto">Contacto</a>
-      <a href="https://app.avai-labs.com/login" rel="noopener">Acceso clientes</a>
+      <a href="https://app.avai-labs.com/login" rel="noopener">AVAI App</a>
       <a href="#contacto" class="btn nav-cta">Consulta gratis <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
     <button class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></button>
@@ -493,7 +493,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
       <div class="card reveal d2" style="display:flex;flex-direction:column;justify-content:center;background:var(--grad-soft);border-color:rgba(76,194,255,.35)">
         <h3 style="font-size:1.45rem">¿No sabes por dónde empezar?</h3>
         <p style="margin-bottom:20px">Analizamos tu negocio gratis y te decimos exactamente qué automatizar primero.</p>
-        <a href="#contacto" class="btn" style="align-self:flex-start">Hablemos</a>
+        <a href="#contacto" class="btn" style="align-self:flex-start" onclick="if(window.abrirChatAVAI){abrirChatAVAI();return false;}">Hablemos</a>
       </div>
     </div>
   </div>
@@ -685,7 +685,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
           <a href="#proceso">Proceso</a>
           <a href="#casos">Casos de uso</a>
           <a href="#contacto">Contacto</a>
-          <a href="https://app.avai-labs.com/login" rel="noopener">Acceso clientes</a>
+          <a href="https://app.avai-labs.com/login" rel="noopener">AVAI App</a>
         </div>
         <div class="foot-col">
           <h5>Contacto</h5>
@@ -772,6 +772,9 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
     launcher.classList.toggle('open',open);
     if(open)setTimeout(()=>{(lead?input:leadName)&&(lead?input:leadName).focus()},300);
   });
+
+  // Permite abrir el chat desde otros botones de la web (p.ej. el CTA "Hablemos").
+  window.abrirChatAVAI=function(){ if(!panel.classList.contains('open'))launcher.click(); };
 
   leadStart&&leadStart.addEventListener('click',()=>{
     const n=(leadName.value||'').trim(), e=(leadEmail.value||'').trim();
