@@ -776,6 +776,57 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
   // Permite abrir el chat desde otros botones de la web (p.ej. el CTA "Hablemos").
   window.abrirChatAVAI=function(){ if(!panel.classList.contains('open'))launcher.click(); };
 
+  /* ===== SALTA SOLO A LOS N SEGUNDOS ======================================================
+     Este chat está escrito a mano AQUÍ, así que no ejecuta el widget oficial de AVAI: por eso
+     el ajuste «mensaje proactivo» del panel (activado, 5 s) no tenía ningún efecto en esta web
+     (20-ago-2026). Ahora lo lee de la misma configuración, para que el panel siga siendo el
+     único sitio donde se decide.
+
+     Qué hace, y por qué así:
+       · ESCRITORIO: abre el chat solo. Es lo que se pidió, y en pantalla grande no tapa la web.
+       · MÓVIL: NO lo abre —el panel ocupa la pantalla entera y taparía lo que se está leyendo—:
+         enseña un globito con el mensaje, y se abre si lo tocan.
+       · UNA VEZ POR PESTAÑA, y nunca si el visitante ya lo había abierto.
+       · Si la configuración no se puede leer, no pasa nada: el chat se queda como siempre. */
+  (function proactiva(){
+    var YA='avai_pro_visto';
+    try{ if(sessionStorage.getItem(YA)==='1')return; }catch(e){}
+    fetch('https://app.avai-labs.com/api/widget/config?tenantId='+encodeURIComponent(AVAI_TENANT))
+      .then(function(r){return r.json()})
+      .then(function(cfg){
+        var pro=cfg&&cfg.widget&&cfg.widget.proactiva;
+        if(!pro||!pro.on)return;
+        var seg=Math.max(1,Number(pro.delaySeg)||8);
+        setTimeout(function(){
+          if(panel.classList.contains('open'))return;          // ya lo abrió él: no molestar
+          try{ sessionStorage.setItem(YA,'1'); }catch(e){}
+          if(window.matchMedia('(min-width:768px)').matches){ launcher.click(); return; }
+          burbuja(pro.texto||'¿Te ayudo en algo?');
+        },seg*1000);
+      })
+      .catch(function(e){ if(window.console&&console.warn)console.warn('[AVAI] proactiva:',e); });
+
+    function burbuja(texto){
+      var b=document.createElement('div');
+      b.setAttribute('role','button'); b.tabIndex=0;
+      b.style.cssText='position:fixed;right:88px;bottom:26px;max-width:220px;background:#fff;color:#0b1220;'+
+        'padding:10px 12px;border-radius:14px;border-bottom-right-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.25);'+
+        'font:14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;z-index:2147483000';
+      b.textContent=texto;
+      var x=document.createElement('span');
+      x.textContent='✕';
+      x.setAttribute('aria-label','Cerrar');
+      x.style.cssText='position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:#0b1220;'+
+        'color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center';
+      x.onclick=function(ev){ ev.stopPropagation(); b.remove(); };
+      b.appendChild(x);
+      b.onclick=function(){ b.remove(); launcher.click(); };
+      document.body.appendChild(b);
+      // Si el visitante abre el chat por su cuenta, el globo sobra.
+      launcher.addEventListener('click',function(){ b.remove(); },{once:true});
+    }
+  })();
+
   leadStart&&leadStart.addEventListener('click',()=>{
     const n=(leadName.value||'').trim(), e=(leadEmail.value||'').trim();
     const okEmail=/.+@.+\..+/.test(e);
