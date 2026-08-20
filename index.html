@@ -789,18 +789,32 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
        · UNA VEZ POR PESTAÑA, y nunca si el visitante ya lo había abierto.
        · Si la configuración no se puede leer, no pasa nada: el chat se queda como siempre. */
   (function proactiva(){
+    /* SE PUEDE COMPROBAR, NO HAY QUE ADIVINAR (20-ago-2026). La primera versión no dejaba rastro: si
+       no saltaba, no había forma de saber por qué —¿ya había saltado en esta pestaña?, ¿no llegó la
+       configuración?— y el único diagnóstico posible era «no funciona». Ahora cada paso se cuenta en
+       la consola del navegador (F12), y con `?chat=test` en la dirección se salta la marca de «ya
+       visto», que es lo que hace que en la MISMA pestaña no vuelva a salir. */
+    var log=function(m){ if(window.console&&console.log)console.log('[AVAI proactiva] '+m); };
+    var forzar=/[?&]chat=test\b/.test(location.search);
     var YA='avai_pro_visto';
-    try{ if(sessionStorage.getItem(YA)==='1')return; }catch(e){}
+    try{
+      if(!forzar&&sessionStorage.getItem(YA)==='1'){
+        log('ya saltó en esta pestaña; abre una nueva o usa ?chat=test');
+        return;
+      }
+    }catch(e){}
     fetch('https://app.avai-labs.com/api/widget/config?tenantId='+encodeURIComponent(AVAI_TENANT))
       .then(function(r){return r.json()})
       .then(function(cfg){
         var pro=cfg&&cfg.widget&&cfg.widget.proactiva;
-        if(!pro||!pro.on)return;
+        if(!pro||!pro.on){ log('desactivada en el panel de AVAI'); return; }
         var seg=Math.max(1,Number(pro.delaySeg)||8);
+        log('armada: en '+seg+' s');
         setTimeout(function(){
-          if(panel.classList.contains('open'))return;          // ya lo abrió él: no molestar
+          if(panel.classList.contains('open')){ log('el chat ya estaba abierto: no molesto'); return; }
           try{ sessionStorage.setItem(YA,'1'); }catch(e){}
-          if(window.matchMedia('(min-width:768px)').matches){ launcher.click(); return; }
+          if(window.matchMedia('(min-width:768px)').matches){ log('abriendo el chat'); launcher.click(); return; }
+          log('móvil: enseño el globito');
           burbuja(pro.texto||'¿Te ayudo en algo?');
         },seg*1000);
       })
@@ -837,6 +851,20 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
     localStorage.setItem('avai_lead',JSON.stringify(lead));
     // Manda el contacto (nombre+email) a AVAI → Airtable en cuanto lo da, aunque no siga chateando.
     try{ fetch('enviar-lead.php',{method:'POST',body:new URLSearchParams({name:n,email:e,message:'Contacto desde el chat de la web'})}); }catch(_){}
+    /* Y AL CRM DE AVAI, CON NOMBRE Y APELLIDOS (20-ago-2026).
+       Antes esto no se hacía y en el panel la conversación se quedaba como «Visitante web»: el
+       nombre y el email solo viajaban DENTRO del primer mensaje, como contexto para el modelo, así
+       que la ficha del CRM nacía anónima. `/api/widget/lead` usa el MISMO identificador de sesión
+       que el chat (`web-<sessionId>`), así que el lead y la conversación son la misma ficha — y se
+       crea aunque el visitante no llegue a escribir nada. */
+    try{
+      fetch('https://app.avai-labs.com/api/widget/lead',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ tenantId:AVAI_TENANT, sessionId:sessionId, nombre:n, email:e })
+      }).then(function(r){return r.json()}).then(function(d){
+        if(d&&d.error&&window.console&&console.warn)console.warn('[AVAI] lead no guardado:',d.error);
+      }).catch(function(err){ if(window.console&&console.warn)console.warn('[AVAI] lead:',err); });
+    }catch(_){}
     showChat();setTimeout(()=>input.focus(),200);
   });
 
