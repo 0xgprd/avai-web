@@ -604,6 +604,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
         </div>
       </div>
       <form class="form" id="leadForm">
+        <input type="hidden" name="origen" value="web-formulario">
         <div class="field"><label>Nombre completo</label><input type="text" name="name" required placeholder="Tu nombre y apellidos"></div>
         <div class="field"><label>Email</label><input type="email" name="email" required placeholder="tucorreo@empresa.com"></div>
         <div class="field"><label>Teléfono</label><input type="tel" name="phone" required placeholder="+34 600 00 00 00"></div>
@@ -850,7 +851,7 @@ footer{border-top:1px solid var(--line);padding:60px 0 34px;margin-top:40px}
     lead={name:n,email:e};
     localStorage.setItem('avai_lead',JSON.stringify(lead));
     // Manda el contacto (nombre+email) a AVAI → Airtable en cuanto lo da, aunque no siga chateando.
-    try{ fetch('enviar-lead.php',{method:'POST',body:new URLSearchParams({name:n,email:e,message:'Contacto desde el chat de la web'})}); }catch(_){}
+    try{ fetch('enviar-lead.php',{method:'POST',body:new URLSearchParams({name:n,email:e,message:'Contacto desde el chat de la web',origen:'chat-web'})}); }catch(_){}
     /* Y AL CRM DE AVAI, CON NOMBRE Y APELLIDOS (20-ago-2026).
        Antes esto no se hacía y en el panel la conversación se quedaba como «Visitante web»: el
        nombre y el email solo viajaban DENTRO del primer mensaje, como contexto para el modelo, así
