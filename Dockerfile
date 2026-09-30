@@ -32,5 +32,29 @@ RUN a2enmod headers \
     > /etc/apache2/conf-available/avai-cache.conf \
  && a2enconf avai-cache
 
+# SEGURIDAD Y UN SOLO DOMINIO (30-sep-2026).
+#
+# - www.avai-labs.com respondía 200 con la misma web: Google veía dos copias. Ahora redirige (301)
+#   a avai-labs.com conservando la ruta. Va en <Directory> porque las reglas de mod_rewrite puestas
+#   a nivel global no las heredan los VirtualHost de Debian.
+# - HSTS: el navegador recuerda que la web va siempre por HTTPS (sin includeSubDomains, para no
+#   imponerlo a otros subdominios). nosniff y Referrer-Policy: buenas prácticas básicas; con esa
+#   política enviar-lead.php sigue recibiendo la página completa como referer (mismo origen).
+# - ServerTokens/ServerSignature: Apache deja de anunciar su versión.
+RUN a2enmod rewrite \
+ && printf '%s\n' \
+    'ServerTokens Prod' \
+    'ServerSignature Off' \
+    'Header always set Strict-Transport-Security "max-age=31536000"' \
+    'Header always set X-Content-Type-Options "nosniff"' \
+    'Header always set Referrer-Policy "strict-origin-when-cross-origin"' \
+    '<Directory /var/www/html>' \
+    '  RewriteEngine On' \
+    '  RewriteCond %{HTTP_HOST} ^www\.avai-labs\.com$ [NC]' \
+    '  RewriteRule ^(.*)$ https://avai-labs.com/$1 [R=301,L]' \
+    '</Directory>' \
+    > /etc/apache2/conf-available/avai-seguridad.conf \
+ && a2enconf avai-seguridad
+
 # Traefik (el reverse proxy de EasyPanel) enruta el trafico a este puerto interno.
 EXPOSE 80
