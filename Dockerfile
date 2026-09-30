@@ -40,7 +40,8 @@ RUN a2enmod headers \
 # - HSTS: el navegador recuerda que la web va siempre por HTTPS (sin includeSubDomains, para no
 #   imponerlo a otros subdominios). nosniff y Referrer-Policy: buenas prácticas básicas; con esa
 #   política enviar-lead.php sigue recibiendo la página completa como referer (mismo origen).
-# - ServerTokens/ServerSignature: Apache deja de anunciar su versión.
+# - ServerTokens/ServerSignature: Apache deja de anunciar su versión. El fichero empieza por "zz-"
+#   para cargarse DESPUÉS del security.conf de Debian, que si no vuelve a poner "ServerTokens OS".
 RUN a2enmod rewrite \
  && printf '%s\n' \
     'ServerTokens Prod' \
@@ -53,8 +54,8 @@ RUN a2enmod rewrite \
     '  RewriteCond %{HTTP_HOST} ^www\.avai-labs\.com$ [NC]' \
     '  RewriteRule ^(.*)$ https://avai-labs.com/$1 [R=301,L]' \
     '</Directory>' \
-    > /etc/apache2/conf-available/avai-seguridad.conf \
- && a2enconf avai-seguridad
+    > /etc/apache2/conf-available/zz-avai-seguridad.conf \
+ && a2enconf zz-avai-seguridad
 
 # Traefik (el reverse proxy de EasyPanel) enruta el trafico a este puerto interno.
 EXPOSE 80
