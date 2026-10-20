@@ -10,6 +10,9 @@ COPY enviar-lead.php /var/www/html/enviar-lead.php
 COPY robots.txt      /var/www/html/robots.txt
 COPY sitemap.xml     /var/www/html/sitemap.xml
 COPY assets/         /var/www/html/assets/
+# Experiencia 3D (oct-2026): hoja de estilos y módulos JavaScript de la web. Three.js y GSAP van en assets/vendor/.
+COPY css/            /var/www/html/css/
+COPY js/             /var/www/html/js/
 
 # EL HTML NO SE CACHEA; LOS ASSETS SÍ (20-ago-2026).
 #
@@ -21,14 +24,24 @@ COPY assets/         /var/www/html/assets/
 # El HTML es pequeño y cambia; las imágenes y vídeos son grandes y no cambian: por eso las dos
 # reglas son distintas. Sin la segunda, quitar la caché del HTML se llevaría por delante la de los
 # assets y la web iría más lenta para todo el mundo.
+#
+# CSS Y JS DE LA WEB: SE REVALIDAN (21-oct-2026). Desde la experiencia 3D la web carga una hoja de
+# estilos y unos 15 módulos JavaScript que se importan entre sí por su nombre (js/main.js → js/ui/nav.js…).
+# Con 7 días de caché, tras un despliegue el navegador mezclaría módulos nuevos con viejos. Con
+# "no-cache" el navegador conserva la copia pero pregunta si cambió (respuesta 304, sin descargar).
+# assets/vendor/ (Three.js y GSAP) lleva la versión en el nombre del fichero: no cambia nunca, así que
+# se cachea un año. La regla <If> se aplica después de las <FilesMatch> y por eso gana.
 RUN a2enmod headers \
  && printf '%s\n' \
-    '<FilesMatch "\.(html|php)$">' \
+    '<FilesMatch "\.(html|php|css|js)$">' \
     '  Header set Cache-Control "no-cache, must-revalidate"' \
     '</FilesMatch>' \
-    '<FilesMatch "\.(png|jpe?g|webp|svg|mp4|ico|css|js)$">' \
+    '<FilesMatch "\.(png|jpe?g|webp|svg|mp4|ico)$">' \
     '  Header set Cache-Control "public, max-age=604800"' \
     '</FilesMatch>' \
+    '<If "%{REQUEST_URI} =~ m#^/assets/vendor/#">' \
+    '  Header set Cache-Control "public, max-age=31536000, immutable"' \
+    '</If>' \
     > /etc/apache2/conf-available/avai-cache.conf \
  && a2enconf avai-cache
 
