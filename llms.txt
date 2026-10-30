@@ -1,0 +1,55 @@
+# AVAI Labs
+
+> Agencia de inteligencia artificial y marketing digital para empresas de España y Francia. / Agence d'intelligence artificielle et de marketing digital pour les entreprises en France et en Espagne.
+
+AVAI Labs combina en un solo equipo la inteligencia artificial, el marketing digital y la producción audiovisual: automatizaciones con IA, chatbots de WhatsApp, estrategias de marketing digital, páginas web y foto y vídeo para marcas, bodas, fiestas y eventos. Trabaja con empresas de España y Francia, en remoto, y en persona en Canarias, donde está su base. Método en cuatro fases: análisis, desarrollo, implementación y optimización. La primera consulta es gratuita. Atiende en español y en francés.
+
+## Español
+
+- [Portada](https://avai-labs.com/)
+
+### Servicios
+
+- [Inteligencia artificial y automatización](https://avai-labs.com/agencia-inteligencia-artificial/): Agencia de inteligencia artificial para empresas: automatizaciones con IA, automatización de procesos e integraciones a medida para ahorrar tiempo y ganar productividad.
+- [Chatbots de WhatsApp con IA](https://avai-labs.com/chatbot-whatsapp-empresas/): Chatbot de WhatsApp con inteligencia artificial: responde a tus clientes 24/7 en WhatsApp, Instagram, teléfono y tu web, agenda citas y rellena tu CRM solo.
+- [Marketing digital](https://avai-labs.com/marketing-digital/): Marketing digital potenciado con IA: estrategia a medida, campañas de publicidad, SEO y creación de contenido para redes que atraen clientes de verdad.
+- [Diseño de páginas web](https://avai-labs.com/diseno-web/): Diseño y desarrollo de páginas web rápidas, atractivas y optimizadas para convertir, con SEO y tecnología de última generación, y asistente de IA si lo necesitas.
+- [Producción audiovisual y eventos](https://avai-labs.com/fotografia-video-eventos/): Producción audiovisual profesional: vídeo y fotografía para marcas, spots y contenido para redes, y cobertura de bodas, fiestas y eventos en España y Francia.
+
+### Blog
+
+- [Los agentes de IA ya tienen correo y calendario propios: el «compañero de trabajo» digital llega a las empresas](https://avai-labs.com/blog/agentes-ia-correo-calendario-propios/): Google presenta agentes de IA con su propia cuenta de correo y calendario, y JPMorgan ya bloquea los agentes que no controla. Lo que anticipa para tu empresa.
+- [El Banco de España confirma que el uso de la IA en las pymes se ha duplicado en dos años](https://avai-labs.com/blog/banco-espana-ia-pymes-se-duplica/): Entre el 30 % y el 35 % de las pymes españolas ya usan inteligencia artificial, frente al 70 % de las grandes empresas. Qué significa para la tuya.
+- [Las pymes que usan inteligencia artificial ahorran 13 horas a la semana](https://avai-labs.com/blog/pymes-ia-ahorran-13-horas-semana/): El Informe Emprende 2026 de Holded revela que el 31 % de las pymes ya usa IA y que ahorra de media 13,3 horas semanales en tareas operativas y administrativas.
+
+## Français
+
+AVAI Labs réunit dans une seule équipe l'intelligence artificielle, le marketing digital et la production audiovisuelle, pour les entreprises en France et en Espagne. Première consultation gratuite.
+
+- [Accueil](https://avai-labs.com/fr/)
+
+### Services
+
+- [Intelligence artificielle et automatisation](https://avai-labs.com/fr/agence-intelligence-artificielle/): Agence d’intelligence artificielle pour les entreprises : automatisations par l’IA, automatisation des processus et intégrations sur mesure pour gagner du temps et de la productivité.
+- [Chatbots WhatsApp avec IA](https://avai-labs.com/fr/chatbot-whatsapp-entreprise/): Chatbot WhatsApp avec intelligence artificielle : il répond à vos clients 24h/24 sur WhatsApp, Instagram, par téléphone et sur votre site, prend les rendez-vous et remplit votre CRM.
+- [Marketing digital](https://avai-labs.com/fr/agence-marketing-digital/): Marketing digital boosté par l’IA : stratégie sur mesure, campagnes publicitaires, SEO et création de contenu pour les réseaux qui attirent de vrais clients.
+- [Création de sites web](https://avai-labs.com/fr/creation-site-web/): Création de sites web rapides, attractifs et optimisés pour convertir, avec SEO et technologie de dernière génération, et un assistant IA si vous le souhaitez.
+- [Production audiovisuelle et événements](https://avai-labs.com/fr/photo-video-evenements/): Production audiovisuelle professionnelle : vidéo et photo pour les marques, spots et contenu pour les réseaux, et couverture de mariages, fêtes et événements en France et en Espagne.
+
+### Blog (français)
+
+- [Les agents d’IA ont désormais leur propre messagerie et leur agenda : le « collègue » numérique arrive dans les entreprises](https://avai-labs.com/fr/blog/agents-ia-messagerie-agenda/): Google présente des agents d’IA dotés de leur propre messagerie et de leur agenda, et JPMorgan bloque les agents qu’il ne contrôle pas. Ce que cela annonce pour votre entreprise.
+- [Banque de France : deux tiers des entreprises françaises utilisent déjà l’IA générative](https://avai-labs.com/fr/blog/banque-de-france-ia-generative-entreprises/): Selon la Banque de France, 67 % des entreprises d’au moins 20 salariés utilisent l’IA générative, mais seules 31 % en tirent déjà des gains. La différence se joue maintenant.
+- [Baromètre France Num 2026 : quatre TPE-PME sur dix utilisent désormais l’intelligence artificielle](https://avai-labs.com/fr/blog/barometre-france-num-2026-ia-tpe-pme/): En un an, la part des TPE-PME françaises qui utilisent l’IA a bondi de 14 points, et elle dépasse la moitié chez les PME. Ce que cela change pour votre entreprise.
+
+## Producto / Produit
+
+- [AVAI App](https://app.avai-labs.com/): agente de IA que atiende WhatsApp, Instagram, teléfono y la web 24/7, agenda citas, envía recordatorios y rellena el CRM.
+
+## Contacto / Contact
+
+- Web: https://avai-labs.com/ · https://avai-labs.com/fr/
+- Email: info@avai-labs.com
+- Teléfono y WhatsApp / Téléphone et WhatsApp: +34 624 50 40 04
+- Dirección / Adresse: C.C. Radazul Bajo, 38109 El Rosario (Tenerife), España
+- Horario / Horaires: lunes a viernes, 9:00 a 19:00 (hora de Canarias)

@@ -27,7 +27,8 @@ export function initNav() {
   function setMenu(open) {
     menu.classList.toggle('open', open);
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    const fr = document.documentElement.lang === 'fr';
+    burger.setAttribute('aria-label', open ? (fr ? 'Fermer le menu' : 'Cerrar menú') : (fr ? 'Ouvrir le menu' : 'Abrir menú'));
     document.body.classList.toggle('menu-open', open);
     if (open) menu.querySelector('a').focus({ preventScroll: true });
   }

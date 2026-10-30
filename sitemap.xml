@@ -1,9 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://avai-labs.com/</loc>
-    <lastmod>2026-10-29</lastmod>
-    <changefreq>weekly</changefreq>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/"/>
+    <lastmod>2026-10-30</lastmod>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/agencia-inteligencia-artificial/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/agencia-inteligencia-artificial/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/agence-intelligence-artificielle/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/agencia-inteligencia-artificial/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/agence-intelligence-artificielle/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/agencia-inteligencia-artificial/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/agence-intelligence-artificielle/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/agencia-inteligencia-artificial/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/chatbot-whatsapp-empresas/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/chatbot-whatsapp-empresas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/chatbot-whatsapp-entreprise/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/chatbot-whatsapp-empresas/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/chatbot-whatsapp-entreprise/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/chatbot-whatsapp-empresas/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/chatbot-whatsapp-entreprise/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/chatbot-whatsapp-empresas/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/marketing-digital/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/marketing-digital/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/agence-marketing-digital/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/marketing-digital/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/agence-marketing-digital/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/marketing-digital/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/agence-marketing-digital/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/marketing-digital/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/diseno-web/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/diseno-web/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/creation-site-web/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/diseno-web/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/creation-site-web/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/diseno-web/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/creation-site-web/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/diseno-web/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fotografia-video-eventos/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/fotografia-video-eventos/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/photo-video-evenements/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/fotografia-video-eventos/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/photo-video-evenements/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/fotografia-video-eventos/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/photo-video-evenements/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/fotografia-video-eventos/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/blog/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://avai-labs.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://avai-labs.com/blog/"/>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/blog/agentes-ia-correo-calendario-propios/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/blog/banco-espana-ia-pymes-se-duplica/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/blog/pymes-ia-ahorran-13-horas-semana/</loc>
+    <lastmod>2026-10-29</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/blog/agents-ia-messagerie-agenda/</loc>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/blog/banque-de-france-ia-generative-entreprises/</loc>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://avai-labs.com/fr/blog/barometre-france-num-2026-ia-tpe-pme/</loc>
+    <lastmod>2026-10-30</lastmod>
+    <priority>0.5</priority>
   </url>
 </urlset>

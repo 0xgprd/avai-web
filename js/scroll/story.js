@@ -6,10 +6,12 @@
 // mitad de página, sin saltos. La inercia la da un quickTo sobre el tiempo, no sobre el scroll: el scroll
 // nativo nunca se bloquea ni se secuestra.
 
+// Capítulos de la portada. Las páginas de servicio y del blog declaran los suyos con data-escena (ver
+// js/main.js): cada capítulo es el id de una sección y lleva su fotograma clave en el mismo orden.
 export const CHAPTERS = ['inicio', 'area-ia', 'area-mkt', 'area-digital', 'proceso', 'casos', 'nosotros', 'contacto'];
 
-export function createStory({ gsap, ScrollTrigger, keyframes, reduced }) {
-  const els = CHAPTERS.map(id => document.getElementById(id));
+export function createStory({ gsap, ScrollTrigger, keyframes, reduced, chapters = CHAPTERS }) {
+  const els = chapters.map(id => document.getElementById(id));
   // proc (avance del proceso), caseIdx y casePulse los escriben js/ui/process.js y js/ui/cases.js.
   const state = Object.assign({ proc: 0, caseIdx: 0, casePulse: 0 }, keyframes[0]);
   const proxy = { t: 0 };

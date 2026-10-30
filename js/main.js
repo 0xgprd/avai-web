@@ -20,6 +20,12 @@ const html = document.documentElement;
 const stageEl = document.getElementById('stage');
 const canvas = document.getElementById('scene');
 const debug = { story: null, stage: null, quality: null, error: null };
+
+// Capítulos de la página: las páginas de servicio y del blog marcan cada sección con data-escena="N"
+// (fotograma de js/scroll/keyframes.js). Sin marcas, es la portada con su historia de 8 capítulos.
+const marcadas = [...document.querySelectorAll('[data-escena][id]')];
+const chapters = marcadas.length ? marcadas.map(el => el.id) : undefined;
+const escenas = marcadas.length ? marcadas.map(el => Number(el.dataset.escena)) : undefined;
 window.__avai = debug; // estado de la escena para depuración y pruebas (solo lectura)
 window.__avaiReady = true;
 
@@ -42,17 +48,17 @@ function start() {
   let reduced = mq.reduced.matches;
   // El proceso solo se «fija» en escritorio y con movimiento normal (ver .process en css/main.css).
   const pinned = () => !mq.mobile.matches && !mq.reduced.matches;
-  const story = createStory({ gsap, ScrollTrigger, keyframes: getKeyframes(mq.mobile.matches), reduced });
+  const story = createStory({ gsap, ScrollTrigger, keyframes: getKeyframes(mq.mobile.matches, escenas), reduced, chapters });
   debug.story = story;
 
   initReveals({ gsap, SplitText, reduced });
-  initProcess({ gsap, ScrollTrigger, story, pinned });
-  initCases({ ScrollTrigger, story });
+  if (document.getElementById('proceso')) initProcess({ gsap, ScrollTrigger, story, pinned });
+  if (document.getElementById('caseList')) initCases({ ScrollTrigger, story });
 
   let stage = null;
 
   mq.mobile.addEventListener('change', e => {
-    story.setKeyframes(getKeyframes(e.matches));
+    story.setKeyframes(getKeyframes(e.matches, escenas));
     if (stage) stage.setLayout(e.matches);
     ScrollTrigger.refresh();
   });

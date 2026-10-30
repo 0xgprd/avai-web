@@ -85,7 +85,11 @@ const MOBILE = [
   { camX: bx, camY: by - 2.3, camZ: bz + 13, alpha: 0.6 },
 ];
 
-export function getKeyframes(mobile) {
+// escenas: qué fotogramas usa la página y en qué orden (por defecto los 8 de la portada). Las páginas de
+// servicio recombinan los existentes, p. ej. [0, 1, 4, 5, 6, 7]: núcleo, sistema IA, trayectoria, flujos,
+// calma y núcleo final. Así todas comparten las mismas escenas, probadas en escritorio y en móvil.
+export function getKeyframes(mobile, escenas) {
   const cam = mobile ? MOBILE : DESKTOP;
-  return chapters(cam).map(k => ({ ...BASE, ...k }));
+  const all = chapters(cam).map(k => ({ ...BASE, ...k }));
+  return escenas ? escenas.map(i => all[i]) : all;
 }

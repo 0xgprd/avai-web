@@ -177,6 +177,9 @@ main,.footer{overflow-x:clip}
 .svc-list li:hover::before{background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
 .svc-list h4{font-size:1.07rem;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
 .svc-list p{margin-top:6px;font-size:.95rem;color:var(--muted);line-height:1.55}
+/* Enlace discreto a la página de cada servicio (29-oct-2026): al final del párrafo, sin añadir altura. */
+.svc-more{display:inline-block;margin-left:6px;font:500 .72rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);white-space:nowrap;transition:color .25s,transform .3s var(--ease)}
+.svc-more:hover{color:var(--ink);transform:translateX(3px)}
 .svc-cta{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;margin:4vh 0 18vh;padding:34px 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);background:linear-gradient(90deg,rgba(5,9,20,.8),rgba(5,9,20,.45))}
 .svc-cta-t{font:600 clamp(1.35rem,2vw,1.7rem)/1.2 var(--display);letter-spacing:-.02em;margin-bottom:6px}
 .svc-cta p:not(.svc-cta-t){color:var(--muted)}
@@ -410,3 +413,34 @@ main,.footer{overflow-x:clip}
   .process-count{display:none}
 }
 .no-webgl .stage canvas{display:none}
+
+/* ---------- 10. Idioma (30-oct-2026): selector ES · FR del menú ---------- */
+.nav-links a.nav-lang{font:500 .75rem/1 var(--mono);letter-spacing:.14em;padding:7px 9px;border-radius:8px;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--ink-2)}
+.nav-links a.nav-lang::after{display:none}
+.nav-links a.nav-lang:hover{box-shadow:inset 0 0 0 1px var(--cyan);color:var(--ink)}
+
+@media (max-width:960px){
+  .nav-links a.nav-lang{font-size:1rem;padding:8px 12px}
+}
+
+/* ---------- 11. Menú «Soluciones» desplegable (30-oct-2026): las 5 páginas de servicio ----------
+   Escritorio: se abre al pasar el ratón o con el teclado (focus-within). Móvil: los enlaces van debajo, en el menú. */
+.nav-drop{position:relative;display:flex;align-items:center;gap:8px}
+.nav-drop::after{content:"";width:6px;height:6px;margin-top:-3px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg);transition:transform .3s var(--ease)}
+.nav-drop:hover::after,.nav-drop:focus-within::after{transform:rotate(225deg);margin-top:3px}
+.nav-sub{position:absolute;top:100%;left:-16px;z-index:110;display:flex;flex-direction:column;min-width:300px;margin-top:16px;padding:10px;border-radius:16px;
+  background:rgba(8,14,30,.96);box-shadow:inset 0 0 0 1px var(--line-2),0 30px 60px -30px rgba(0,0,0,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s,transform .35s var(--ease),visibility 0s .35s}
+.nav-sub::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px}
+.nav-drop:hover .nav-sub,.nav-drop:focus-within .nav-sub{opacity:1;visibility:visible;transform:none;transition:opacity .25s,transform .35s var(--ease),visibility 0s}
+.nav-links .nav-sub a:not(.btn){padding:10px 12px;border-radius:10px;font-size:.9rem;color:var(--ink-2);white-space:nowrap}
+.nav-links .nav-sub a:not(.btn)::after{display:none}
+.nav-links .nav-sub a:not(.btn):hover{background:rgba(69,214,247,.08);color:var(--ink)}
+@media (min-width:961px) and (max-width:1200px){.nav-links{gap:20px}.nav-app{padding-left:20px}}
+@media (max-width:960px){
+  .nav-links{justify-content:flex-start;overflow-y:auto;padding-top:96px}
+  .nav-drop{flex-direction:column;align-items:flex-start;gap:0}
+  .nav-drop::after{display:none}
+  .nav-sub{position:static;min-width:0;margin:2px 0 8px;padding:2px 0 2px 14px;border-radius:0;border-left:1px solid var(--line-2);background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;opacity:1;visibility:visible;transform:none}
+  .nav-links .nav-sub a:not(.btn){padding:6px 0;font:500 1rem/1.35 var(--body);letter-spacing:0;color:var(--muted);white-space:normal}
+}

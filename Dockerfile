@@ -13,6 +13,17 @@ COPY assets/         /var/www/html/assets/
 # Experiencia 3D (oct-2026): hoja de estilos y módulos JavaScript de la web. Three.js y GSAP van en assets/vendor/.
 COPY css/            /var/www/html/css/
 COPY js/             /var/www/html/js/
+# SEO (29-oct-2026) y versión francesa (30-oct-2026): páginas de servicio, blog, portada francesa, llms.txt
+# y la clave de IndexNow. Casi todo lo genera tools/construir.js; se sube a git ya generado. fr/ y blog/ se
+# copian enteros: añadir un artículo o una página francesa no toca este fichero.
+COPY agencia-inteligencia-artificial/ /var/www/html/agencia-inteligencia-artificial/
+COPY chatbot-whatsapp-empresas/       /var/www/html/chatbot-whatsapp-empresas/
+COPY marketing-digital/               /var/www/html/marketing-digital/
+COPY diseno-web/                      /var/www/html/diseno-web/
+COPY fotografia-video-eventos/        /var/www/html/fotografia-video-eventos/
+COPY blog/                            /var/www/html/blog/
+COPY fr/                              /var/www/html/fr/
+COPY llms.txt 3fe78ac3b678ca541d621a2053282f0c.txt /var/www/html/
 
 # EL HTML NO SE CACHEA; LOS ASSETS SÍ (20-ago-2026).
 #
