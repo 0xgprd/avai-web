@@ -66,6 +66,8 @@ RUN a2enmod headers \
 #   política enviar-lead.php sigue recibiendo la página completa como referer (mismo origen).
 # - ServerTokens/ServerSignature: Apache deja de anunciar su versión. El fichero empieza por "zz-"
 #   para cargarse DESPUÉS del security.conf de Debian, que si no vuelve a poner "ServerTokens OS".
+# - Carpetas sin barra final (30-oct-2026): /diseno-web → /diseno-web/ directamente en https. Sin esta
+#   regla, Apache (detrás de Traefik, que le habla en http) redirigía a http:// y luego Traefik a https://.
 RUN a2enmod rewrite \
  && printf '%s\n' \
     'ServerTokens Prod' \
@@ -77,6 +79,9 @@ RUN a2enmod rewrite \
     '  RewriteEngine On' \
     '  RewriteCond %{HTTP_HOST} ^www\.avai-labs\.com$ [NC]' \
     '  RewriteRule ^(.*)$ https://avai-labs.com/$1 [R=301,L]' \
+    '  RewriteCond %{REQUEST_FILENAME} -d' \
+    '  RewriteCond %{REQUEST_URI} !/$' \
+    '  RewriteRule ^(.*)$ https://avai-labs.com/$1/ [R=301,L]' \
     '</Directory>' \
     > /etc/apache2/conf-available/zz-avai-seguridad.conf \
  && a2enconf zz-avai-seguridad
