@@ -18,9 +18,10 @@ module.exports = {
   },
 
   // Textos que se quedan igual en francés (marcas, datos de contacto, palabras idénticas).
-  mismos: ['AVAI App', 'WhatsApp', 'Instagram', 'YouTube', 'Marketing digital', 'AVAI Labs', 'Base', 'AVAI', 'Marvesa',
+  mismos: ['AVAI App', 'WhatsApp', 'Instagram', 'Facebook', 'YouTube', 'Marketing digital', 'AVAI Labs', 'Base', 'AVAI', 'Marvesa',
     'info@avai-labs.com', '+34 624 50 40 04', 'C.C. Radazul Bajo, 38109 · El Rosario, Tenerife',
-    'Web', 'SEO', 'Motion', 'CRM', 'Principal', 'ES', 'Español', 'Contact', 'Menu', 'Services', 'Documents', 'Agenda', 'Motion design', 'PDF', 'REC', '4K · 25 fps'],
+    'Web', 'SEO', 'Motion', 'CRM', 'Principal', 'ES', 'Español', 'Contact', 'Menu', 'Services', 'Documents', 'Agenda', 'Motion design', 'PDF', 'REC', '4K · 25 fps',
+    'Hi! Are you open on Sunday?', '10:00', '12:30', '17:30'],
 
   pares: [
     // Cabecera y menús
@@ -120,7 +121,32 @@ module.exports = {
     ['<li>Bodas y eventos</li>', '<li>Mariages et événements</li>'],
     ['<li>Contenido para redes</li>', '<li>Contenus pour les réseaux</li>'],
     ['<li>Tomas aéreas</li>', '<li>Prises de vue aériennes</li>'],
-    ['AVAI App, nuestro agente de IA ↗', 'AVAI App, notre agent IA ↗'],
+    ['Y nuestra propia app: AVAI App ↓', 'Et notre propre app : AVAI App ↓'],
+
+    // 6b · Nuestra app (el enlace a la landing ya lleva ?lang=fr por el par de la cabecera)
+    ['>[ Nuestra app ]<', '>[ Notre app ]<'],
+    ['Y tenemos <span class="serif">nuestra propia app.</span>', 'Et nous avons <span class="serif">notre propre app.</span>'],
+    ['AVAI App es la plataforma que hemos creado para que tu negocio atienda solo: un agente de IA que responde por WhatsApp, Instagram, Facebook, teléfono y el chat de tu web, agenda las citas, envía los recordatorios y guarda cada contacto en tu CRM.',
+     'AVAI App est la plateforme que nous avons créée pour que votre entreprise réponde toute seule : un agent IA qui répond sur WhatsApp, Instagram, Facebook, par téléphone et dans le chat de votre site, prend les rendez-vous, envoie les rappels et enregistre chaque contact dans votre CRM.'],
+    ['<b class="mono">Atiende</b><span>En todos tus canales, 24/7 y en el idioma del cliente.</span>', '<b class="mono">Répond</b><span>Sur tous vos canaux, 24h/24 et dans la langue du client.</span>'],
+    ['<b class="mono">Agenda</b><span>Da, cambia y recuerda las citas en tu calendario.</span>', '<b class="mono">Planifie</b><span>Prend, déplace et rappelle les rendez-vous dans votre agenda.</span>'],
+    ['<b class="mono">Ordena</b><span>Cada conversación acaba en tu CRM y en tu panel.</span>', '<b class="mono">Organise</b><span>Chaque conversation finit dans votre CRM et votre tableau de bord.</span>'],
+    ['<b class="mono">A medida</b><span>Funciones propias de tu negocio, como enviar tu oferta en PDF.</span>', '<b class="mono">Sur mesure</b><span>Des fonctions propres à votre entreprise, comme envoyer votre devis en PDF.</span>'],
+    ['>Descubrir AVAI App ↗<', '>Découvrir AVAI App ↗<'],
+    ['>Probar el agente<', '>Essayer l’agent<'],
+    ['<i></i>El chat de esta web funciona con AVAI App', '<i></i>Le chat de ce site fonctionne avec AVAI App'],
+    ['<span class="on">Bandeja</span><span>Agenda</span><span>Contactos</span>', '<span class="on">Messages</span><span>Agenda</span><span>Contacts</span>'],
+    ['<i></i>Agente activo', '<i></i>Agent actif'],
+    ['<p>¿Tenéis hueco mañana por la tarde?</p><span class="est mono">Cita agendada</span>', '<p>Vous avez un créneau demain après-midi ?</p><span class="est mono">RDV pris</span>'],
+    ['<span class="est mono">Respondido en inglés</span>', '<span class="est mono">Répondu en anglais</span>'],
+    ['<span class="can mono">Teléfono</span><p>Llamada · cambiar la cita del jueves</p><span class="est mono">Cita movida</span>', '<span class="can mono">Téléphone</span><p>Appel · déplacer le RDV de jeudi</p><span class="est mono">RDV déplacé</span>'],
+    ['<p>Quiero pedir un presupuesto</p><span class="est mono">En tu CRM</span>', '<p>Je voudrais un devis</p><span class="est mono">Dans votre CRM</span>'],
+    ['<p class="mono">Mañana</p>', '<p class="mono">Demain</p>'],
+    ['<span>Consulta</span>', '<span>Consultation</span>'],
+    ['<span>Primera visita</span>', '<span>Première visite</span>'],
+    ['<span>Nueva · por WhatsApp</span>', '<span>Nouveau · par WhatsApp</span>'],
+    ['<p>¿Me podéis mandar la oferta?</p><span class="est mono">PDF enviado</span>', '<p>Vous pouvez m’envoyer le devis ?</p><span class="est mono">PDF envoyé</span>'],
+    ['✓ Recordatorios 24 h y 6 h antes', '✓ Rappels 24 h et 6 h avant'],
 
     // 7 · Portafolio, nosotros, proceso
     ['Nuestro <span class="serif">portafolio.</span>', 'Notre <span class="serif">portfolio.</span>'],

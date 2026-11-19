@@ -30,7 +30,7 @@ const WA = 'https://wa.me/34624504004';
 // Analítica sin cookies (Umami en nuestro VPS): solo cuenta en avai-labs.com, no en local ni en vistas previas.
 const UMAMI = '<script defer src="https://avai-umami.ig2tl9.easypanel.host/avai.js" data-website-id="144366c2-f015-485c-bd7f-9285b163c8cc" data-domains="avai-labs.com"></script>';
 const ORG_ID = SITE + '/#organizacion';
-const V = '20261120'; // versión de css/js en las URL (el servidor los revalida igualmente)
+const V = '20261121'; // versión de css/js en las URL (el servidor los revalida igualmente)
 const IDIOMAS = ['es', 'fr'];
 
 const T = require(path.join(ROOT, 'contenido', 'i18n', 'comun.js'));

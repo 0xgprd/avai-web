@@ -142,16 +142,26 @@ const TEMAS = {
   claro: { tinta: '#0b0d12', acento: '#2f6bff', caliente: '#0d2fa8', gris: '#6c6f78' },  // sobre fondo claro
 };
 
-function labs(x0, gris) {
-  const a = 13.4, w = 8.4, t = 16, b = 28; let x = x0; const d = [];
-  d.push(`M${x} ${t}V${b}H${x + 8}`); x += a;
-  d.push(`M${x} ${b}L${x + w / 2} ${t}L${x + w} ${b}M${x + 1.65} 23.6H${x + w - 1.65}`); x += a;
-  d.push(`M${x} ${t}H${x + 5}A3 3 0 0 1 ${x + 5} ${t + 6}H${x}M${x + 5.2} ${t + 6}A3 3 0 0 1 ${x + 5.2} ${b}H${x}V${t}`); x += a;
-  d.push(`M${x + 8} ${t + 1.9}C${x + 7.1} ${t + .6} ${x + 5.8} ${t} ${x + 4.2} ${t}C${x + 2} ${t} ${x + .5} ${t + 1.2} ${x + .5} ${t + 3}C${x + .5} ${t + 5} ${x + 2.3} ${t + 5.6} ${x + 4.2} ${t + 6}C${x + 6.4} ${t + 6.4} ${x + 8.1} ${t + 7.1} ${x + 8.1} ${t + 9}C${x + 8.1} ${t + 10.9} ${x + 6.5} ${b} ${x + 4.2} ${b}C${x + 2.4} ${b} ${x + 1} ${b - .5} ${x} ${b - 2}`);
+// El rótulo tras la línea fina: «LABS» para la agencia y «APP» para AVAI App (19-nov-2026), con las mismas letras de
+// palo seco dibujadas a trazo.
+const GLIFOS = {
+  L: (x, t, b) => `M${x} ${t}V${b}H${x + 8}`,
+  A: (x, t, b, w) => `M${x} ${b}L${x + w / 2} ${t}L${x + w} ${b}M${x + 1.65} 23.6H${x + w - 1.65}`,
+  B: (x, t, b) => `M${x} ${t}H${x + 5}A3 3 0 0 1 ${x + 5} ${t + 6}H${x}M${x + 5.2} ${t + 6}A3 3 0 0 1 ${x + 5.2} ${b}H${x}V${t}`,
+  P: (x, t, b) => `M${x} ${b}V${t}H${x + 5}A3.3 3.3 0 0 1 ${x + 5} ${t + 6.6}H${x}`,
+  S: (x, t, b) => `M${x + 8} ${t + 1.9}C${x + 7.1} ${t + .6} ${x + 5.8} ${t} ${x + 4.2} ${t}C${x + 2} ${t} ${x + .5} ${t + 1.2} ${x + .5} ${t + 3}C${x + .5} ${t + 5} ${x + 2.3} ${t + 5.6} ${x + 4.2} ${t + 6}C${x + 6.4} ${t + 6.4} ${x + 8.1} ${t + 7.1} ${x + 8.1} ${t + 9}C${x + 8.1} ${t + 10.9} ${x + 6.5} ${b} ${x + 4.2} ${b}C${x + 2.4} ${b} ${x + 1} ${b - .5} ${x} ${b - 2}`,
+};
+const PASO_LETRA = 13.4;
+function labs(x0, gris, texto = 'LABS') {
+  const w = 8.4, t = 16, b = 28;
+  let x = x0; const d = [];
+  for (const l of texto) { d.push(GLIFOS[l](x, t, b, w)); x += PASO_LETRA; }
   return `<path d="${d.map(s => s.replace(/(\d+\.\d{2})\d+/g, '$1')).join('')}" fill="none" stroke="${gris}" stroke-width="1.7" stroke-miterlimit="10"/>`;
 }
+// Ancho del logotipo según el rótulo: el de LABS es el de siempre (268); el de APP es más corto.
+const anchoLogo = (sub = 'LABS') => sub === 'LABS' ? 268 : Math.ceil(78 + 137 + (sub.length - 1) * PASO_LETRA + 8.4 + 4);
 
-function palabra(T, pref = 'w') {
+function palabra(T, pref = 'w', sub = 'LABS') {
   const id = k => pref + k;
   const letras = ['M-1.36 47L20 0L41.36 47', 'M27.7 -3L48 44L68.3 -3', 'M55.64 47L77 0L98.36 47', 'M109 -3V47'];
   return `<defs><clipPath id="${id('c')}"><rect x="-6" y="0" width="124" height="44"/></clipPath>
@@ -161,17 +171,17 @@ function palabra(T, pref = 'w') {
   <path d="M62.1 28H91.9" stroke="${T.tinta}" stroke-width="4"/>
   <rect class="haz" x="-14" y="25.6" width="51" height="4.8" fill="url(#${id('h')})" filter="url(#${id('f')})" opacity=".8"/>
   <rect class="haz" x="-14" y="26.4" width="51" height="3.2" fill="url(#${id('h')})"/>
-  <path d="M126 7V37" stroke="${T.gris}" stroke-width="1.2"/>${labs(137, T.gris)}`;
+  <path d="M126 7V37" stroke="${T.gris}" stroke-width="1.2"/>${labs(137, T.gris, sub)}`;
 }
 
 // Logotipo horizontal: el símbolo (58 de diámetro) centrado con las letras; el haz sale del ojo hacia la A.
 // Con `anima`, el haz se enciende una vez al cargar (salvo con «reducir movimiento»).
 const ANCHO = 268, ALTO = 64, S = 58 / (2 * R);
 const ANIMA = `<style>@media (prefers-reduced-motion:no-preference){.haz{transform-box:fill-box;transform-origin:0 50%;animation:haz 1.2s .3s cubic-bezier(.16,1,.3,1) both}}@keyframes haz{from{opacity:0;transform:scaleX(0)}}</style>`;
-const logo = (tema, { anima = false } = {}) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ANCHO} ${ALTO}" width="${ANCHO}" height="${ALTO}">
-  <title>AVAI Labs</title>${anima ? '\n  ' + ANIMA : ''}
+const logo = (tema, { anima = false, sub = 'LABS' } = {}) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${anchoLogo(sub)} ${ALTO}" width="${anchoLogo(sub)}" height="${ALTO}">
+  <title>${sub === 'APP' ? 'AVAI App' : 'AVAI Labs'}</title>${anima ? '\n  ' + ANIMA : ''}
   <g transform="translate(${f1(32 - C * S)} ${f1(32 - C * S)}) scale(${S.toFixed(6)})">${simbolo('s')}</g>
-  <g transform="translate(78 10)">${palabra(TEMAS[tema], 'w')}</g>
+  <g transform="translate(78 10)">${palabra(TEMAS[tema], 'w', sub)}</g>
 </svg>
 `;
 const simboloSvg = () => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${C - R - 1} ${C - R - 1} ${2 * R + 2} ${2 * R + 2}" width="512" height="512">
@@ -180,15 +190,15 @@ const simboloSvg = () => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${C -
 </svg>
 `;
 // A una tinta: el haz es el travesaño macizo de la A con una cola que se afila hacia el símbolo
-const palabraMono = color => `<defs><clipPath id="wc"><rect x="-6" y="0" width="124" height="44"/></clipPath></defs>
+const palabraMono = (color, sub = 'LABS') => `<defs><clipPath id="wc"><rect x="-6" y="0" width="124" height="44"/></clipPath></defs>
   <g clip-path="url(#wc)" fill="none" stroke="${color}" stroke-width="4" stroke-miterlimit="10">${['M-1.36 47L20 0L41.36 47', 'M27.7 -3L48 44L68.3 -3', 'M55.64 47L77 0L98.36 47', 'M109 -3V47'].map(d => `<path d="${d}"/>`).join('')}</g>
   <path d="M62.1 28H91.9" stroke="${color}" stroke-width="4"/>
   <path d="M-12 28L8 26.2H33V29.8H8Z" fill="${color}"/>
-  <path d="M126 7V37" stroke="${color}" stroke-width="1.2"/>${labs(137, color)}`;
-const logoMono = color => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ANCHO} ${ALTO}" width="${ANCHO}" height="${ALTO}">
-  <title>AVAI Labs</title>
+  <path d="M126 7V37" stroke="${color}" stroke-width="1.2"/>${labs(137, color, sub)}`;
+const logoMono = (color, sub = 'LABS') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${anchoLogo(sub)} ${ALTO}" width="${anchoLogo(sub)}" height="${ALTO}">
+  <title>${sub === 'APP' ? 'AVAI App' : 'AVAI Labs'}</title>
   <g transform="translate(${f1(32 - C * S)} ${f1(32 - C * S)}) scale(${S.toFixed(6)})">${simboloMono(color, 'u')}</g>
-  <g transform="translate(78 10)">${palabraMono(color)}</g>
+  <g transform="translate(78 10)">${palabraMono(color, sub)}</g>
 </svg>
 `;
 const simboloMonoSvg = color => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${C - R - 1} ${C - R - 1} ${2 * R + 2} ${2 * R + 2}" width="512" height="512">
@@ -332,14 +342,17 @@ async function paquete(dir) {
   } finally { cerrar(); }
 }
 
-module.exports = { simbolo, simboloMono, logo, logoMono, simboloSvg, simboloMonoSvg, OJO, TEMAS, ANCHO, ALTO, chrome, dataSvg, lienzo };
+module.exports = { simbolo, simboloMono, logo, logoMono, simboloSvg, simboloMonoSvg, OJO, TEMAS, ANCHO, ALTO, anchoLogo, chrome, dataSvg, lienzo };
 
 // =================================================================================================================
 if (require.main === module) (async () => {
   fs.writeFileSync(path.join(ASSETS, 'simbolo-avai.svg'), simboloSvg());
   fs.writeFileSync(path.join(ASSETS, 'logo-avai.svg'), logo('oscuro', { anima: true }));
   fs.writeFileSync(path.join(ASSETS, 'logo-avai-claro.svg'), logo('claro', { anima: true }));
-  console.log('  assets/simbolo-avai.svg, logo-avai.svg, logo-avai-claro.svg');
+  // AVAI App (19-nov-2026): el mismo logotipo con «APP» tras la línea fina, para la landing y la app
+  fs.writeFileSync(path.join(ASSETS, 'logo-avai-app.svg'), logo('oscuro', { anima: true, sub: 'APP' }));
+  fs.writeFileSync(path.join(ASSETS, 'logo-avai-app-claro.svg'), logo('claro', { anima: true, sub: 'APP' }));
+  console.log('  assets/simbolo-avai.svg, logo-avai.svg, logo-avai-claro.svg, logo-avai-app.svg, logo-avai-app-claro.svg');
   if (process.argv.includes('--png')) await rasterizar();
   if (process.argv.includes('--og')) await imagenesOg();
   const i = process.argv.indexOf('--paquete');

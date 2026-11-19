@@ -191,7 +191,17 @@ addEventListener('DOMContentLoaded', () => {
 
   // Resto de la página
   gsap.from('#cadena > *', { autoAlpha: 0, y: 30, stagger: .1, duration: .9, ease: 'expo.out', scrollTrigger: { trigger: '#cadena', start: 'top 85%' } });
-  revelarLineas('.auto h2, .cab h2, .cierre h2, .nos h2');
+  revelarLineas('.auto h2, .cab h2, .cierre h2, .nos h2, .app h2');
+  // Nuestra app: el panel se abre, las conversaciones entran una a una con su resultado y la cita nueva se
+  // enciende en la agenda. Sin animaciones (más arriba se sale antes), todo se ve tal cual.
+  gsap.from('.app-lista li, .app-ctas, .app-nota', { y: 24, autoAlpha: 0, stagger: .08, duration: .9, ease: 'expo.out', scrollTrigger: { trigger: '.app-lista', start: 'top 85%' } });
+  gsap.timeline({ scrollTrigger: { trigger: '.panel', start: 'top 80%' } })
+    .from('.panel', { clipPath: 'inset(0 0 100% 0)', y: 40, duration: 1.2, ease: 'expo.out' })
+    .from('.conv', { autoAlpha: 0, x: -24, stagger: .16, duration: .8, ease: 'expo.out' }, '-=.6')
+    .from('.conv .est', { autoAlpha: 0, scale: .7, stagger: .16, duration: .5, ease: 'back.out(2)' }, '-=.7')
+    .from('.hueco', { autoAlpha: 0, y: 12, stagger: .1, duration: .6, ease: 'expo.out' }, '-=.9')
+    .from('.hueco.nuevo', { backgroundColor: 'rgba(90,216,255,0)', borderColor: 'rgba(255,255,255,.12)', duration: .9, ease: 'power2.out' })
+    .from('.agenda .aviso', { autoAlpha: 0, y: 8, duration: .6, ease: 'expo.out' }, '-=.4');
   gsap.from('.claro', { borderRadius: '120px 120px 0 0', ease: 'none', scrollTrigger: { trigger: '.claro', start: 'top bottom', end: 'top 40%', scrub: true } });
   gsap.utils.toArray('.b').forEach((b, i) => gsap.from(b, { clipPath: 'inset(100% 0 0 0 round 16px)', duration: 1.3, ease: 'expo.out', delay: (i % 3) * .08, scrollTrigger: { trigger: b, start: 'top 90%' } }));
   gsap.from('.linea-t li, .hechos div', { y: 30, autoAlpha: 0, stagger: .08, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.nos', start: 'top 80%' } });

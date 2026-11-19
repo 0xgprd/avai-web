@@ -226,6 +226,43 @@ main,footer{position:relative;z-index:2}
 .tc{right:32px;top:30px}
 .fmt{left:32px;bottom:30px;opacity:.85}
 
+/* 6b · nuestra app (AVAI App): el texto y el paso a la landing a la izquierda; a la derecha, un panel de la app
+   (bandeja de conversaciones de los cuatro canales y la agenda de mañana) */
+.app{padding:16vh var(--g) 14vh;position:relative}
+.app-g{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(32px,5vw,88px);align-items:center}
+.app-kick{color:var(--cian)}
+.app h2{font:300 clamp(2.4rem,5.2vw,5rem)/.98 var(--sans);letter-spacing:-.05em;margin-top:22px;max-width:12ch}
+.app h2 .serif{color:var(--cian)}
+.app-lead{color:#c7ccd8;margin-top:22px;max-width:46ch}
+.app-lista{margin-top:26px;border-top:1px solid var(--linea);max-width:470px}
+.app-lista li{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--linea);color:#d9dce4;font-size:.95rem}
+.app-lista b{color:var(--cian);padding-top:4px}
+.app-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.app-nota{margin-top:20px;color:var(--gris);display:flex;align-items:center;gap:10px}
+.app-nota i,.panel-vivo i{width:7px;height:7px;border-radius:50%;background:#3ee08f;box-shadow:0 0 10px #3ee08f;flex:none}
+.panel{background:rgba(5,10,22,.78);box-shadow:0 70px 140px -60px rgba(47,107,255,.55);font-size:.9rem}
+.panel-cab{display:flex;align-items:center;gap:20px;padding:16px 20px;border-bottom:1px solid var(--linea)}
+.panel-cab img{height:24px;width:auto}
+.panel-tabs{display:flex;gap:2px;font-size:.6rem}
+.panel-tabs span{padding:7px 10px;color:var(--gris)}
+.panel-tabs .on{color:var(--tinta);box-shadow:inset 0 -1px 0 var(--cian)}
+.panel-vivo{margin-left:auto;display:flex;align-items:center;gap:8px;color:#3ee08f;font-size:.6rem}
+.panel-cuerpo{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.conv{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;align-items:center;padding:15px 20px;border-bottom:1px solid var(--linea)}
+.conv:last-child{border-bottom:0}
+.conv:nth-child(1){--c:#3ee08f}.conv:nth-child(2){--c:#ff6fae}.conv:nth-child(3){--c:#5b8cff}.conv:nth-child(4){--c:var(--cian)}.conv:nth-child(5){--c:var(--tinta)}
+.can{display:flex;align-items:center;gap:8px;color:var(--gris);font-size:.6rem}
+.can::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c);flex:none}
+.conv p{grid-column:1/-1;grid-row:2;color:#e6e8ee}
+.est{padding:6px 9px;border:1px solid rgba(90,216,255,.35);color:var(--cian);font-size:.56rem;white-space:nowrap}
+.agenda{border-left:1px solid var(--linea);padding:16px 20px 20px;display:flex;flex-direction:column;gap:10px}
+.agenda>.mono{color:var(--gris);margin-bottom:4px}
+.hueco{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;padding:12px;border:1px solid var(--linea);background:rgba(255,255,255,.03);font-size:.86rem}
+.hueco b{color:var(--gris)}
+.hueco.nuevo{border-color:rgba(90,216,255,.6);background:rgba(90,216,255,.12)}
+.hueco.nuevo b{color:var(--cian)}
+.agenda .aviso{margin-top:6px;color:#3ee08f;font-size:.58rem}
+
 /* 7 · zona clara: portafolio, nosotros, proceso */
 .claro{background:var(--crema);color:#111318;position:relative;z-index:3;border-radius:28px 28px 0 0}
 .claro .cab h2 .serif,.claro .nos h2 .serif{color:var(--oro)}
@@ -310,12 +347,20 @@ main,footer{position:relative;z-index:2}
   .web{width:92vw;right:4vw;top:62%}
   .txt-c{top:11vh;transform:none;right:var(--g)}
   .txt-c p{display:none}
-  .nos,.cierre-g,.sv{grid-template-columns:1fr}
+  .nos,.cierre-g,.sv,.app-g{grid-template-columns:1fr}
+  .app{padding-block:12vh 10vh}
+  .panel-cuerpo{grid-template-columns:1fr}
+  .agenda{border-left:0;border-top:1px solid var(--linea)}
   .sv-vis{height:300px}
   .bento{grid-template-columns:1fr 1fr}.b{grid-column:span 2 !important;grid-row:span 1 !important}
   .linea-t{grid-template-columns:1fr 1fr;gap:24px 0}
   .form{grid-template-columns:1fr}
   .datos div{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .panel-tabs{display:none}
+  .conv{padding:14px 16px}
+  .app-lista li{grid-template-columns:78px 1fr}
 }
 @media (prefers-reduced-motion:reduce){.burbuja{opacity:1;transform:none}.hilo::after,.hoja i,.orb,.orb span,.rec i{animation:none}.hoja i{background-size:100% 100%}.menu-movil{transition:none}}
 .sin-anim .tile,.sin-anim #txtB,.sin-anim .burbuja{opacity:1;transform:none}

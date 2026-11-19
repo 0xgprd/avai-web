@@ -41,12 +41,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="/assets/portafolio/lujo-plato.webp">
-<link rel="stylesheet" href="css/portada.css?v=20261120">
+<link rel="stylesheet" href="css/portada.css?v=20261121">
 <script defer src="assets/vendor/gsap-3.15.0.min.js"></script>
 <script defer src="assets/vendor/ScrollTrigger-3.15.0.min.js"></script>
 <script defer src="assets/vendor/SplitText-3.15.0.min.js"></script>
 <script defer src="assets/vendor/lenis-1.3.27.min.js"></script>
-<script type="module" src="js/portada.js?v=20261120"></script>
+<script type="module" src="js/portada.js?v=20261121"></script>
 <!-- Analítica sin cookies (Umami en nuestro VPS, 30-oct-2026): solo cuenta en avai-labs.com. Eventos con data-umami-event. -->
 <script defer src="https://avai-umami.ig2tl9.easypanel.host/avai.js" data-website-id="144366c2-f015-485c-bd7f-9285b163c8cc" data-domains="avai-labs.com"></script>
 </head>
@@ -224,7 +224,55 @@
         </div>
       </article>
     </div>
-    <div class="serv-pie"><div class="serv-barra"><i id="servBarra"></i></div><a class="mono" href="https://app.avai-labs.com/" rel="noopener">AVAI App, nuestro agente de IA ↗</a></div>
+    <div class="serv-pie"><div class="serv-barra"><i id="servBarra"></i></div><a class="mono" href="#app">Y nuestra propia app: AVAI App ↓</a></div>
+  </div>
+</section>
+
+<!-- 6b · Nuestra app (19-nov-2026): la web enseña que AVAI tiene su propia app y lleva a su landing, donde está
+     el acceso de los clientes. El panel de la derecha es una ilustración: sin cifras ni datos de nadie. -->
+<section class="app" id="app" aria-labelledby="app-t">
+  <div class="app-g">
+    <div class="app-txt">
+      <p class="mono app-kick">[ Nuestra app ]</p>
+      <h2 id="app-t">Y tenemos <span class="serif">nuestra propia app.</span></h2>
+      <p class="app-lead">AVAI App es la plataforma que hemos creado para que tu negocio atienda solo: un agente de IA que responde por WhatsApp, Instagram, Facebook, teléfono y el chat de tu web, agenda las citas, envía los recordatorios y guarda cada contacto en tu CRM.</p>
+      <ul class="app-lista">
+        <li><b class="mono">Atiende</b><span>En todos tus canales, 24/7 y en el idioma del cliente.</span></li>
+        <li><b class="mono">Agenda</b><span>Da, cambia y recuerda las citas en tu calendario.</span></li>
+        <li><b class="mono">Ordena</b><span>Cada conversación acaba en tu CRM y en tu panel.</span></li>
+        <li><b class="mono">A medida</b><span>Funciones propias de tu negocio, como enviar tu oferta en PDF.</span></li>
+      </ul>
+      <div class="app-ctas">
+        <a class="pill" href="https://app.avai-labs.com/" rel="noopener" data-umami-event="ir-avai-app">Descubrir AVAI App ↗</a>
+        <button type="button" class="pill linea" onclick="if(window.abrirChatAVAI){abrirChatAVAI();}" data-umami-event="abrir-chat">Probar el agente</button>
+      </div>
+      <p class="app-nota mono"><i></i>El chat de esta web funciona con AVAI App</p>
+    </div>
+    <div class="app-vis" aria-hidden="true">
+      <div class="panel hud">
+        <div class="panel-cab">
+          <img src="assets/logo-avai-app.svg" alt="" width="255" height="64" loading="lazy" decoding="async">
+          <span class="panel-tabs mono"><span class="on">Bandeja</span><span>Agenda</span><span>Contactos</span></span>
+          <span class="panel-vivo mono"><i></i>Agente activo</span>
+        </div>
+        <div class="panel-cuerpo">
+          <ul class="bandeja">
+            <li class="conv"><span class="can mono">WhatsApp</span><p>¿Tenéis hueco mañana por la tarde?</p><span class="est mono">Cita agendada</span></li>
+            <li class="conv"><span class="can mono">Instagram</span><p>Hi! Are you open on Sunday?</p><span class="est mono">Respondido en inglés</span></li>
+            <li class="conv"><span class="can mono">Facebook</span><p>¿Me podéis mandar la oferta?</p><span class="est mono">PDF enviado</span></li>
+            <li class="conv"><span class="can mono">Teléfono</span><p>Llamada · cambiar la cita del jueves</p><span class="est mono">Cita movida</span></li>
+            <li class="conv"><span class="can mono">Web</span><p>Quiero pedir un presupuesto</p><span class="est mono">En tu CRM</span></li>
+          </ul>
+          <div class="agenda">
+            <p class="mono">Mañana</p>
+            <div class="hueco"><b class="mono">10:00</b><span>Consulta</span></div>
+            <div class="hueco"><b class="mono">12:30</b><span>Primera visita</span></div>
+            <div class="hueco nuevo"><b class="mono">17:30</b><span>Nueva · por WhatsApp</span></div>
+            <p class="aviso mono">✓ Recordatorios 24 h y 6 h antes</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
