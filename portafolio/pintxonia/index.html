@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pintxonia · Tasca de pintxos — Portafolio AVAI Labs</title>
+<meta name="description" content="Pintxonia, tasca de pintxos para ir picando y quedarse. Web diseñada por AVAI Labs.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://avai-labs.com/portafolio/pintxonia/">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600&family=Kalam:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/portafolio/comun/mini.css?v=20261119">
+<style>
+:root{--fondo:#f4ead8;--tinta:#2a1a14;--suave:#6e5a4c;--acento:#b31237;--sec:#1f8c8f;--oscuro:#b31237;--display:'Archivo Black',sans-serif;--cuerpo:'Barlow',sans-serif}
+.hero h1{font-size:clamp(3rem,12.5vw,13rem);letter-spacing:-.02em;line-height:.85;color:#f4ead8;white-space:nowrap}
+.hero{background:#b31237}.hero .sub{font-family:'Kalam',cursive;font-size:clamp(1.3rem,2.4vw,2rem);color:#f5c400}
+.intro h2 em,.lista h2 em,.galeria h2 em,.reserva h2 em{font-family:'Kalam',cursive;font-style:normal;color:#b31237}
+.lista h2 em{color:#f5c400}.lista{color:#fff}.lista .item p{color:rgba(255,255,255,.8)}.lista .precio{color:#f5c400}
+.marq.amarillo{background:#f5c400;color:#2a1a14}.btn{border-radius:999px}
+</style>
+<script defer src="/assets/vendor/gsap-3.15.0.min.js"></script>
+<script defer src="/assets/vendor/ScrollTrigger-3.15.0.min.js"></script>
+<script defer src="/assets/vendor/SplitText-3.15.0.min.js"></script>
+<script defer src="/assets/vendor/lenis-1.3.27.min.js"></script>
+<script type="module" src="/portafolio/comun/mini.js?v=20261119"></script>
+<script defer src="https://avai-umami.ig2tl9.easypanel.host/avai.js" data-website-id="144366c2-f015-485c-bd7f-9285b163c8cc" data-domains="avai-labs.com"></script>
+</head>
+<body class="w-pintxonia">
+<header class="m-cab">
+  <a class="marca" href="#inicio">Pintxonia</a>
+  <nav><a href="#carta">La carta</a><a href="#barra">La barra</a><a href="#reserva">Reservar</a></nav>
+  <a class="btn btn-sm" href="#reserva">¡Ven a probar!</a>
+</header>
+<main>
+<section class="hero hero-letras" id="inicio">
+  <h1 data-r="letras">PINTXONIA</h1>
+  <div class="flotan" aria-hidden="true"><img src="/assets/portafolio/tapas-barra.webp" alt="" data-par="-12"><img src="/assets/portafolio/tapas-pintxos.webp" alt="" data-par="10"></div>
+  <p class="sub" data-r="sube">Pintxos para picar, compartir y pedir otra ronda.</p>
+  <a class="btn" href="#reserva" data-r="sube">¡Ven a probar!</a>
+</section>
+
+<div class="marq amarillo" aria-hidden="true"><div class="marq-in"><span>Uno más y nos vamos</span><i>✦</i><span>Un poco de todo</span><i>✦</i><span>Mucho de bueno</span><i>✦</i><span>Siempre otra ronda</span><i>✦</i><span>Uno más y nos vamos</span><i>✦</i><span>Un poco de todo</span><i>✦</i><span>Mucho de bueno</span><i>✦</i><span>Siempre otra ronda</span><i>✦</i><span>Uno más y nos vamos</span><i>✦</i><span>Un poco de todo</span><i>✦</i><span>Mucho de bueno</span><i>✦</i><span>Siempre otra ronda</span><i>✦</i><span>Uno más y nos vamos</span><i>✦</i><span>Un poco de todo</span><i>✦</i><span>Mucho de bueno</span><i>✦</i><span>Siempre otra ronda</span><i>✦</i></div></div>
+
+<section class="m intro">
+  <div class="intro-g">
+    <div><p class="kicker">La tasca</p><h2 data-r="lineas">Un pintxo, <em>es así de simple.</em></h2><p class="texto" data-r="sube">Llegas, pides algo para beber y la barra hace el resto. Pintxos recién hechos, cazuelitas calientes y ganas de quedarse un rato más.</p></div>
+    <div class="img" data-r="mascara"><img src="/assets/portafolio/tapas-bar.webp" alt="" loading="lazy" data-par="8"></div>
+  </div>
+</section>
+
+<section class="m lista fondo-sec" id="carta">
+  <div class="lista-g">
+    <div><p class="kicker">La carta</p><h2 data-r="lineas">Mucho <em>de bueno.</em></h2></div>
+    <ol>
+      <li class="item" data-r="sube"><span class="n">01</span><div><h3>Gilda clásica</h3><p>Aceituna, guindilla y anchoa del Cantábrico.</p></div><span class="precio">2,50 €</span></li>
+      <li class="item" data-r="sube"><span class="n">02</span><div><h3>Txaka con mahonesa</h3><p>Sobre pan tostado, con un toque de cebollino.</p></div><span class="precio">3,00 €</span></li>
+      <li class="item" data-r="sube"><span class="n">03</span><div><h3>Tortilla del día</h3><p>Jugosa, como tiene que ser.</p></div><span class="precio">3,20 €</span></li>
+      <li class="item" data-r="sube"><span class="n">04</span><div><h3>Croqueta de jamón</h3><p>Cremosa por dentro, crujiente por fuera.</p></div><span class="precio">2,20 €</span></li>
+      <li class="item" data-r="sube"><span class="n">05</span><div><h3>Cazuelita de setas</h3><p>Setas de temporada salteadas al ajillo.</p></div><span class="precio">6,50 €</span></li>
+      <li class="item" data-r="sube"><span class="n">06</span><div><h3>Txistorra al vino</h3><p>Con pan para mojar.</p></div><span class="precio">4,00 €</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="m galeria" id="barra">
+  <p class="kicker">La barra</p><h2 data-r="lineas">Para picar <em>con los ojos.</em></h2>
+  <div class="gal-g"><figure data-r="mascara" style="--r:-3deg"><img src="/assets/portafolio/tapas-pintxos.webp" alt="" loading="lazy"><figcaption>01</figcaption></figure><figure data-r="mascara" style="--r:2deg"><img src="/assets/portafolio/tapas-barra.webp" alt="" loading="lazy"><figcaption>02</figcaption></figure><figure data-r="mascara" style="--r:-1.5deg"><img src="/assets/portafolio/tapas-bar.webp" alt="" loading="lazy"><figcaption>03</figcaption></figure><figure data-r="mascara" style="--r:3deg"><img src="/assets/portafolio/tapas-pintxos.webp" alt="" loading="lazy"><figcaption>04</figcaption></figure></div>
+</section>
+
+<section class="m reserva" id="reserva">
+  <div class="reserva-g">
+    <div><p class="kicker">Reservar</p><h2 data-r="lineas">¿Te guardamos <em>sitio?</em></h2></div>
+    <form class="form-demo" novalidate>
+      <label class="campo"><span>Día</span><input name="c0" type="date"></label>
+      <label class="campo"><span>Hora</span><select name="c1"><option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option><option>21:30</option><option>22:00</option></select></label>
+      <label class="campo"><span>Personas</span><select name="c2"><option>2</option><option>3</option><option>4</option><option>5</option><option>6 o más</option></select></label>
+      <label class="campo"><span>Nombre</span><input name="c3" type="text"></label>
+      <button class="btn" type="submit">Reservar mesa</button>
+      <p class="aviso" role="status" hidden>Esta web forma parte del <a href="/#portafolio">portafolio de AVAI Labs</a>: no se ha enviado ninguna reserva. ¿Quieres una web así para tu negocio? <a href="/#contacto">Hablemos →</a></p>
+    </form>
+  </div>
+</section>
+</main>
+<footer class="m-pie">
+  <div class="m-pie-g">
+    <div><p class="marca-g">Pintxonia</p><p class="suave">Tasca de pintxos</p></div>
+    <nav><a href="#carta">La carta</a><a href="#barra">La barra</a><a href="#reserva">Reservar</a></nav>
+  </div>
+  <div class="credito"><span>Web diseñada y desarrollada por <a href="/" data-umami-event="mini-volver-pintxonia">AVAI Labs</a></span><a class="btn btn-sm" href="/#contacto" data-umami-event="mini-quiero-pintxonia">¿Quieres una web así? →</a></div>
+</footer>
+
+<!-- Asistente: conversación de ejemplo de lo que hace el chatbot con IA de AVAI Labs para este sector -->
+<button class="asist-aviso" id="asistAviso" type="button">¡Hola! ¿Te guardo una mesa?</button>
+<button class="asist-b" id="asistB" type="button" aria-expanded="false" aria-controls="asist"><span class="punto"></span>Asistente</button>
+<div class="asist" id="asist" hidden>
+  <div class="asist-cab"><span class="punto"></span>Asistente de Pintxonia<button type="button" id="asistX" aria-label="Cerrar">✕</button></div>
+  <div class="asist-cuerpo" id="asistC"><div class="burb cli">¿Abrís el domingo por la noche?</div><div class="burb ia">¡Sí! El domingo abrimos de 19:00 a 23:30. ¿Te guardo una mesa?</div><div class="burb cli">Para 2 a las 21:00.</div><div class="burb ia">Hecho: mesa para 2 a las 21:00. ¡Te esperamos!</div><div class="burb ok">✓ Mesa reservada</div></div>
+  <p class="asist-pie">Conversación de ejemplo · Asistente con IA de <a href="/chatbot-whatsapp-empresas/">AVAI Labs</a></p>
+</div>
+</body>
+</html>

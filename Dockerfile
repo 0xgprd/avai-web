@@ -23,6 +23,8 @@ COPY diseno-web/                      /var/www/html/diseno-web/
 COPY fotografia-video-eventos/        /var/www/html/fotografia-video-eventos/
 COPY blog/                            /var/www/html/blog/
 COPY fr/                              /var/www/html/fr/
+# Portafolio (19-nov-2026): las mini-webs de AVAI Labs, generadas por tools/construir-portafolio.js (noindex).
+COPY portafolio/                      /var/www/html/portafolio/
 COPY llms.txt 3fe78ac3b678ca541d621a2053282f0c.txt /var/www/html/
 
 # EL HTML NO SE CACHEA; LOS ASSETS SÍ (20-ago-2026).

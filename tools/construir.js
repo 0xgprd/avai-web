@@ -25,7 +25,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://avai-labs.com';
-const PORTADA_MODIFICADA = '2026-10-30';
+const PORTADA_MODIFICADA = '2026-11-19';
 const WIDGET = '<script src="https://app.avai-labs.com/widget.js" data-tenant="336b854a-a359-4369-94bf-66030ed87ee6" async></script>';
 const WA = 'https://wa.me/34624504004';
 // Analítica sin cookies (Umami en nuestro VPS): solo cuenta en avai-labs.com, no en local ni en vistas previas.
@@ -60,17 +60,13 @@ const flecha = '<svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><pa
 const n2 = i => String(i).padStart(2, '0');
 const DEMO_ATTR = 'onclick="if(window.abrirChatAVAI){abrirChatAVAI();return false;}" data-umami-event="demo-agente"';
 
-function trozo(texto, inicio, fin, nombre) {
-  const i = texto.indexOf(inicio);
-  const j = texto.indexOf(fin, i + inicio.length);
-  if (i < 0 || j < 0) throw new Error('no encuentro en index.html: ' + nombre);
-  return texto.slice(i, j + fin.length);
-}
-// Piezas de la portada que se reutilizan idénticas
-const STAGE = trozo(portadaEs, '<div class="stage" id="stage" aria-hidden="true">', '<div class="stage-shade"></div>\n</div>', 'escena 3D');
-const FLOW_SVG = trozo(portadaEs, '<svg class="flow-svg"', '</svg>', 'diagrama de flujo');
-const HEAD_ANIM = trozo(portadaEs, '<script>\n/* Estado inicial antes del primer pintado.', '</script>', 'script de estado inicial');
-const ABRIR_CHAT = trozo(portadaEs, '<script>\nwindow.abrirChatAVAI=function(){', '</script>', 'función abrirChatAVAI');
+// Piezas comunes de las páginas generadas (escena 3D de respaldo, diagrama de flujo, estado inicial y función que
+// abre el chat). Hasta el 19-nov-2026 se copiaban de la portada; desde la portada «Fusión» están en contenido/piezas/.
+const pieza = f => fs.readFileSync(path.join(ROOT, 'contenido', 'piezas', f), 'utf8').replace(/\r\n/g, '\n').trim();
+const STAGE = pieza("escena-3d.html");
+const FLOW_SVG = pieza("flujo.svg");
+const HEAD_ANIM = pieza("estado-inicial.html");
+const ABRIR_CHAT = pieza("abrir-chat.html");
 
 // ---------- Artículos del blog ----------
 function leerArticulos(lang) {

@@ -1,0 +1,7 @@
+<script>
+window.abrirChatAVAI=function(){
+  var b=document.querySelector('button[aria-label="Abrir chat"]');
+  if(b){ if(b.textContent!=='✕')b.click(); return; }
+  var c=document.getElementById('contacto'); if(c)c.scrollIntoView({behavior:'smooth'});
+};
+</script>

@@ -25,3 +25,4 @@ Si cambias de versión, cambia también el nombre del fichero y la importación 
 |---|---|---|
 | `three-0.186.1.avai.min.js` | Three.js 0.186.1 | MIT |
 | `gsap-3.15.0.min.js`, `ScrollTrigger-3.15.0.min.js`, `SplitText-3.15.0.min.js` | GSAP 3.15.0 | GSAP Standard "no charge" license, uso comercial permitido |
+| `lenis-1.3.27.min.js` | Lenis 1.3.27 (scroll suave de la portada y del portafolio, desde el 19-nov-2026) | MIT |

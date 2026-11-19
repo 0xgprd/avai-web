@@ -1,0 +1,145 @@
+/* Mini-webs del portafolio de AVAI Labs (19-nov-2026). Base común; cada web define su tema en :root
+   (--fondo, --tinta, --suave, --acento, --sec, --oscuro, --display, --cuerpo) y su CSS propio. */
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--fondo)}
+body{background:var(--fondo);color:var(--tinta);font:400 1rem/1.65 var(--cuerpo);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+ol,ul{list-style:none}
+:focus-visible{outline:2px solid var(--acento);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.02;letter-spacing:-.02em}
+h2{font-size:clamp(2.2rem,5vw,4.6rem)}
+h2 em,h1 em{font-style:italic;color:var(--acento)}
+.kicker{font:500 .72rem/1.3 var(--cuerpo);letter-spacing:.22em;text-transform:uppercase;color:var(--acento);margin-bottom:18px}
+.texto{color:var(--suave);margin-top:20px;max-width:46ch;font-size:1.05rem}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;background:var(--acento);color:var(--fondo);font:500 .78rem/1 var(--cuerpo);letter-spacing:.14em;text-transform:uppercase;border:0;cursor:pointer;transition:transform .35s cubic-bezier(.16,1,.3,1),filter .3s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.btn-sm{padding:11px 18px;font-size:.7rem}
+.m{padding:clamp(80px,14vh,160px) clamp(20px,5vw,72px)}
+.img{overflow:hidden;border-radius:4px;position:relative}
+.img img{width:100%;height:100%;object-fit:cover;transform:scale(1.12)}
+
+/* cabecera */
+.m-cab{position:fixed;inset:0 0 auto 0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px clamp(20px,5vw,72px);transition:background .4s,color .4s,padding .4s;color:#fff}
+.m-cab.solido{background:color-mix(in srgb,var(--fondo) 92%,transparent);color:var(--tinta);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding-block:12px}
+.m-cab .marca{font:400 1.7rem/1 var(--display)}
+.m-cab nav{display:flex;gap:28px;font-size:.88rem;letter-spacing:.04em}
+.m-cab nav a{opacity:.85}.m-cab nav a:hover{opacity:1}
+
+/* hero: imagen a sangre */
+.hero{position:relative;min-height:100svh;overflow:hidden}
+.hero-imagen{display:grid;place-items:center;text-align:center;color:#fff}
+.hero-imagen .fondo{position:absolute;inset:0}
+.hero-imagen .fondo img{width:100%;height:115%;object-fit:cover}
+.hero-imagen .fondo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.25) 50%,rgba(0,0,0,.6))}
+.hero-imagen .txt{position:relative;z-index:2;padding:0 20px}
+.hero-imagen .kicker{color:#fff;opacity:.85}
+.hero h1{font-size:clamp(3rem,9vw,8.4rem)}
+.hero .sub{margin:20px auto 34px;max-width:40ch;font-size:1.08rem;opacity:.92}
+.baja{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:#fff;animation:baja 2s ease-in-out infinite;z-index:2}
+@keyframes baja{50%{transform:translate(-50%,8px)}}
+/* hero: partido */
+.hero-partido{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:5vw;padding:120px clamp(20px,5vw,72px) 60px;color:var(--tinta)}
+.hero-partido .sub{margin:22px 0 30px;color:var(--suave)}
+.hero-partido .img{height:min(78svh,720px)}
+.w-albaria .m-cab,.w-nolvea .m-cab{color:var(--tinta)}
+/* hero: letras gigantes */
+.hero-letras{display:grid;place-items:center;align-content:center;text-align:center;padding:110px 20px 60px;color:#fff}
+.hero-letras h1{position:relative;z-index:2}
+.hero-letras .flotan img{position:absolute;width:clamp(150px,20vw,300px);aspect-ratio:1;object-fit:cover;border-radius:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);z-index:1}
+.hero-letras .flotan img:first-child{left:8%;top:22%;transform:rotate(-8deg)}
+.hero-letras .flotan img:last-child{right:8%;bottom:14%;transform:rotate(7deg)}
+.hero-letras .sub,.hero-letras .btn{position:relative;z-index:2}
+
+/* marquesina */
+.marq{overflow:hidden;background:var(--oscuro);color:var(--fondo);padding:18px 0;white-space:nowrap}
+.marq-in{display:inline-flex;gap:28px;animation:marq 38s linear infinite;font:400 clamp(1.1rem,2vw,1.6rem)/1 var(--display)}
+.marq i{font-style:normal;opacity:.6}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* intro y pasos */
+.intro-g{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center}
+.intro .img,.pasos .img{aspect-ratio:4/5}
+.pasos-l{margin-top:34px;border-top:1px solid color-mix(in srgb,var(--tinta) 18%,transparent)}
+.pasos-l li{display:grid;grid-template-columns:54px 1fr;padding:18px 0;border-bottom:1px solid color-mix(in srgb,var(--tinta) 18%,transparent)}
+.pasos-l .n{color:var(--acento);font-weight:500}
+.pasos-l h3{font-size:1.3rem}
+.pasos-l p{color:var(--suave);font-size:.95rem;margin-top:4px}
+
+/* tarjetas */
+.tarj-g{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px);margin-top:50px}
+.tarj .img{aspect-ratio:4/5}
+.tarj .img img{transform:scale(1.05);transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.tarj:hover .img img{transform:scale(1.12)}
+.tarj h3{font-size:1.7rem;margin-top:18px}
+.tarj p{color:var(--suave);margin-top:8px}
+.tarj .meta{display:block;margin-top:12px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acento)}
+
+/* lista (carta, tratamientos) */
+.lista.fondo-sec{background:var(--sec)}
+.lista-g{display:grid;grid-template-columns:.8fr 1.2fr;gap:6vw;align-items:start}
+.lista ol{border-top:1px solid color-mix(in srgb,currentColor 22%,transparent)}
+.lista .item{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:baseline;padding:22px 0;border-bottom:1px solid color-mix(in srgb,currentColor 22%,transparent);transition:padding .4s}
+.lista .item:hover{padding-left:10px}
+.lista .n{font-size:.8rem;opacity:.7}
+.lista .item h3{font-size:1.55rem}
+.lista .item p{color:var(--suave);margin-top:4px;font-size:.95rem}
+.lista .precio{font:400 1.3rem/1 var(--display);color:var(--acento)}
+
+/* galería */
+.gal-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:50px}
+.gal-g figure{transform:rotate(var(--r));transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.gal-g figure:hover{transform:rotate(0) scale(1.03)}
+.gal-g img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px}
+.gal-g figcaption{margin-top:10px;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--suave)}
+
+/* reserva */
+.reserva{background:var(--sec)}
+.reserva-g{display:grid;grid-template-columns:.9fr 1.1fr;gap:6vw;align-items:start}
+.form-demo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.campo span{display:block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--suave);margin-bottom:8px}
+.campo input,.campo select{width:100%;padding:14px;border:1px solid color-mix(in srgb,var(--tinta) 22%,transparent);background:color-mix(in srgb,var(--fondo) 70%,transparent);color:var(--tinta);font:inherit;border-radius:3px}
+.form-demo .btn{grid-column:1/-1;justify-content:center}
+.aviso{grid-column:1/-1;padding:16px;border-left:3px solid var(--acento);background:color-mix(in srgb,var(--fondo) 80%,transparent);font-size:.95rem}
+.aviso a{text-decoration:underline;color:var(--acento)}
+
+/* pie */
+.m-pie{background:var(--oscuro);color:var(--fondo);padding:70px clamp(20px,5vw,72px) 26px}
+.w-albaria .m-pie,.w-nolvea .m-pie,.w-nerelia .m-pie{color:#f4f1ec}
+.m-pie-g{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.marca-g{font:400 clamp(3rem,10vw,8rem)/.9 var(--display)}
+.m-pie .suave{opacity:.7;margin-top:10px}
+.m-pie nav{display:flex;flex-direction:column;gap:10px}
+.credito{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:60px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18);font-size:.85rem}
+.credito a{text-decoration:underline}
+.credito .btn{text-decoration:none;background:#fff;color:#111}
+
+/* asistente (conversación de ejemplo) */
+.asist-aviso{position:fixed;right:22px;bottom:78px;z-index:40;max-width:230px;padding:11px 14px;border:0;border-radius:14px 14px 4px 14px;background:#fff;color:#151821;font:400 .84rem/1.35 system-ui,sans-serif;text-align:left;box-shadow:0 18px 40px -14px rgba(0,0,0,.45);cursor:pointer;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .4s,transform .4s}
+.asist-aviso.on{opacity:1;transform:none;pointer-events:auto}
+.asist-b{position:fixed;right:22px;bottom:22px;z-index:40;display:flex;align-items:center;gap:10px;padding:13px 18px;border:0;border-radius:999px;background:#111318;color:#fff;font:500 .82rem/1 system-ui,sans-serif;box-shadow:0 18px 40px -12px rgba(0,0,0,.5);cursor:pointer}
+.punto{width:8px;height:8px;border-radius:50%;background:#3ee08f;box-shadow:0 0 0 0 rgba(62,224,143,.6);animation:latido 2s infinite}
+@keyframes latido{70%{box-shadow:0 0 0 8px rgba(62,224,143,0)}}
+.asist{position:fixed;right:22px;bottom:80px;z-index:41;width:min(340px,calc(100vw - 44px));border-radius:16px;overflow:hidden;background:#fff;color:#151821;box-shadow:0 30px 80px -20px rgba(0,0,0,.55);font:400 .86rem/1.45 system-ui,sans-serif}
+.asist-cab{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#151821;color:#fff}
+.asist-cab button{margin-left:auto;background:none;border:0;color:#fff;cursor:pointer;font-size:1rem}
+.asist-cuerpo{padding:14px;display:flex;flex-direction:column;gap:8px;min-height:230px}
+.burb{max-width:86%;padding:9px 12px;border-radius:12px}
+.burb.cli{align-self:flex-end;background:#eef1f6;border-bottom-right-radius:3px}
+.burb.ia{align-self:flex-start;background:#151821;color:#fff;border-bottom-left-radius:3px}
+.burb.ok{align-self:center;background:#e8fbf1;color:#127a46;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.asist-pie{padding:10px 14px;border-top:1px solid #eceef2;font-size:.74rem;color:#6b707d}
+.asist-pie a{text-decoration:underline}
+
+/* entradas (las pone mini.js; sin JS todo se ve) */
+.js [data-r]{visibility:hidden}
+
+@media (max-width:860px){
+  .m-cab nav{display:none}
+  .hero-partido,.intro-g,.lista-g,.reserva-g{grid-template-columns:1fr}
+  .hero-partido .img{height:52svh}
+  .tarj-g{grid-template-columns:1fr}
+  .form-demo{grid-template-columns:1fr}
+  .hero-letras .flotan img{width:120px}
+}
+@media (prefers-reduced-motion:reduce){.marq-in,.baja,.punto{animation:none}.js [data-r]{visibility:visible}}

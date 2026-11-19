@@ -1,0 +1,12 @@
+<script>
+/* Estado inicial antes del primer pintado.
+   - "anim": los textos esperan a su animación de entrada (solo con JS y sin «reducir movimiento»).
+   - Red de seguridad: si js/main.js no arranca en 4 s (red lenta, error), se quita "anim" y el contenido
+     se ve igualmente. La web nunca depende de la escena 3D para leerse ni para contactar. */
+(function(h){
+  h.classList.remove('no-js'); h.classList.add('js');
+  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  h.classList.add(rm ? 'rm' : 'anim');
+  setTimeout(function(){ if(!window.__avaiReady) h.classList.remove('anim'); }, 4000);
+})(document.documentElement);
+</script>

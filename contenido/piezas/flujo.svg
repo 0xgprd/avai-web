@@ -1,0 +1,10 @@
+<svg class="flow-svg" viewBox="0 0 600 340" preserveAspectRatio="none">
+            <g class="flow-lines">
+              <path class="fl fl-in" d="M70 60 C 190 60, 220 170, 300 170"/>
+              <path class="fl fl-in" d="M70 170 C 180 170, 220 170, 300 170"/>
+              <path class="fl fl-in" d="M70 280 C 190 280, 220 170, 300 170"/>
+              <path class="fl fl-out" d="M300 170 C 380 170, 410 60, 530 60"/>
+              <path class="fl fl-out" d="M300 170 C 390 170, 420 170, 530 170"/>
+              <path class="fl fl-out" d="M300 170 C 380 170, 410 280, 530 280"/>
+            </g>
+          </svg>

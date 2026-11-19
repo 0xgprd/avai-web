@@ -114,6 +114,23 @@ for (const p of paginas) {
   else console.log('✓ ' + p.rel);
 }
 
+// Mini-webs del portafolio (19-nov-2026): sin indexar, fuera del sitemap, formularios que no envían nada.
+for (const w of require(path.join(ROOT, 'contenido', 'portafolio.js'))) {
+  const rel = `portafolio/${w.slug}/index.html`;
+  const errores = [];
+  if (!fs.existsSync(path.join(ROOT, rel))) { console.log(`✗ ${rel}: no existe (¿falta node tools/construir-portafolio.js?)`); fallos++; continue; }
+  const html = leer(rel);
+  if (!html.includes('<meta name="robots" content="noindex')) errores.push('falta noindex');
+  if (enSitemap.has(urlDe(rel))) errores.push('no debe estar en sitemap.xml');
+  if ((html.match(/<h1[\s>]/g) || []).length !== 1) errores.push('debe tener un solo <h1>');
+  if (/<form[^>]*action=/.test(html) || html.includes('enviar-lead.php')) errores.push('el formulario no debe enviar datos');
+  if (!html.includes('href="/#contacto"')) errores.push('falta el enlace «¿Quieres una web así?» al contacto de AVAI');
+  const rotos = enlacesRotos(html);
+  if (rotos.length) errores.push('enlaces rotos: ' + rotos.join(', '));
+  if (errores.length) { fallos++; console.log('✗ ' + rel); errores.forEach(e => console.log('   - ' + e)); }
+  else console.log('✓ ' + rel);
+}
+
 const rotosPortada = enlacesRotos(leer('index.html'));
 if (rotosPortada.length) { fallos++; console.log('✗ index.html: enlaces rotos: ' + rotosPortada.join(', ')); }
 else console.log('✓ index.html: enlaces internos');
