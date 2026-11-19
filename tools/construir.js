@@ -128,7 +128,7 @@ function nav(lang, otraUrl) {
   const enlaces = `<a href="${home}#portafolio">${esc(t.nav.portafolio)}</a>
     <a href="${home}#servicios">${esc(t.nav.servicios)}</a>
     <a href="${home}#proceso">${esc(t.nav.proceso)}</a>
-    <a href="${t.acceso}" rel="noopener">${esc(t.nav.acceso)}</a>
+    <a href="${t.app}" rel="noopener">${esc(t.nav.app)}</a>
     <a href="${home}#contacto">${esc(t.nav.contacto)}</a>`;
   return `
 <header class="cab-web">
@@ -197,7 +197,7 @@ function pie(lang, otraUrl) {
     </div>
     <div class="pie-cols">
       <div class="pie-col"><h2>${esc(t.pie.soluciones)}</h2>${sol}</div>
-      <div class="pie-col"><h2>${esc(t.pie.empresa)}</h2><a href="${home}#nosotros">${esc(t.pie.sobre)}</a><a href="${home}#portafolio">${esc(t.pie.portafolio)}</a><a href="${home}#proceso">${esc(t.pie.proceso)}</a><a href="${home}#casos">${esc(t.pie.casos)}</a><a href="${t.acceso}" rel="noopener">${esc(t.pie.acceso)}</a><a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a><a href="${t.privacidad}">${esc(t.pie.privacidad)}</a></div>
+      <div class="pie-col"><h2>${esc(t.pie.empresa)}</h2><a href="${home}#nosotros">${esc(t.pie.sobre)}</a><a href="${home}#portafolio">${esc(t.pie.portafolio)}</a><a href="${home}#proceso">${esc(t.pie.proceso)}</a><a href="${home}#casos">${esc(t.pie.casos)}</a><a href="${t.app}" rel="noopener">AVAI App</a><a href="${t.privacidad}">${esc(t.pie.privacidad)}</a></div>
       <div class="pie-col"><h2>${esc(t.pie.contacto)}</h2><a href="mailto:info@avai-labs.com">info@avai-labs.com</a><a href="tel:+34624504004">+34 624 50 40 04</a><a data-umami-event="whatsapp" href="${WA}" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/avai.labs/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@atlanticvisionai" target="_blank" rel="noopener">YouTube</a><a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a></div>
     </div>
   </div>

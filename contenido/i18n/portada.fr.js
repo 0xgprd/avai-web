@@ -186,7 +186,6 @@ module.exports = {
     ['href="/privacidad.html"', 'href="/fr/confidentialite.html"'],
     ['© 2026 AVAI Labs. Todos los derechos reservados.', '© 2026 AVAI Labs. Tous droits réservés.'],
     ['· Hecho con IA', '· Fait avec l’IA'],
-    ['href="https://app.avai-labs.com/login"', 'href="https://app.avai-labs.com/login?lang=fr"'],
-    ['>Acceso clientes<', '>Espace clients<'],
+    ['href="https://app.avai-labs.com/"', 'href="https://app.avai-labs.com/?lang=fr"'],
   ],
 };

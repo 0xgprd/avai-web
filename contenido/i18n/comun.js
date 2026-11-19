@@ -6,8 +6,8 @@ module.exports = {
   es: {
     lang: 'es', ogLocale: 'es_ES', og: 'og-avai.jpg', base: '', privacidad: '/privacidad.html',
     skip: 'Saltar al contenido',
-    nav: { portafolio: 'Portafolio', servicios: 'Servicios', proceso: 'Proceso', casos: 'Casos de uso', nosotros: 'Nosotros', contacto: 'Contacto', acceso: 'Acceso clientes', cta: 'Consulta gratuita' },
-    acceso: 'https://app.avai-labs.com/login',
+    nav: { portafolio: 'Portafolio', servicios: 'Servicios', proceso: 'Proceso', casos: 'Casos de uso', nosotros: 'Nosotros', contacto: 'Contacto', app: 'AVAI App', cta: 'Consulta gratuita' },
+    app: 'https://app.avai-labs.com/',
     marcaAria: 'AVAI Labs, ir a la portada',
     logoAlt: 'AVAI Labs — Agencia de diseño web e inteligencia artificial',
     menuAria: 'Abrir menú', menuMovilAria: 'Menú', navAria: 'Principal',
@@ -29,15 +29,15 @@ module.exports = {
     pie: {
       marca: 'Agencia de diseño web e inteligencia artificial para empresas de España y Francia. Webs, chatbots y automatizaciones a medida.',
       soluciones: 'Soluciones', empresa: 'Empresa', contacto: 'Contacto',
-      sobre: 'Sobre nosotros', portafolio: 'Portafolio', proceso: 'Proceso', casos: 'Casos de uso', acceso: 'Acceso clientes', contactar: 'Contacto',
+      sobre: 'Sobre nosotros', portafolio: 'Portafolio', proceso: 'Proceso', casos: 'Casos de uso', contactar: 'Contacto',
       privacidad: 'Política de privacidad', derechos: '© 2026 AVAI Labs. Todos los derechos reservados.', hecho: 'Hecho con IA',
     },
   },
   fr: {
     lang: 'fr', ogLocale: 'fr_FR', og: 'og-avai-fr.jpg', base: '/fr', privacidad: '/fr/confidentialite.html',
     skip: 'Aller au contenu',
-    nav: { portafolio: 'Portfolio', servicios: 'Services', proceso: 'Méthode', casos: 'Cas d’usage', nosotros: 'À propos', contacto: 'Contact', acceso: 'Espace clients', cta: 'Consultation gratuite' },
-    acceso: 'https://app.avai-labs.com/login?lang=fr',
+    nav: { portafolio: 'Portfolio', servicios: 'Services', proceso: 'Méthode', casos: 'Cas d’usage', nosotros: 'À propos', contacto: 'Contact', app: 'AVAI App', cta: 'Consultation gratuite' },
+    app: 'https://app.avai-labs.com/?lang=fr',
     marcaAria: 'AVAI Labs, aller à l’accueil',
     logoAlt: 'AVAI Labs — Agence de création de sites web et d’intelligence artificielle',
     menuAria: 'Ouvrir le menu', menuMovilAria: 'Menu', navAria: 'Principal',
@@ -59,7 +59,7 @@ module.exports = {
     pie: {
       marca: 'Agence de création de sites web et d’intelligence artificielle pour les entreprises en France et en Espagne. Sites, chatbots et automatisations sur mesure.',
       soluciones: 'Solutions', empresa: 'Entreprise', contacto: 'Contact',
-      sobre: 'À propos', portafolio: 'Portfolio', proceso: 'Méthode', casos: 'Cas d’usage', acceso: 'Espace clients', contactar: 'Contact',
+      sobre: 'À propos', portafolio: 'Portfolio', proceso: 'Méthode', casos: 'Cas d’usage', contactar: 'Contact',
       privacidad: 'Politique de confidentialité', derechos: '© 2026 AVAI Labs. Tous droits réservés.', hecho: 'Fait avec l’IA',
     },
   },

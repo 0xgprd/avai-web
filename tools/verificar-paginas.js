@@ -12,7 +12,7 @@
 //   - enlaces internos que llevan a un fichero que existe;
 //   - imagen internacional: ni title, ni H1, ni description dicen «Tenerife» o «Canarias»;
 //   - el chat oficial (widget.js) y la función que lo abre;
-//   - sin blog (19-nov-2026): ningún enlace a /blog/ y el acceso de clientes a AVAI App en la cabecera.
+//   - sin blog (19-nov-2026): ningún enlace a /blog/; «AVAI App» lleva a la landing de la app, nunca al panel.
 // Para fr/index.html, además: mismos ids que la portada española y el formulario intacto (campos, origen,
 // envío a /enviar-lead.php).
 const fs = require('fs');
@@ -65,7 +65,8 @@ for (const p of paginas) {
   if (!html.includes('https://app.avai-labs.com/widget.js')) errores.push('falta el chat oficial (widget.js)');
   if (!html.includes('window.abrirChatAVAI=function')) errores.push('falta la función abrirChatAVAI');
   if (/href="(\/fr)?\/blog\//.test(html)) errores.push('queda un enlace al blog, que ya no existe');
-  if (!html.includes('href="https://app.avai-labs.com/login')) errores.push('falta el acceso de clientes (AVAI App)');
+  if (!/href="https:\/\/app\.avai-labs\.com\/(\?lang=fr)?"/.test(html)) errores.push('falta el enlace a la landing de AVAI App');
+  if (html.includes('app.avai-labs.com/login')) errores.push('la web no da acceso al panel de AVAI App: el enlace va a la landing');
 
   // hreflang recíproco
   const alt = alternos(html);
