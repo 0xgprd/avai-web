@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="no-js">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,8 @@
 <link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/agence-marketing-digital/">
 <link rel="alternate" hreflang="x-default" href="https://avai-labs.com/marketing-digital/">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#050914">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/svg+xml" href="/assets/simbolo-avai.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -21,13 +22,13 @@
 <meta property="og:title" content="Agence de marketing digital et intelligence artificielle · AVAI Labs">
 <meta property="og:description" content="Marketing digital boosté par l’IA : stratégie sur mesure, campagnes publicitaires, SEO et création de contenu pour les réseaux qui attirent de vrais clients.">
 <meta property="og:url" content="https://avai-labs.com/fr/agence-marketing-digital/">
-<meta property="og:image" content="https://avai-labs.com/assets/og-avai.jpg">
+<meta property="og:image" content="https://avai-labs.com/assets/og-avai-fr.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Agence de marketing digital et intelligence artificielle · AVAI Labs">
 <meta name="twitter:description" content="Marketing digital boosté par l’IA : stratégie sur mesure, campagnes publicitaires, SEO et création de contenu pour les réseaux qui attirent de vrais clients.">
-<meta name="twitter:image" content="https://avai-labs.com/assets/og-avai.jpg">
+<meta name="twitter:image" content="https://avai-labs.com/assets/og-avai-fr.jpg">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Service","name":"Marketing digital","serviceType":"Marketing digital","description":"Marketing digital boosté par l’IA : stratégie sur mesure, campagnes publicitaires, SEO et création de contenu pour les réseaux qui attirent de vrais clients.","url":"https://avai-labs.com/fr/agence-marketing-digital/","inLanguage":"fr","provider":{"@type":"ProfessionalService","@id":"https://avai-labs.com/#organizacion","name":"AVAI Labs","url":"https://avai-labs.com/"},"areaServed":[{"@type":"Country","name":"Espagne"},{"@type":"Country","name":"France"}],"availableLanguage":["es","fr"]}
 </script>
@@ -39,274 +40,178 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css?v=20261030">
-<link rel="stylesheet" href="/css/paginas.css?v=20261030">
-<script>
-/* Estado inicial antes del primer pintado.
-   - "anim": los textos esperan a su animación de entrada (solo con JS y sin «reducir movimiento»).
-   - Red de seguridad: si js/main.js no arranca en 4 s (red lenta, error), se quita "anim" y el contenido
-     se ve igualmente. La web nunca depende de la escena 3D para leerse ni para contactar. */
-(function(h){
-  h.classList.remove('no-js'); h.classList.add('js');
-  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  h.classList.add(rm ? 'rm' : 'anim');
-  setTimeout(function(){ if(!window.__avaiReady) h.classList.remove('anim'); }, 4000);
-})(document.documentElement);
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/portada.css?v=20261120">
+<link rel="stylesheet" href="/css/paginas.css?v=20261120">
 <script defer src="/assets/vendor/gsap-3.15.0.min.js"></script>
 <script defer src="/assets/vendor/ScrollTrigger-3.15.0.min.js"></script>
 <script defer src="/assets/vendor/SplitText-3.15.0.min.js"></script>
-<script type="module" src="/js/main.js?v=20261030"></script>
+<script defer src="/assets/vendor/lenis-1.3.27.min.js"></script>
+<script type="module" src="/js/paginas.js?v=20261120"></script>
 <script defer src="https://avai-umami.ig2tl9.easypanel.host/avai.js" data-website-id="144366c2-f015-485c-bd7f-9285b163c8cc" data-domains="avai-labs.com"></script>
 </head>
 <body class="pg">
-
 <a class="skip" href="#contenido">Aller au contenu</a>
+<canvas id="gl" aria-hidden="true"></canvas>
 
-<header class="nav" id="nav">
-  <div class="nav-in">
-    <a href="/fr/" class="brand" aria-label="AVAI Labs, aller à l’accueil">
-      <picture><source srcset="/assets/logo-avai.webp" type="image/webp"><img src="/assets/logo-avai-sm.png" alt="AVAI Labs — Agence d’intelligence artificielle et de marketing digital" class="logo-img" width="320" height="128"></picture>
-    </a>
-    <nav class="nav-links" id="navLinks" aria-label="Principal">
-      <div class="nav-drop">
-        <a href="/fr/#servicios" class="nav-drop-t">Solutions</a>
-        <div class="nav-sub">
-          <a href="/fr/agence-intelligence-artificielle/">Intelligence artificielle et automatisation</a>
-          <a href="/fr/chatbot-whatsapp-entreprise/">Chatbots WhatsApp avec IA</a>
-          <a href="/fr/agence-marketing-digital/">Marketing digital</a>
-          <a href="/fr/creation-site-web/">Création de sites web</a>
-          <a href="/fr/photo-video-evenements/">Production audiovisuelle et événements</a>
-        </div>
-      </div>
-      <a href="/fr/#proceso">Processus</a>
-      <a href="/fr/#casos">Cas d’usage</a>
-      <a href="/fr/#nosotros">À propos</a>
-      <a href="/fr/blog/">Blog</a>
-      <a href="/fr/#contacto">Contact</a>
-      <a href="/marketing-digital/" class="nav-lang" hreflang="es" lang="es" aria-label="Versión en español">ES</a>
-      <a href="https://app.avai-labs.com/" rel="noopener" class="nav-app">AVAI App</a>
-      <a href="/fr/#contacto" class="btn btn-sm nav-cta">Consultation gratuite</a>
-    </nav>
-    <button class="burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
-  </div>
+<header class="cab-web">
+  <a class="logo" href="/fr/" aria-label="AVAI Labs, aller à l’accueil"><img src="/assets/logo-avai.svg" alt="AVAI Labs — Agence de création de sites web et d’intelligence artificielle" width="268" height="64"></a>
+  <nav class="nav mono" aria-label="Principal">
+    <a href="/fr/#portafolio">Portfolio</a>
+    <a href="/fr/#servicios">Services</a>
+    <a href="/fr/#proceso">Méthode</a>
+    <a href="/fr/blog/">Blog</a>
+    <a href="/fr/#contacto">Contact</a>
+    <a href="/marketing-digital/" class="lang" hreflang="es" lang="es" aria-label="Versión en español">ES</a>
+  </nav>
+  <a class="btn-esq mono" href="/fr/#contacto">Consultation gratuite →</a>
+  <button class="burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menuMovil"><span></span><span></span></button>
 </header>
-
-<div class="stage" id="stage" aria-hidden="true">
-  <div class="stage-fallback">
-    <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <radialGradient id="fbCore" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stop-color="#e6f6ff" stop-opacity=".95"/>
-          <stop offset=".28" stop-color="#45d6f7" stop-opacity=".55"/>
-          <stop offset=".62" stop-color="#1d63f0" stop-opacity=".16"/>
-          <stop offset="1" stop-color="#1d63f0" stop-opacity="0"/>
-        </radialGradient>
-        <pattern id="fbDots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="1.1" fill="#7fd8ff" fill-opacity=".55"/></pattern>
-        <clipPath id="fbSphere"><circle cx="400" cy="400" r="150"/></clipPath>
-      </defs>
-      <circle cx="400" cy="400" r="330" fill="url(#fbCore)" opacity=".55"/>
-      <g clip-path="url(#fbSphere)" opacity=".7"><rect x="250" y="250" width="300" height="300" fill="url(#fbDots)"/></g>
-      <g fill="none" stroke="#7fb4ff">
-        <ellipse cx="400" cy="400" rx="230" ry="78" transform="rotate(-16 400 400)" stroke-opacity=".34"/>
-        <ellipse cx="400" cy="400" rx="270" ry="104" transform="rotate(22 400 400)" stroke-opacity=".24"/>
-        <ellipse cx="400" cy="400" rx="318" ry="132" transform="rotate(-4 400 400)" stroke-opacity=".16"/>
-      </g>
-      <circle cx="400" cy="400" r="58" fill="url(#fbCore)"/>
-    </svg>
-  </div>
-  <canvas id="scene"></canvas>
-  <div class="stage-shade"></div>
-</div>
-
-<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+<nav class="menu-movil" id="menuMovil" aria-label="Menu">
+    <a href="/fr/#portafolio">Portfolio</a>
+    <a href="/fr/#servicios">Services</a>
+    <a href="/fr/#proceso">Méthode</a>
+    <a href="/fr/blog/">Blog</a>
+    <a href="/fr/#contacto">Contact</a>
+  <a href="/marketing-digital/" hreflang="es" lang="es">Español</a>
+  <a class="pill" href="/fr/#contacto">Consultation gratuite</a>
+</nav>
 
 <main id="contenido">
 
-<section class="hero" id="inicio" data-escena="0" aria-labelledby="hero-title">
-  <div class="wrap hero-in">
-    <nav class="pg-migas" aria-label="Vous êtes ici"><ol><li><a href="/fr/">Accueil</a></li><li aria-current="page">Marketing digital</li></ol></nav>
-    <p class="kicker" data-reveal="fade"><span class="kicker-dot"></span>Marketing et croissance digitale</p>
-    <h1 id="hero-title" class="hero-title pg-hero-title" data-reveal="hero">Le marketing digital <span class="grad">boosté par l’intelligence artificielle.</span></h1>
-    <p class="hero-sub" data-reveal="fade">Des stratégies qui attirent de vrais clients : un plan sur mesure, des campagnes qui touchent les bonnes personnes et une marque présente sur les moteurs de recherche et les réseaux.</p>
-    <div class="hero-ctas" data-reveal="fade">
-      <a href="/fr/#contacto" class="btn">Demander une consultation gratuite<svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a href="#que" class="btn btn-ghost">Voir comment ça marche</a>
+<section class="pg-hero" id="inicio" aria-labelledby="h1">
+  <div class="pg-hero-in">
+    <nav class="migas" aria-label="Vous êtes ici"><ol class="mono"><li><a href="/fr/">Accueil</a></li><li aria-current="page">Marketing digital</li></ol></nav>
+    <p class="kick mono">[ Marketing et croissance digitale ]</p>
+    <h1 id="h1">Le marketing digital <span class="serif">boosté par l’intelligence artificielle.</span></h1>
+    <p class="pg-sub">Des stratégies qui attirent de vrais clients : un plan sur mesure, des campagnes qui touchent les bonnes personnes et une marque présente sur les moteurs de recherche et les réseaux.</p>
+    <div class="ctas">
+      <a href="/fr/#contacto" class="pill">Demander une consultation gratuite <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="#que" class="pill linea">Voir comment ça marche</a>
     </div>
-    <ul class="hero-tags" data-reveal="fade" aria-label="Ce qui est inclus">
-      <li>Stratégie</li><li>Campagnes</li><li>SEO</li><li>Contenu</li>
-    </ul>
   </div>
-  <a class="scroll-cue" href="#que" data-reveal="fade"><span>Faites défiler pour explorer</span><i aria-hidden="true"></i></a>
+  <div class="hero-pie"><ul class="pg-tags mono" aria-label="Ce qui est inclus"><li>Stratégie</li><li>Campagnes</li><li>SEO</li><li>Contenu</li></ul><a class="mono" href="#que">Faites défiler pour explorer ↓</a></div>
 </section>
 
-<article class="area" id="que" data-escena="2" data-side="right" aria-labelledby="que-t">
-  <div class="wrap area-in">
-    <div class="area-copy">
-      <p class="label"><span class="label-n">01</span>Ce que nous faisons</p>
-      <h2 id="que-t" class="h3" data-reveal="lines">Une seule équipe pour grandir</h2>
-      <p class="area-lead" data-reveal="fade">Stratégie, publicité et contenu, boostés par l’IA et adaptés à votre activité.</p>
-      <ul class="svc-list" data-reveal="list">
-          <li><h3>Stratégie de marketing digital</h3><p>Un plan boosté par l’intelligence artificielle et conçu sur mesure pour votre activité.</p></li>
-          <li><h3>Campagnes et publicité</h3><p>Des campagnes publicitaires pensées pour attirer les clients qui vous intéressent.</p></li>
-          <li><h3>SEO et acquisition</h3><p>Le référencement pour que vous trouvent ceux qui cherchent déjà ce que vous proposez.</p></li>
-          <li><h3><a href="/fr/photo-video-evenements/">Création de contenu</a></h3><p>Du contenu pour les réseaux sociaux qui garde votre marque présente et reconnaissable.</p></li>
-      </ul>
-    </div>
+<section class="pg-que" id="que" aria-labelledby="que-t">
+  <div class="pg-cab">
+    <p class="mono pg-rot"><span>01</span>Ce que nous faisons</p>
+    <h2 id="que-t">Une seule équipe pour grandir</h2>
+    <p class="pg-lead">Stratégie, publicité et contenu, boostés par l’IA et adaptés à votre activité.</p>
   </div>
-</article>
-
-<section class="process" id="proceso" data-escena="4" aria-labelledby="proc-title">
-  <div class="process-pin">
-    <div class="wrap process-in">
-      <div class="process-head">
-        <p class="label"><span class="label-n">02</span>Comment ça marche</p>
-        <h2 id="proc-title" class="h2" data-reveal="lines">Un plan, pas des publications au hasard</h2>
-        <p class="lead" data-reveal="fade">Chaque action répond à une stratégie et se mesure.</p>
-      </div>
-      <div class="process-body">
-        <div class="process-meter" aria-hidden="true"><i id="procMeter"></i></div>
-        <ol class="steps" id="steps">
-          <li class="step is-active"><span class="step-n">01</span><div><h3>Analyse</h3><p>Nous étudions votre activité et où se trouvent vos clients.</p></div></li>
-          <li class="step"><span class="step-n">02</span><div><h3>Stratégie</h3><p>Nous concevons un plan sur mesure, boosté par l’IA.</p></div></li>
-          <li class="step"><span class="step-n">03</span><div><h3>Lancement</h3><p>Nous lançons campagnes, SEO et contenu.</p></div></li>
-          <li class="step"><span class="step-n">04</span><div><h3>Optimisation</h3><p>Nous mesurons les résultats et améliorons en continu.</p></div></li>
-        </ol>
-      </div>
-      <p class="process-count" aria-hidden="true">Phase <span id="procNow">01</span> / 04</p>
-    </div>
-  </div>
+  <ol class="pg-items">
+      <li><span class="mono">01</span><h3>Stratégie de marketing digital</h3><p>Un plan boosté par l’intelligence artificielle et conçu sur mesure pour votre activité.</p></li>
+      <li><span class="mono">02</span><h3>Campagnes et publicité</h3><p>Des campagnes publicitaires pensées pour attirer les clients qui vous intéressent.</p></li>
+      <li><span class="mono">03</span><h3>SEO et acquisition</h3><p>Le référencement pour que vous trouvent ceux qui cherchent déjà ce que vous proposez.</p></li>
+      <li><span class="mono">04</span><h3><a href="/fr/photo-video-evenements/">Création de contenu</a></h3><p>Du contenu pour les réseaux sociaux qui garde votre marque présente et reconnaissable.</p></li>
+  </ol>
 </section>
 
-<section class="cases" id="casos" data-escena="5" aria-labelledby="cases-title">
-  <div class="wrap">
-    <div class="cases-head">
-      <p class="label"><span class="label-n">03</span>Cas</p>
-      <h2 id="cases-title" class="h2" data-reveal="lines">Du premier clic au client</h2>
-      <p class="lead" data-reveal="fade">Pour les entreprises qui veulent plus de clients et une marque reconnue, avec une seule équipe pour la stratégie, la publicité et le contenu.</p>
-    </div>
-    <div class="cases-grid">
-      <ol class="case-list" id="caseList">
-        <li class="case is-active" data-in="Moteurs de recherche|Réseaux sociaux|Publicité" data-hub="Stratégie IA" data-out="Visites qualifiées|Nouveaux contacts|Marque présente">
-          <span class="case-n">01</span>
+<section class="pg-casos" id="casos" aria-labelledby="casos-t">
+  <div class="cab-c">
+    <p class="mono pg-rot"><span>02</span>Cas</p>
+    <h2 id="casos-t">Du premier clic au client</h2>
+    <p class="pg-lead">Pour les entreprises qui veulent plus de clients et une marque reconnue, avec une seule équipe pour la stratégie, la publicité et le contenu.</p>
+  </div>
+  <ol class="pg-casos-l">
+      <li class="caso hud">
+        <div class="caso-txt">
+          <span class="mono caso-n">01</span>
           <h3>Acquisition</h3>
           <p>Des campagnes et un référencement qui amènent sur votre site ceux qui cherchent déjà ce que vous proposez.</p>
-          <p class="case-shift"><span class="case-before">Avant : de la publicité sans plan derrière.</span><span class="case-after">Chaque euro a un objectif</span></p>
-        </li>
-        <li class="case" data-in="Formulaire|Chat|Campagnes" data-hub="Qualification IA" data-out="Prospect prioritaire|Fiche dans le CRM|Suivi">
-          <span class="case-n">02</span>
+          <p class="cambio"><span>Avant : de la publicité sans plan derrière.</span><span class="mono">→ Chaque euro a un objectif</span></p>
+        </div>
+        <div class="caso-flujo" aria-hidden="true">
+          <ul class="f-in mono"><li>Moteurs de recherche</li><li>Réseaux sociaux</li><li>Publicité</li></ul><span class="hilo"></span>
+          <span class="f-hub">Stratégie IA</span><span class="hilo"></span>
+          <ul class="f-out mono"><li>Visites qualifiées</li><li>Nouveaux contacts</li><li>Marque présente</li></ul>
+        </div>
+      </li>
+      <li class="caso hud">
+        <div class="caso-txt">
+          <span class="mono caso-n">02</span>
           <h3>Qualification des prospects</h3>
           <p>L’IA filtre et priorise les contacts issus des campagnes pour que votre équipe parle aux bonnes personnes.</p>
-          <p class="case-shift"><span class="case-before">Avant : l’équipe examine chaque contact un par un.</span><span class="case-after">Plus de conversions, moins d’efforts</span></p>
-        </li>
-        <li class="case" data-in="Photo|Vidéo|Textes" data-hub="Production intégrée" data-out="Réseaux sociaux|Votre site|Campagnes">
-          <span class="case-n">03</span>
+          <p class="cambio"><span>Avant : l’équipe examine chaque contact un par un.</span><span class="mono">→ Plus de conversions, moins d’efforts</span></p>
+        </div>
+        <div class="caso-flujo" aria-hidden="true">
+          <ul class="f-in mono"><li>Formulaire</li><li>Chat</li><li>Campagnes</li></ul><span class="hilo"></span>
+          <span class="f-hub">Qualification IA</span><span class="hilo"></span>
+          <ul class="f-out mono"><li>Prospect prioritaire</li><li>Fiche dans le CRM</li><li>Suivi</li></ul>
+        </div>
+      </li>
+      <li class="caso hud">
+        <div class="caso-txt">
+          <span class="mono caso-n">03</span>
           <h3>Un contenu régulier</h3>
           <p>Une production audiovisuelle intégrée pour que votre marque publie avec qualité et régularité.</p>
-          <p class="case-shift"><span class="case-before">Avant : publier seulement quand on a le temps.</span><span class="case-after">Votre marque, toujours présente</span></p>
-        </li>
-      </ol>
-
-      <figure class="flow" id="flow" aria-hidden="true">
-        <div class="flow-top"><span class="flow-tag"><i></i>Flux automatisé</span><span class="flow-case" id="flowCase">01 · Acquisition</span></div>
-        <div class="flow-body">
-          <svg class="flow-svg" viewBox="0 0 600 340" preserveAspectRatio="none">
-            <g class="flow-lines">
-              <path class="fl fl-in" d="M70 60 C 190 60, 220 170, 300 170"/>
-              <path class="fl fl-in" d="M70 170 C 180 170, 220 170, 300 170"/>
-              <path class="fl fl-in" d="M70 280 C 190 280, 220 170, 300 170"/>
-              <path class="fl fl-out" d="M300 170 C 380 170, 410 60, 530 60"/>
-              <path class="fl fl-out" d="M300 170 C 390 170, 420 170, 530 170"/>
-              <path class="fl fl-out" d="M300 170 C 380 170, 410 280, 530 280"/>
-            </g>
-          </svg>
-          <ul class="flow-nodes flow-in"><li>Moteurs de recherche</li><li>Réseaux sociaux</li><li>Publicité</li></ul>
-          <div class="flow-hub"><span class="flow-hub-ring"></span><span id="flowHub">Stratégie IA</span></div>
-          <ul class="flow-nodes flow-out"><li>Visites qualifiées</li><li>Nouveaux contacts</li><li>Marque présente</li></ul>
+          <p class="cambio"><span>Avant : publier seulement quand on a le temps.</span><span class="mono">→ Votre marque, toujours présente</span></p>
         </div>
-        <figcaption class="flow-cap"><span>Entrées</span><span>Système</span><span>Résultats</span></figcaption>
-      </figure>
-    </div>
-  </div>
+        <div class="caso-flujo" aria-hidden="true">
+          <ul class="f-in mono"><li>Photo</li><li>Vidéo</li><li>Textes</li></ul><span class="hilo"></span>
+          <span class="f-hub">Production intégrée</span><span class="hilo"></span>
+          <ul class="f-out mono"><li>Réseaux sociaux</li><li>Votre site</li><li>Campagnes</li></ul>
+        </div>
+      </li>
+  </ol>
 </section>
 
-<section class="about pg-faq" id="preguntas" data-escena="6" aria-labelledby="faq-t">
-  <div class="wrap pg-faq-in">
-    <div class="pg-faq-head">
-      <p class="label"><span class="label-n">04</span>Questions fréquentes</p>
-      <h2 id="faq-t" class="h2" data-reveal="lines">Ce qu’on nous demande le plus</h2>
+<div class="claro">
+  <section class="proc pg-proc" id="proceso" aria-labelledby="proc-t">
+    <div class="cab"><div><p class="mono pg-rot"><span>03</span>Comment ça marche</p><h2 id="proc-t">Un plan, pas des publications au hasard</h2></div><p class="pg-lead">Chaque action répond à une stratégie et se mesure.</p></div>
+    <ol class="linea-t">
+      <li><span class="mono">01</span><h3>Analyse</h3><p>Nous étudions votre activité et où se trouvent vos clients.</p></li>
+      <li><span class="mono">02</span><h3>Stratégie</h3><p>Nous concevons un plan sur mesure, boosté par l’IA.</p></li>
+      <li><span class="mono">03</span><h3>Lancement</h3><p>Nous lançons campagnes, SEO et contenu.</p></li>
+      <li><span class="mono">04</span><h3>Optimisation</h3><p>Nous mesurons les résultats et améliorons en continu.</p></li>
+    </ol>
+  </section>
+  <section class="pg-faq" id="preguntas" aria-labelledby="faq-t">
+    <div><p class="mono pg-rot"><span>04</span>Questions fréquentes</p><h2 id="faq-t">Ce qu’on nous demande le plus</h2></div>
+    <div class="pg-faq-l">
+      <details><summary>Que comprend une stratégie de marketing digital ?</summary><p>Un plan sur mesure pour votre activité qui combine, selon vos besoins, publicité, référencement et contenu pour les réseaux sociaux.</p></details>
+      <details><summary>Comment utilisez-vous l’intelligence artificielle en marketing ?</summary><p>Nous l’utilisons pour concevoir et affiner le plan, et nous la combinons à nos automatisations : par exemple, pour filtrer et prioriser les contacts issus des campagnes.</p></details>
+      <details><summary>Faites-vous aussi les photos et les vidéos ?</summary><p>Oui. Nous avons notre propre production audiovisuelle : vidéo et photo pour votre marque et contenu pour les réseaux.</p></details>
+      <details><summary>Où travaillez-vous ?</summary><p>Avec des entreprises en France et en Espagne. Nous travaillons à distance et, en présentiel, aux Canaries, où se trouve notre base.</p></details>
     </div>
-    <div class="pg-faq-list" data-reveal="fade">
-        <details><summary>Que comprend une stratégie de marketing digital ?</summary><p>Un plan sur mesure pour votre activité qui combine, selon vos besoins, publicité, référencement et contenu pour les réseaux sociaux.</p></details>
-        <details><summary>Comment utilisez-vous l’intelligence artificielle en marketing ?</summary><p>Nous l’utilisons pour concevoir et affiner le plan, et nous la combinons à nos automatisations : par exemple, pour filtrer et prioriser les contacts issus des campagnes.</p></details>
-        <details><summary>Faites-vous aussi les photos et les vidéos ?</summary><p>Oui. Nous avons notre propre production audiovisuelle : vidéo et photo pour votre marque et contenu pour les réseaux.</p></details>
-        <details><summary>Où travaillez-vous ?</summary><p>Avec des entreprises en France et en Espagne. Nous travaillons à distance et, en présentiel, aux Canaries, où se trouve notre base.</p></details>
-    </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<section class="contact pg-final" id="contacto" data-escena="7" aria-labelledby="contact-title">
-  <div class="wrap">
-    <div class="contact-head">
-      <p class="label"><span class="label-n">05</span>Contact</p>
-      <h2 id="contact-title" class="h2 h2-xl" data-reveal="lines">On parle de votre projet ?</h2>
-      <p class="lead" data-reveal="fade">Consultation gratuite et sans engagement : nous analysons votre situation et vous disons par quoi commencer.</p>
-      <div class="contact-ctas" data-reveal="fade">
-        <a href="/fr/#contacto" class="btn">Demander une consultation gratuite<svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a data-umami-event="whatsapp" href="https://wa.me/34624504004" class="btn btn-ghost" target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+<section class="cierre pg-final" id="contacto" aria-labelledby="final-t">
+  <div class="gigante" id="gigante" aria-hidden="true">AVAI</div>
+  <div class="pg-final-g">
+    <div>
+      <p class="mono">Contact</p>
+      <h2 id="final-t">On parle de votre projet ?</h2>
+      <p class="lead">Consultation gratuite et sans engagement : nous analysons votre situation et vous disons par quoi commencer.</p>
+      <div class="ctas">
+        <a href="/fr/#contacto" class="pill">Demander une consultation gratuite <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a data-umami-event="whatsapp" href="https://wa.me/34624504004" class="pill linea" target="_blank" rel="noopener">Écrire sur WhatsApp</a>
       </div>
     </div>
     <nav class="pg-rel" aria-label="À découvrir aussi">
-      <span>À découvrir aussi</span>
-      <a href="/fr/photo-video-evenements/">Production audiovisuelle et événements <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a href="/fr/creation-site-web/">Création de sites web <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <p class="mono">À découvrir aussi</p>
+      <a href="/fr/photo-video-evenements/">Production audiovisuelle et événements</a>
+      <a href="/fr/creation-site-web/">Création de sites web</a>
     </nav>
   </div>
 </section>
 
 </main>
 
-<footer class="footer">
-  <div class="wrap">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <picture><source srcset="/assets/logo-avai.webp" type="image/webp"><img src="/assets/logo-avai-sm.png" alt="AVAI Labs — Agence d’intelligence artificielle et de marketing digital" class="logo-img" width="320" height="128" loading="lazy"></picture>
-        <p>Agence d’intelligence artificielle et de marketing digital pour les entreprises en France et en Espagne. IA et automatisation, marketing, web et production audiovisuelle.</p>
-      </div>
-      <div class="foot-cols">
-        <div class="foot-col">
-          <h2 class="foot-h">Solutions</h2>
-          <a href="/fr/agence-intelligence-artificielle/">Intelligence artificielle et automatisation</a>
-          <a href="/fr/chatbot-whatsapp-entreprise/">Chatbots WhatsApp avec IA</a>
-          <a href="/fr/agence-marketing-digital/">Marketing digital</a>
-          <a href="/fr/creation-site-web/">Création de sites web</a>
-          <a href="/fr/photo-video-evenements/">Production audiovisuelle et événements</a>
-        </div>
-        <div class="foot-col">
-          <h2 class="foot-h">Entreprise</h2>
-          <a href="/fr/#nosotros">À propos</a>
-          <a href="/fr/#proceso">Processus</a>
-          <a href="/fr/#casos">Cas d’usage</a>
-          <a href="/fr/blog/">Blog</a>
-          <a href="/fr/#contacto">Contact</a>
-          <a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a>
-          <a href="/fr/confidentialite.html">Politique de confidentialité</a>
-        </div>
-        <div class="foot-col">
-          <h2 class="foot-h">Contact</h2>
-          <a href="mailto:info@avai-labs.com">info@avai-labs.com</a>
-          <a href="tel:+34624504004">+34 624 50 40 04</a>
-          <a data-umami-event="whatsapp" href="https://wa.me/34624504004" target="_blank" rel="noopener">WhatsApp +34 624 50 40 04</a>
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a>
-        </div>
-      </div>
+<footer class="cierre pie">
+  <div class="pie-top">
+    <div class="pie-marca">
+      <img src="/assets/logo-avai-claro.svg" alt="AVAI Labs — Agence de création de sites web et d’intelligence artificielle" width="268" height="64" loading="lazy">
+      <p>Agence de création de sites web et d’intelligence artificielle pour les entreprises en France et en Espagne. Sites, chatbots et automatisations sur mesure.</p>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 AVAI Labs. Tous droits réservés.</span>
-      <span><a href="/fr/confidentialite.html">Politique de confidentialité</a> · <a href="/marketing-digital/" hreflang="es" lang="es">Español</a> · Fait avec l’IA</span>
+    <div class="pie-cols">
+      <div class="pie-col"><h2>Solutions</h2><a href="/fr/agence-intelligence-artificielle/">Intelligence artificielle et automatisation</a><a href="/fr/chatbot-whatsapp-entreprise/">Chatbots WhatsApp avec IA</a><a href="/fr/agence-marketing-digital/">Marketing digital</a><a href="/fr/creation-site-web/">Création de sites web</a><a href="/fr/photo-video-evenements/">Production audiovisuelle et événements</a></div>
+      <div class="pie-col"><h2>Entreprise</h2><a href="/fr/#nosotros">À propos</a><a href="/fr/#portafolio">Portfolio</a><a href="/fr/#proceso">Méthode</a><a href="/fr/#casos">Cas d’usage</a><a href="/fr/blog/">Blog</a><a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a><a href="/fr/confidentialite.html">Politique de confidentialité</a></div>
+      <div class="pie-col"><h2>Contact</h2><a href="mailto:info@avai-labs.com">info@avai-labs.com</a><a href="tel:+34624504004">+34 624 50 40 04</a><a data-umami-event="whatsapp" href="https://wa.me/34624504004" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/avai.labs/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@atlanticvisionai" target="_blank" rel="noopener">YouTube</a><a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a></div>
     </div>
   </div>
+  <div class="pie-bajo"><span>© 2026 AVAI Labs. Tous droits réservés.</span><span><a href="/fr/confidentialite.html">Politique de confidentialité</a> · <a href="/marketing-digital/" hreflang="es" lang="es">Español</a> · Fait avec l’IA</span></div>
 </footer>
 
 <script>

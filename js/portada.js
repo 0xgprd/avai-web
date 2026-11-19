@@ -10,6 +10,7 @@
 import { fondoGL, HACES } from './portada/fondo-gl.js';
 import { PROYECTOS, DEMOS, TEXTOS, foto, urlProyecto } from './portada/portafolio.js';
 import { iniciarSuave, revelarLineas, reducido } from './portada/suave.js';
+import { cabecera, menuMovil, cursorVer } from './portada/interfaz.js';
 
 const lang = document.documentElement.lang === 'fr' ? 'fr' : 'es';
 const T = TEXTOS[lang];
@@ -69,34 +70,18 @@ chips.addEventListener('click', e => {
 });
 pintar(0);
 
-// ---------- Cabecera: fondo oscuro al bajar (se lee también sobre las zonas claras) ----------
-const cabWeb = $('.cab-web');
-const cabSolida = () => cabWeb.classList.toggle('solido', scrollY > 60);
-addEventListener('scroll', cabSolida, { passive: true }); cabSolida();
+// ---------- Cabecera, menú móvil y cursor «Ver la web» (js/portada/interfaz.js) ----------
+cabecera();
+menuMovil(lang);
+cursorVer(T.verWeb);
 
-// ---------- Menú móvil ----------
-const burger = $('#burger');
-const abrirMenu = v => {
-  document.body.classList.toggle('menu-abierto', v);
-  burger.setAttribute('aria-expanded', v);
-  burger.setAttribute('aria-label', v ? (lang === 'fr' ? 'Fermer le menu' : 'Cerrar menú') : (lang === 'fr' ? 'Ouvrir le menu' : 'Abrir menú'));
-};
-burger.addEventListener('click', () => abrirMenu(!document.body.classList.contains('menu-abierto')));
-document.querySelectorAll('#menuMovil a').forEach(a => a.addEventListener('click', () => abrirMenu(false)));
-addEventListener('keydown', e => { if (e.key === 'Escape') abrirMenu(false); });
-
-// ---------- Cursor «Ver la web» (solo con ratón) ----------
-if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  const cur = document.createElement('div');
-  cur.className = 'cursor';
-  cur.setAttribute('aria-hidden', 'true');
-  cur.innerHTML = `<span>${T.verWeb}</span>`;
-  document.body.append(cur);
-  let x = 0, y = 0, cx = 0, cy = 0;
-  addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; }, { passive: true });
-  (function seguir() { cx += (x - cx) * .2; cy += (y - cy) * .2; cur.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(seguir); })();
-  document.addEventListener('pointerover', e => { if (e.target.closest('[data-cursor]')) cur.classList.add('on'); });
-  document.addEventListener('pointerout', e => { const a = e.target.closest('[data-cursor]'); if (a && !a.contains(e.relatedTarget)) cur.classList.remove('on'); });
+// ---------- Código de tiempo del visor (panel de producción audiovisual), solo mientras se ve ----------
+const tc = $('#servTc');
+if (tc && !reducido && 'IntersectionObserver' in window) {
+  let f = 0, visible = false;
+  new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(tc);
+  const d2 = n => String(n).padStart(2, '0');
+  setInterval(() => { if (!visible) return; f++; const s = Math.floor(f / 25); tc.textContent = `00:${d2(Math.floor(s / 60) % 60)}:${d2(s % 60)}:${d2(f % 25)}`; }, 40);
 }
 
 // ---------- Fondo ----------
@@ -151,6 +136,23 @@ addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // Servicios: en escritorio la pista se desliza de lado mientras se baja (se crea antes que los demás
+  // disparadores de más abajo para que cuenten con el espacio que añade al fijarse). En móvil, paneles apilados.
+  const serv = $('.serv'), pista = $('#pista'), servPin = $('.serv-pin'), servN = $('#servN'), servBarra = $('#servBarra');
+  const paneles = gsap.utils.toArray('.sv');
+  gsap.matchMedia().add({ ancho: '(min-width: 961px)', estrecho: '(max-width: 960px)' }, ctx => {
+    if (ctx.conditions.estrecho) {
+      paneles.forEach(p => gsap.from(p, { y: 60, autoAlpha: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: p, start: 'top 88%' } }));
+      return;
+    }
+    serv.classList.add('h');
+    const distancia = () => { const g = parseFloat(getComputedStyle(servPin).paddingLeft) || 0; return Math.max(0, pista.scrollWidth - (servPin.clientWidth - 2 * g)); };
+    const paso = gsap.to(pista, { x: () => -distancia(), ease: 'none', scrollTrigger: { trigger: serv, pin: true, start: 'top top', end: () => '+=' + distancia(), scrub: 1, invalidateOnRefresh: true,
+      onUpdate: st => { servN.textContent = String(Math.round(st.progress * (paneles.length - 1)) + 1).padStart(2, '0'); servBarra.style.transform = `scaleX(${st.progress})`; } } });
+    paneles.forEach(p => gsap.fromTo(p.querySelector('.sv-vis'), { xPercent: 12 }, { xPercent: -12, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: paso, start: 'left right', end: 'right left', scrub: true } }));
+    return () => serv.classList.remove('h');
+  });
+
   window.SplitText && SplitText.create('#h1', { type: 'lines', mask: 'lines', onSplit: s => gsap.from(s.lines, { yPercent: 110, duration: 1.4, ease: 'expo.out', stagger: .12, delay: retraso }) });
   gsap.from('.hero .kick, .hero-nav, .hero-pie', { autoAlpha: 0, y: 14, duration: 1, stagger: .12, delay: retraso + .4 });
 
@@ -190,7 +192,6 @@ addEventListener('DOMContentLoaded', () => {
   // Resto de la página
   gsap.from('#cadena > *', { autoAlpha: 0, y: 30, stagger: .1, duration: .9, ease: 'expo.out', scrollTrigger: { trigger: '#cadena', start: 'top 85%' } });
   revelarLineas('.auto h2, .cab h2, .cierre h2, .nos h2');
-  gsap.from('.s', { y: 70, autoAlpha: 0, stagger: .12, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.serv-g', start: 'top 80%' } });
   gsap.from('.claro', { borderRadius: '120px 120px 0 0', ease: 'none', scrollTrigger: { trigger: '.claro', start: 'top bottom', end: 'top 40%', scrub: true } });
   gsap.utils.toArray('.b').forEach((b, i) => gsap.from(b, { clipPath: 'inset(100% 0 0 0 round 16px)', duration: 1.3, ease: 'expo.out', delay: (i % 3) * .08, scrollTrigger: { trigger: b, start: 'top 90%' } }));
   gsap.from('.linea-t li, .hechos div', { y: 30, autoAlpha: 0, stagger: .08, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.nos', start: 'top 80%' } });

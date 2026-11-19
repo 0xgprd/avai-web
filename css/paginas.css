@@ -1,89 +1,153 @@
 /* =====================================================================================================
-   AVAI Labs — páginas de servicio y blog (29-oct-2026; inmersivas y bilingües desde el 30-oct-2026)
-   Se carga DESPUÉS de main.css. Las páginas generadas por tools/construir.js reutilizan las secciones de la
-   portada (hero, área, proceso, casos, contacto) con su escena 3D; aquí solo va lo propio: migas, preguntas
-   frecuentes, panel de lectura del blog, selector y aviso de idioma.
+   AVAI Labs — páginas de servicio y blog con el diseño «Fusión» (19-nov-2026)
+   Se carga después de css/portada.css, que pone la base: colores, tipos, cabecera, menú móvil, cursor,
+   botones, bloques HUD, zona clara, cierre con el «AVAI» gigante y pie. Aquí solo lo propio de estas páginas.
+   Orden de una página de servicio: hero → qué hacemos → (portafolio) → casos → zona clara (proceso y
+   preguntas) → llamada final → pie. Blog: hero → lista o artículo en la zona clara → llamada final → pie.
    ===================================================================================================== */
+.nav a[aria-current]{color:var(--tinta)}
+.migas{margin-bottom:28px}
+.migas ol{display:flex;flex-wrap:wrap;gap:8px;color:var(--gris)}
+.migas li+li::before{content:"/";margin-right:8px;color:var(--tenue)}
+.migas a:hover{color:var(--tinta)}
+.pg-rot{display:flex;gap:12px;align-items:center;color:var(--gris)}
+.pg-rot span{color:var(--cian)}
+.claro .pg-rot span{color:var(--oro)}
+.pg-lead{color:#c7ccd8;max-width:46ch;margin-top:18px}
+.claro .pg-lead{color:#4d4a44}
+.ic-arrow{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
 
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* hero: el título abajo a la izquierda, sobre los haces de luz */
+.pg-hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:140px var(--g) 34px}
+.pg-hero .kick{color:var(--cian);margin-bottom:24px}
+.pg-hero h1{font:300 clamp(2.6rem,7vw,7.2rem)/.95 var(--sans);letter-spacing:-.055em;max-width:17ch}
+.pg-hero h1 .serif{display:block;color:var(--cian);font-size:.9em}
+.pg-sub{color:#c9cdd8;max-width:48ch;margin-top:26px;font-size:1.08rem}
+.pg-hero .ctas{margin-top:30px}
+.pg-hero .hero-pie{position:static;margin-top:9vh;padding:18px 0 0;border-top:1px solid var(--linea);display:flex;justify-content:space-between;align-items:center;gap:20px}
+.pg-hero .hero-pie a{color:var(--gris);white-space:nowrap}
+.pg-hero .hero-pie a:hover{color:var(--tinta)}
+.pg-tags{display:flex;flex-wrap:wrap;gap:8px 24px;color:#c7cbd6}
+.pg-tags li::before{content:"+ ";color:var(--cian)}
 
-/* ---------- Migas (dentro del hero) ---------- */
-.pg-migas{margin-bottom:26px}
-.pg-migas ol{display:flex;flex-wrap:wrap;gap:8px;font:400 .78rem/1.4 var(--mono);color:var(--dim)}
-.pg-migas li+li::before{content:"/";margin-right:8px;color:var(--dim)}
-.pg-migas a{color:var(--muted);transition:color .25s}
-.pg-migas a:hover{color:var(--cyan)}
-.pg-migas [aria-current]{color:var(--ink-2)}
+/* qué hacemos: título fijo a la izquierda, lista a la derecha */
+.pg-que{padding:16vh var(--g) 12vh;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:6vw;align-items:start}
+.pg-cab{position:sticky;top:120px}
+.pg-cab h2,.cab-c h2{font:300 clamp(2.2rem,4.6vw,4.4rem)/1 var(--sans);letter-spacing:-.05em;margin-top:16px}
+.pg-items{border-top:1px solid var(--linea)}
+.pg-items li{display:grid;grid-template-columns:56px 1fr;gap:8px 18px;padding:30px 0;border-bottom:1px solid var(--linea)}
+.pg-items .mono{color:var(--cian);padding-top:10px;grid-row:span 2}
+.pg-items h3{font:400 clamp(1.5rem,2.4vw,2.2rem)/1.08 var(--sans);letter-spacing:-.035em}
+.pg-items h3 a{background:linear-gradient(var(--cian),var(--cian)) 0 100%/0 1px no-repeat;transition:background-size .5s cubic-bezier(.16,1,.3,1)}
+.pg-items h3 a::after{content:" →";color:var(--cian)}
+.pg-items h3 a:hover{background-size:100% 1px}
+.pg-items p{color:var(--gris);max-width:52ch}
 
-/* Los H1 de servicio son más largos que el de la portada */
-.pg-hero-title{max-width:16ch;font-size:clamp(2.4rem,5vw,5rem)}
+/* portafolio: fila de mini-webs (en escritorio se desliza de lado con el scroll, js/paginas.js) */
+.pg-port{padding:4vh 0 12vh;overflow-x:clip}
+.pg-port .cab{padding:0 var(--g)}
+.pg-port .cab .mono{color:var(--gris)}
+.pg-port-g{display:flex;gap:16px;padding:0 var(--g);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.pg-port-g::-webkit-scrollbar{display:none}
+.pg-port-g.desliza{overflow:visible;scroll-snap-type:none;will-change:transform}
+.pg-pw{position:relative;flex:none;width:min(40vw,580px);aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:#0d1018;scroll-snap-align:start;box-shadow:0 40px 90px -40px rgba(0,0,0,.9)}
+.pg-pw img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.pg-pw:hover img{transform:scale(1.05)}
+.pg-pw .nb{position:absolute;z-index:1;inset:0 0 auto 0;height:9%;background:rgba(0,0,0,.45);display:flex;align-items:center;gap:5px;padding:0 3%}
+.pg-pw .nb i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.55)}
+.pg-pw::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.6))}
+.pg-pw .t{position:absolute;left:18px;right:18px;bottom:16px;z-index:2;display:flex;justify-content:space-between;align-items:end;gap:12px;color:#fff}
+.pg-pw .t b{font:400 clamp(1.4rem,2.2vw,2.2rem)/1 var(--serif);font-style:italic}
+.pg-pw .t .mono{color:rgba(255,255,255,.88);text-align:right}
 
-/* Servicios del área: h3 en vez de h4 (jerarquía de la página), mismo aspecto */
-.svc-list h3{font-size:1.07rem;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
-.svc-list h3 a{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
-.svc-list h3 a::after{content:" →";color:var(--cyan)}
+/* casos: cada uno con su flujo entradas → sistema → resultados */
+.pg-casos{padding:12vh var(--g) 14vh}
+.cab-c{max-width:780px;margin-bottom:7vh}
+.pg-casos-l{display:flex;flex-direction:column;gap:18px}
+.caso{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:4vw;align-items:center;padding:clamp(22px,3vw,44px)}
+.caso.hud{background:rgba(5,10,22,.74);-webkit-backdrop-filter:none;backdrop-filter:none}
+.caso-n{color:var(--cian)}
+.caso h3{font:300 clamp(1.7rem,2.8vw,2.6rem)/1.05 var(--sans);letter-spacing:-.04em;margin-top:12px}
+.caso p{color:#c7ccd8;margin-top:12px;max-width:44ch}
+.cambio{display:flex;flex-direction:column;gap:8px;margin-top:18px !important}
+.cambio span:first-child{color:var(--gris)}
+.cambio .mono{color:var(--cian)}
+.caso-flujo{display:flex;align-items:center;justify-content:center}
+.f-in,.f-out{display:flex;flex-direction:column;gap:8px;min-width:0}
+.f-in li,.f-out li{padding:9px 12px;border:1px solid var(--linea);color:#d9dce4;background:rgba(255,255,255,.03);font-size:.6rem}
+.f-out li{border-color:rgba(90,216,255,.35);color:var(--cian)}
+.caso-flujo .hilo{flex:none;width:clamp(22px,3vw,56px)}
+.f-hub{flex:none;display:grid;place-items:center;width:clamp(100px,9vw,132px);aspect-ratio:1;border-radius:50%;padding:12px;text-align:center;border:1px solid rgba(90,216,255,.5);
+  box-shadow:0 0 40px rgba(90,216,255,.22),inset 0 0 30px rgba(90,216,255,.12);color:#fff;font:500 .6rem/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase}
 
-/* El proceso fijo es algo más corto que en la portada: 4 fases cortas */
-.gsap-ok .pg .process{height:300vh}
+/* zona clara: proceso y preguntas */
+.pg-proc{padding:12vh var(--g) 8vh}
+.pg-proc .cab h2{margin-top:14px}
+.pg-faq{padding:8vh var(--g) 14vh;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:6vw;align-items:start;border-top:1px solid #d9d2c5}
+.pg-faq h2{font:300 clamp(2.2rem,4.4vw,4rem)/1 var(--sans);letter-spacing:-.05em;margin-top:14px}
+.pg-faq-l{border-top:1px solid #cfc8bb}
+.pg-faq details{border-bottom:1px solid #cfc8bb}
+.pg-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;font:400 1.18rem/1.3 var(--sans);letter-spacing:-.02em;color:#111318}
+.pg-faq summary::-webkit-details-marker{display:none}
+.pg-faq summary::after{content:"+";flex:none;font:300 1.7rem/1 var(--sans);color:var(--oro);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.pg-faq details[open] summary::after{transform:rotate(45deg)}
+.pg-faq summary:hover{color:var(--oro)}
+.pg-faq details p{color:#4d4a44;padding:0 0 24px;max-width:62ch}
 
-/* ---------- Preguntas frecuentes (escena de calma) ---------- */
-.pg-faq-in{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:5vw;align-items:start}
-.pg-faq-head{position:relative}
-.pg-faq-head::before{content:"";position:absolute;z-index:-1;inset:-30% -20%;background:radial-gradient(closest-side,rgba(5,9,20,.88),rgba(5,9,20,0));pointer-events:none}
-.pg-faq-list{padding:8px clamp(18px,2.6vw,32px);border-radius:22px;background:rgba(7,12,26,.78);box-shadow:inset 0 0 0 1px var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.pg-faq-list details+details{border-top:1px solid var(--line)}
-.pg-faq-list summary{position:relative;list-style:none;cursor:pointer;padding:22px 40px 22px 0;font:600 1.02rem/1.4 var(--display);letter-spacing:-.01em;color:var(--ink)}
-.pg-faq-list summary::-webkit-details-marker{display:none}
-.pg-faq-list summary::after{content:"+";position:absolute;right:4px;top:18px;font:400 1.5rem/1 var(--body);color:var(--cyan);transition:transform .3s var(--ease)}
-.pg-faq-list details[open] summary::after{transform:rotate(45deg)}
-.pg-faq-list details p{padding:0 40px 22px 0;color:var(--muted);font-size:.97rem}
+/* llamada final (dentro de .cierre, como el contacto de la portada) */
+.pg-final-g{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:6vw;padding:8vh var(--g) 10vh;align-items:end}
+.pg-rel{border-top:1px solid #dcdfe6}
+.pg-rel .mono{color:#6b707d;padding:16px 0 4px}
+.pg-rel a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid #dcdfe6;font:400 clamp(1.2rem,1.8vw,1.6rem)/1.2 var(--sans);letter-spacing:-.03em;transition:padding .4s cubic-bezier(.16,1,.3,1)}
+.pg-rel a::after{content:"→";color:var(--azul);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.pg-rel a:hover{padding-left:10px}
+.pg-rel a:hover::after{transform:translateX(6px)}
 
-/* ---------- Llamada final y enlaces relacionados ---------- */
-.pg-final{padding-bottom:8vh}
-.pg-rel{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin-top:12vh;padding-top:28px;border-top:1px solid var(--line)}
-.pg-rel span{font:500 .75rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-.pg-rel a{display:inline-flex;align-items:center;gap:8px;color:var(--ink-2);font-weight:500;transition:color .25s}
-.pg-rel a:hover{color:var(--cyan)}
-.pg-rel .ic-arrow{flex:none;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
-.pg-rel a:hover .ic-arrow{transform:translateX(4px)}
+/* blog: lista */
+.pg-hero-blog{min-height:80svh}
+.pg-blog{padding:4vh var(--g) 16vh}
+.pg-blog .pg-rot{margin-bottom:22px}
+.pg-arts{border-top:1px solid var(--linea)}
+.pg-art{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:10px 40px;align-items:baseline;padding:34px 0;border-bottom:1px solid var(--linea);transition:padding .5s cubic-bezier(.16,1,.3,1)}
+.pg-art time{color:var(--gris)}
+.pg-art h3{font:300 clamp(1.5rem,2.8vw,2.6rem)/1.08 var(--sans);letter-spacing:-.04em;max-width:26ch;transition:color .3s}
+.pg-art p{grid-column:2;color:var(--gris);max-width:62ch}
+.pg-leer{grid-column:3;grid-row:1;color:var(--cian);white-space:nowrap}
+.pg-art:hover{padding-left:14px}
+.pg-art:hover h3{color:var(--cian)}
 
-/* ---------- Blog: la escena sigue viva detrás; el texto va sobre un panel para leerse bien ---------- */
-.pg-hero-art,.pg-hero-blog{min-height:86vh;min-height:86svh}
-.pg-h1-art{max-width:22ch;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.04}
-.pg-resumen{margin-top:34px;max-width:40rem;padding:20px 22px;border-radius:16px;background:rgba(7,12,26,.8);box-shadow:inset 0 0 0 1px var(--line-2);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.pg-resumen h2,.pg-fuentes h2{font:500 .75rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
-.pg-resumen li{position:relative;padding-left:18px;color:var(--ink-2)}
-.pg-resumen li+li{margin-top:8px}
-.pg-resumen li::before{content:"";position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+/* blog: artículo */
+.pg-hero-art{min-height:auto;padding-top:170px;padding-bottom:9vh}
+.pg-art-g{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:5vw;align-items:end}
+.pg-hero-art h1{font-size:clamp(2.2rem,4.8vw,4.8rem);line-height:1;max-width:20ch}
+.pg-resumen{padding:24px 26px}
+.pg-resumen h2{color:var(--cian);margin-bottom:10px}
+.pg-resumen li{padding:12px 0;border-top:1px solid var(--linea);color:#d9dce4;font-size:.98rem}
+.pg-cuerpo{max-width:760px;margin:0 auto;padding:12vh var(--g);color:#26282e;font-size:1.1rem;line-height:1.75}
+.pg-cuerpo>p:first-child{font-size:1.3rem;line-height:1.55;color:#111318}
+.pg-cuerpo p{margin-top:1.1em}
+.pg-cuerpo h2{font:400 clamp(1.6rem,2.6vw,2.2rem)/1.1 var(--sans);letter-spacing:-.035em;color:#111318;margin-top:2em}
+.pg-cuerpo ul{margin-top:1em}
+.pg-cuerpo li{position:relative;padding-left:22px;margin-top:.5em}
+.pg-cuerpo li::before{content:"";position:absolute;left:0;top:.8em;width:9px;height:1px;background:var(--oro)}
+.pg-cuerpo a{color:#111318;text-decoration:underline;text-decoration-color:var(--oro);text-underline-offset:3px}
+.pg-cuerpo a:hover{color:var(--oro)}
+.pg-cuerpo strong{font-weight:600;color:#111318}
+.pg-fuentes{margin-top:4em;padding-top:22px;border-top:1px solid #cfc8bb}
+.pg-fuentes h2{font:500 .7rem/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#7a7468;margin:0}
+.pg-fuentes li{font-size:.95rem}
 
-.pg-lectura{padding:8vh 0 14vh}
-.pg-panel{max-width:48rem;padding:clamp(24px,4vw,52px);border-radius:24px;background:rgba(5,9,20,.86);box-shadow:inset 0 0 0 1px var(--line),0 60px 120px -60px rgba(0,0,0,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.pg-cuerpo{color:var(--ink-2);font-size:1.06rem;line-height:1.75}
-.pg-cuerpo>*+*{margin-top:1.1em}
-.pg-cuerpo h2{margin-top:1.8em;font-size:1.45rem;color:var(--ink)}
-.pg-cuerpo ul{padding-left:1.2em;list-style:disc}
-.pg-cuerpo a{color:var(--cyan);text-decoration:underline;text-underline-offset:3px}
-.pg-fuentes{margin-top:44px!important;padding-top:24px;border-top:1px solid var(--line)}
-.pg-fuentes ul{list-style:none;padding:0}
-.pg-fuentes li+li{margin-top:6px}
-.pg-fuentes a{font-size:.9rem;color:var(--muted);word-break:break-word}
-.pg-fuentes a:hover{color:var(--cyan)}
-
-.pg-lista li{border-top:1px solid var(--line)}
-.pg-lista li:last-child{border-bottom:1px solid var(--line)}
-.pg-lista a{display:block;padding:28px 0;transition:padding .35s var(--ease)}
-.pg-lista a:hover{padding-left:10px}
-.pg-lista time{font:400 .8rem/1.4 var(--mono);color:var(--dim)}
-.pg-lista h3{margin-top:10px;font-size:clamp(1.2rem,2vw,1.55rem);letter-spacing:-.02em;color:var(--ink);transition:color .25s}
-.pg-lista a:hover h3{color:var(--cyan)}
-.pg-lista p{margin-top:8px;color:var(--muted);font-size:.96rem}
-.pg-leer{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font:500 .75rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
-.pg-leer .ic-arrow{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-
-/* ---------- Responsive ---------- */
 @media (max-width:960px){
-  .pg-faq-in{grid-template-columns:1fr;gap:28px}
+  .pg-que,.pg-faq,.pg-final-g,.caso,.pg-art-g{grid-template-columns:1fr}
+  .pg-cab{position:static}
+  .pg-hero .hero-pie{flex-direction:column;align-items:flex-start}
+  .pg-pw{width:80vw}
+  .pg-art{grid-template-columns:1fr}
+  .pg-art p,.pg-leer{grid-column:1;grid-row:auto}
+  .pg-proc .cab{flex-direction:column;align-items:flex-start}
 }
-@media (max-width:620px){
-  .pg-panel{border-radius:18px}
+@media (max-width:600px){
+  .caso-flujo{flex-direction:column}
+  .caso-flujo .hilo{width:1px;height:22px}
+  .f-in,.f-out{flex-direction:row;flex-wrap:wrap;justify-content:center}
 }

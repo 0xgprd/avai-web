@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="no-js">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,8 @@
 <link rel="alternate" hreflang="fr" href="https://avai-labs.com/fr/agence-intelligence-artificielle/">
 <link rel="alternate" hreflang="x-default" href="https://avai-labs.com/agencia-inteligencia-artificial/">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#050914">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/svg+xml" href="/assets/simbolo-avai.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -39,275 +40,179 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css?v=20261030">
-<link rel="stylesheet" href="/css/paginas.css?v=20261030">
-<script>
-/* Estado inicial antes del primer pintado.
-   - "anim": los textos esperan a su animación de entrada (solo con JS y sin «reducir movimiento»).
-   - Red de seguridad: si js/main.js no arranca en 4 s (red lenta, error), se quita "anim" y el contenido
-     se ve igualmente. La web nunca depende de la escena 3D para leerse ni para contactar. */
-(function(h){
-  h.classList.remove('no-js'); h.classList.add('js');
-  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  h.classList.add(rm ? 'rm' : 'anim');
-  setTimeout(function(){ if(!window.__avaiReady) h.classList.remove('anim'); }, 4000);
-})(document.documentElement);
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/portada.css?v=20261120">
+<link rel="stylesheet" href="/css/paginas.css?v=20261120">
 <script defer src="/assets/vendor/gsap-3.15.0.min.js"></script>
 <script defer src="/assets/vendor/ScrollTrigger-3.15.0.min.js"></script>
 <script defer src="/assets/vendor/SplitText-3.15.0.min.js"></script>
-<script type="module" src="/js/main.js?v=20261030"></script>
+<script defer src="/assets/vendor/lenis-1.3.27.min.js"></script>
+<script type="module" src="/js/paginas.js?v=20261120"></script>
 <script defer src="https://avai-umami.ig2tl9.easypanel.host/avai.js" data-website-id="144366c2-f015-485c-bd7f-9285b163c8cc" data-domains="avai-labs.com"></script>
 </head>
 <body class="pg">
-
 <a class="skip" href="#contenido">Saltar al contenido</a>
+<canvas id="gl" aria-hidden="true"></canvas>
 
-<header class="nav" id="nav">
-  <div class="nav-in">
-    <a href="/" class="brand" aria-label="AVAI Labs, ir a la portada">
-      <picture><source srcset="/assets/logo-avai.webp" type="image/webp"><img src="/assets/logo-avai-sm.png" alt="AVAI Labs — Agencia de inteligencia artificial y marketing digital" class="logo-img" width="320" height="128"></picture>
-    </a>
-    <nav class="nav-links" id="navLinks" aria-label="Principal">
-      <div class="nav-drop">
-        <a href="/#servicios" class="nav-drop-t">Soluciones</a>
-        <div class="nav-sub">
-          <a href="/agencia-inteligencia-artificial/">Inteligencia artificial y automatización</a>
-          <a href="/chatbot-whatsapp-empresas/">Chatbots de WhatsApp con IA</a>
-          <a href="/marketing-digital/">Marketing digital</a>
-          <a href="/diseno-web/">Diseño de páginas web</a>
-          <a href="/fotografia-video-eventos/">Producción audiovisual y eventos</a>
-        </div>
-      </div>
-      <a href="/#proceso">Proceso</a>
-      <a href="/#casos">Casos de uso</a>
-      <a href="/#nosotros">Nosotros</a>
-      <a href="/blog/">Blog</a>
-      <a href="/#contacto">Contacto</a>
-      <a href="/fr/agence-intelligence-artificielle/" class="nav-lang" hreflang="fr" lang="fr" aria-label="Version française">FR</a>
-      <a href="https://app.avai-labs.com/" rel="noopener" class="nav-app">AVAI App</a>
-      <a href="/#contacto" class="btn btn-sm nav-cta">Consulta gratuita</a>
-    </nav>
-    <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
-  </div>
+<header class="cab-web">
+  <a class="logo" href="/" aria-label="AVAI Labs, ir a la portada"><img src="/assets/logo-avai.svg" alt="AVAI Labs — Agencia de diseño web e inteligencia artificial" width="268" height="64"></a>
+  <nav class="nav mono" aria-label="Principal">
+    <a href="/#portafolio">Portafolio</a>
+    <a href="/#servicios">Servicios</a>
+    <a href="/#proceso">Proceso</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#contacto">Contacto</a>
+    <a href="/fr/agence-intelligence-artificielle/" class="lang" hreflang="fr" lang="fr" aria-label="Version française">FR</a>
+  </nav>
+  <a class="btn-esq mono" href="/#contacto">Consulta gratuita →</a>
+  <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuMovil"><span></span><span></span></button>
 </header>
-
-<div class="stage" id="stage" aria-hidden="true">
-  <div class="stage-fallback">
-    <svg viewBox="0 0 800 800" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <radialGradient id="fbCore" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stop-color="#e6f6ff" stop-opacity=".95"/>
-          <stop offset=".28" stop-color="#45d6f7" stop-opacity=".55"/>
-          <stop offset=".62" stop-color="#1d63f0" stop-opacity=".16"/>
-          <stop offset="1" stop-color="#1d63f0" stop-opacity="0"/>
-        </radialGradient>
-        <pattern id="fbDots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="1.1" fill="#7fd8ff" fill-opacity=".55"/></pattern>
-        <clipPath id="fbSphere"><circle cx="400" cy="400" r="150"/></clipPath>
-      </defs>
-      <circle cx="400" cy="400" r="330" fill="url(#fbCore)" opacity=".55"/>
-      <g clip-path="url(#fbSphere)" opacity=".7"><rect x="250" y="250" width="300" height="300" fill="url(#fbDots)"/></g>
-      <g fill="none" stroke="#7fb4ff">
-        <ellipse cx="400" cy="400" rx="230" ry="78" transform="rotate(-16 400 400)" stroke-opacity=".34"/>
-        <ellipse cx="400" cy="400" rx="270" ry="104" transform="rotate(22 400 400)" stroke-opacity=".24"/>
-        <ellipse cx="400" cy="400" rx="318" ry="132" transform="rotate(-4 400 400)" stroke-opacity=".16"/>
-      </g>
-      <circle cx="400" cy="400" r="58" fill="url(#fbCore)"/>
-    </svg>
-  </div>
-  <canvas id="scene"></canvas>
-  <div class="stage-shade"></div>
-</div>
-
-<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+<nav class="menu-movil" id="menuMovil" aria-label="Menú">
+    <a href="/#portafolio">Portafolio</a>
+    <a href="/#servicios">Servicios</a>
+    <a href="/#proceso">Proceso</a>
+    <a href="/blog/">Blog</a>
+    <a href="/#contacto">Contacto</a>
+  <a href="/fr/agence-intelligence-artificielle/" hreflang="fr" lang="fr">Français</a>
+  <a class="pill" href="/#contacto">Consulta gratuita</a>
+</nav>
 
 <main id="contenido">
 
-<section class="hero" id="inicio" data-escena="0" aria-labelledby="hero-title">
-  <div class="wrap hero-in">
-    <nav class="pg-migas" aria-label="Estás en"><ol><li><a href="/">Inicio</a></li><li aria-current="page">Inteligencia artificial y automatización</li></ol></nav>
-    <p class="kicker" data-reveal="fade"><span class="kicker-dot"></span>Inteligencia artificial y automatización</p>
-    <h1 id="hero-title" class="hero-title pg-hero-title" data-reveal="hero">Agencia de inteligencia artificial <span class="grad">para empresas.</span></h1>
-    <p class="hero-sub" data-reveal="fade">Diseñamos e implantamos sistemas de IA que trabajan por ti y se conectan con las herramientas que ya usas.</p>
-    <div class="hero-ctas" data-reveal="fade">
-      <a href="/#contacto" class="btn">Solicitar una consulta gratuita<svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a href="#que" class="btn btn-ghost">Ver cómo funciona</a>
+<section class="pg-hero" id="inicio" aria-labelledby="h1">
+  <div class="pg-hero-in">
+    <nav class="migas" aria-label="Estás en"><ol class="mono"><li><a href="/">Inicio</a></li><li aria-current="page">Inteligencia artificial y automatización</li></ol></nav>
+    <p class="kick mono">[ Inteligencia artificial y automatización ]</p>
+    <h1 id="h1">Agencia de inteligencia artificial <span class="serif">para empresas.</span></h1>
+    <p class="pg-sub">Diseñamos e implantamos sistemas de IA que trabajan por ti y se conectan con las herramientas que ya usas.</p>
+    <div class="ctas">
+      <a href="/#contacto" class="pill">Solicitar una consulta gratuita <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="#que" class="pill linea">Ver cómo funciona</a>
     </div>
-    <ul class="hero-tags" data-reveal="fade" aria-label="Lo que incluye">
-      <li>Automatizaciones con IA</li><li>Procesos</li><li>Integraciones</li><li>Asistentes</li>
-    </ul>
   </div>
-  <a class="scroll-cue" href="#que" data-reveal="fade"><span>Desliza para explorar</span><i aria-hidden="true"></i></a>
+  <div class="hero-pie"><ul class="pg-tags mono" aria-label="Lo que incluye"><li>Automatizaciones con IA</li><li>Procesos</li><li>Integraciones</li><li>Asistentes</li></ul><a class="mono" href="#que">Desliza para explorar ↓</a></div>
 </section>
 
-<article class="area" id="que" data-escena="1" data-side="left" aria-labelledby="que-t">
-  <div class="wrap area-in">
-    <div class="area-copy">
-      <p class="label"><span class="label-n">01</span>Qué hacemos</p>
-      <h2 id="que-t" class="h3" data-reveal="lines">Sistemas que trabajan por ti</h2>
-      <p class="area-lead" data-reveal="fade">Menos tareas manuales y más tiempo para lo que de verdad importa.</p>
-      <ul class="svc-list" data-reveal="list">
-          <li><h3>Automatizaciones con IA</h3><p>Flujos inteligentes que conectan tus herramientas y ejecutan tareas complejas sin intervención humana.</p></li>
-          <li><h3>Automatización de procesos</h3><p>Eliminamos las tareas manuales repetitivas: copiar, pegar, reenviar y teclear datos.</p></li>
-          <li><h3>Integraciones y optimización</h3><p>Conectamos tus sistemas existentes y afinamos cada proceso para exprimir el máximo rendimiento.</p></li>
-          <li><h3><a href="/chatbot-whatsapp-empresas/">Chatbots y asistentes</a></h3><p>Asistentes que atienden a tus clientes 24/7, cualifican leads y reservan citas.</p></li>
-      </ul>
-    </div>
+<section class="pg-que" id="que" aria-labelledby="que-t">
+  <div class="pg-cab">
+    <p class="mono pg-rot"><span>01</span>Qué hacemos</p>
+    <h2 id="que-t">Sistemas que trabajan por ti</h2>
+    <p class="pg-lead">Menos tareas manuales y más tiempo para lo que de verdad importa.</p>
   </div>
-</article>
-
-<section class="process" id="proceso" data-escena="4" aria-labelledby="proc-title">
-  <div class="process-pin">
-    <div class="wrap process-in">
-      <div class="process-head">
-        <p class="label"><span class="label-n">02</span>Cómo funciona</p>
-        <h2 id="proc-title" class="h2" data-reveal="lines">Del problema a una solución que funciona</h2>
-        <p class="lead" data-reveal="fade">Te acompañamos desde la primera reunión hasta la mejora continua.</p>
-      </div>
-      <div class="process-body">
-        <div class="process-meter" aria-hidden="true"><i id="procMeter"></i></div>
-        <ol class="steps" id="steps">
-          <li class="step is-active"><span class="step-n">01</span><div><h3>Análisis</h3><p>Estudiamos tu negocio y detectamos las oportunidades con mayor impacto.</p></div></li>
-          <li class="step"><span class="step-n">02</span><div><h3>Desarrollo</h3><p>Diseñamos y construimos la solución a medida de tus necesidades reales.</p></div></li>
-          <li class="step"><span class="step-n">03</span><div><h3>Implementación</h3><p>La integramos en tus herramientas y formamos a tu equipo para usarla.</p></div></li>
-          <li class="step"><span class="step-n">04</span><div><h3>Optimización</h3><p>Medimos resultados y mejoramos de forma continua.</p></div></li>
-        </ol>
-      </div>
-      <p class="process-count" aria-hidden="true">Fase <span id="procNow">01</span> / 04</p>
-    </div>
-  </div>
+  <ol class="pg-items">
+      <li><span class="mono">01</span><h3>Automatizaciones con IA</h3><p>Flujos inteligentes que conectan tus herramientas y ejecutan tareas complejas sin intervención humana.</p></li>
+      <li><span class="mono">02</span><h3>Automatización de procesos</h3><p>Eliminamos las tareas manuales repetitivas: copiar, pegar, reenviar y teclear datos.</p></li>
+      <li><span class="mono">03</span><h3>Integraciones y optimización</h3><p>Conectamos tus sistemas existentes y afinamos cada proceso para exprimir el máximo rendimiento.</p></li>
+      <li><span class="mono">04</span><h3><a href="/chatbot-whatsapp-empresas/">Chatbots y asistentes</a></h3><p>Asistentes que atienden a tus clientes 24/7, cualifican leads y reservan citas.</p></li>
+  </ol>
 </section>
 
-<section class="cases" id="casos" data-escena="5" aria-labelledby="cases-title">
-  <div class="wrap">
-    <div class="cases-head">
-      <p class="label"><span class="label-n">03</span>Casos</p>
-      <h2 id="cases-title" class="h2" data-reveal="lines">Lo que automatizamos</h2>
-      <p class="lead" data-reveal="fade">Para empresas de cualquier sector que pierden horas cada semana en tareas que se repiten.</p>
-    </div>
-    <div class="cases-grid">
-      <ol class="case-list" id="caseList">
-        <li class="case is-active" data-in="Facturas|Contratos|Formularios" data-hub="Extracción con IA" data-out="Datos extraídos|Documento clasificado|Archivo ordenado">
-          <span class="case-n">01</span>
+<section class="pg-casos" id="casos" aria-labelledby="casos-t">
+  <div class="cab-c">
+    <p class="mono pg-rot"><span>02</span>Casos</p>
+    <h2 id="casos-t">Lo que automatizamos</h2>
+    <p class="pg-lead">Para empresas de cualquier sector que pierden horas cada semana en tareas que se repiten.</p>
+  </div>
+  <ol class="pg-casos-l">
+      <li class="caso hud">
+        <div class="caso-txt">
+          <span class="mono caso-n">01</span>
           <h3>Gestión documental</h3>
           <p>Extracción, clasificación y archivado automático de facturas, contratos y formularios.</p>
-          <p class="case-shift"><span class="case-before">Antes: cada documento se teclea y se archiva a mano.</span><span class="case-after">Cero tareas manuales</span></p>
-        </li>
-        <li class="case" data-in="Ventas|Marketing|Operaciones" data-hub="Datos conectados" data-out="Panel al día|Informe generado|Envío automático">
-          <span class="case-n">02</span>
+          <p class="cambio"><span>Antes: cada documento se teclea y se archiva a mano.</span><span class="mono">→ Cero tareas manuales</span></p>
+        </div>
+        <div class="caso-flujo" aria-hidden="true">
+          <ul class="f-in mono"><li>Facturas</li><li>Contratos</li><li>Formularios</li></ul><span class="hilo"></span>
+          <span class="f-hub">Extracción con IA</span><span class="hilo"></span>
+          <ul class="f-out mono"><li>Datos extraídos</li><li>Documento clasificado</li><li>Archivo ordenado</li></ul>
+        </div>
+      </li>
+      <li class="caso hud">
+        <div class="caso-txt">
+          <span class="mono caso-n">02</span>
           <h3>Informes y seguimiento</h3>
           <p>Paneles e informes que se generan y envían solos, con todas tus fuentes de datos conectadas.</p>
-          <p class="case-shift"><span class="case-before">Antes: los datos se copian de varias herramientas.</span><span class="case-after">Decisiones con datos al día</span></p>
-        </li>
-        <li class="case" data-in="Copiar datos|Reenviar emails|Hojas de cálculo" data-hub="Flujo automático" data-out="Tarea completada|Registro actualizado|Equipo libre">
-          <span class="case-n">03</span>
+          <p class="cambio"><span>Antes: los datos se copian de varias herramientas.</span><span class="mono">→ Decisiones con datos al día</span></p>
+        </div>
+        <div class="caso-flujo" aria-hidden="true">
+          <ul class="f-in mono"><li>Ventas</li><li>Marketing</li><li>Operaciones</li></ul><span class="hilo"></span>
+          <span class="f-hub">Datos conectados</span><span class="hilo"></span>
+          <ul class="f-out mono"><li>Panel al día</li><li>Informe generado</li><li>Envío automático</li></ul>
+        </div>
+      </li>
+      <li class="caso hud">
+        <div class="caso-txt">
+          <span class="mono caso-n">03</span>
           <h3>Tareas repetitivas</h3>
           <p>Lo que se repite cada día pasa a ejecutarse solo, y tu equipo dedica su tiempo a lo importante.</p>
-          <p class="case-shift"><span class="case-before">Antes: horas a la semana copiando y pegando.</span><span class="case-after">Más tiempo para lo importante</span></p>
-        </li>
-      </ol>
-
-      <figure class="flow" id="flow" aria-hidden="true">
-        <div class="flow-top"><span class="flow-tag"><i></i>Flujo automatizado</span><span class="flow-case" id="flowCase">01 · Gestión documental</span></div>
-        <div class="flow-body">
-          <svg class="flow-svg" viewBox="0 0 600 340" preserveAspectRatio="none">
-            <g class="flow-lines">
-              <path class="fl fl-in" d="M70 60 C 190 60, 220 170, 300 170"/>
-              <path class="fl fl-in" d="M70 170 C 180 170, 220 170, 300 170"/>
-              <path class="fl fl-in" d="M70 280 C 190 280, 220 170, 300 170"/>
-              <path class="fl fl-out" d="M300 170 C 380 170, 410 60, 530 60"/>
-              <path class="fl fl-out" d="M300 170 C 390 170, 420 170, 530 170"/>
-              <path class="fl fl-out" d="M300 170 C 380 170, 410 280, 530 280"/>
-            </g>
-          </svg>
-          <ul class="flow-nodes flow-in"><li>Facturas</li><li>Contratos</li><li>Formularios</li></ul>
-          <div class="flow-hub"><span class="flow-hub-ring"></span><span id="flowHub">Extracción con IA</span></div>
-          <ul class="flow-nodes flow-out"><li>Datos extraídos</li><li>Documento clasificado</li><li>Archivo ordenado</li></ul>
+          <p class="cambio"><span>Antes: horas a la semana copiando y pegando.</span><span class="mono">→ Más tiempo para lo importante</span></p>
         </div>
-        <figcaption class="flow-cap"><span>Entradas</span><span>Sistema</span><span>Resultados</span></figcaption>
-      </figure>
-    </div>
-  </div>
+        <div class="caso-flujo" aria-hidden="true">
+          <ul class="f-in mono"><li>Copiar datos</li><li>Reenviar emails</li><li>Hojas de cálculo</li></ul><span class="hilo"></span>
+          <span class="f-hub">Flujo automático</span><span class="hilo"></span>
+          <ul class="f-out mono"><li>Tarea completada</li><li>Registro actualizado</li><li>Equipo libre</li></ul>
+        </div>
+      </li>
+  </ol>
 </section>
 
-<section class="about pg-faq" id="preguntas" data-escena="6" aria-labelledby="faq-t">
-  <div class="wrap pg-faq-in">
-    <div class="pg-faq-head">
-      <p class="label"><span class="label-n">04</span>Preguntas frecuentes</p>
-      <h2 id="faq-t" class="h2" data-reveal="lines">Lo que más nos preguntan</h2>
+<div class="claro">
+  <section class="proc pg-proc" id="proceso" aria-labelledby="proc-t">
+    <div class="cab"><div><p class="mono pg-rot"><span>03</span>Cómo funciona</p><h2 id="proc-t">Del problema a una solución que funciona</h2></div><p class="pg-lead">Te acompañamos desde la primera reunión hasta la mejora continua.</p></div>
+    <ol class="linea-t">
+      <li><span class="mono">01</span><h3>Análisis</h3><p>Estudiamos tu negocio y detectamos las oportunidades con mayor impacto.</p></li>
+      <li><span class="mono">02</span><h3>Desarrollo</h3><p>Diseñamos y construimos la solución a medida de tus necesidades reales.</p></li>
+      <li><span class="mono">03</span><h3>Implementación</h3><p>La integramos en tus herramientas y formamos a tu equipo para usarla.</p></li>
+      <li><span class="mono">04</span><h3>Optimización</h3><p>Medimos resultados y mejoramos de forma continua.</p></li>
+    </ol>
+  </section>
+  <section class="pg-faq" id="preguntas" aria-labelledby="faq-t">
+    <div><p class="mono pg-rot"><span>04</span>Preguntas frecuentes</p><h2 id="faq-t">Lo que más nos preguntan</h2></div>
+    <div class="pg-faq-l">
+      <details><summary>¿Qué puede automatizar la inteligencia artificial en mi empresa?</summary><p>La atención al cliente, la cualificación de los contactos que llegan, la gestión de documentos como facturas, contratos y formularios, los informes y, en general, cualquier tarea que tu equipo repite cada día copiando datos de una herramienta a otra.</p></details>
+      <details><summary>¿Tengo que cambiar las herramientas que ya uso?</summary><p>No. Integramos el sistema en tus herramientas actuales y formamos a tu equipo para usarlo.</p></details>
+      <details><summary>¿Las soluciones son a medida?</summary><p>Sí. Nada de plantillas: diseñamos para tu negocio concreto y, una vez en marcha, medimos los resultados y mejoramos el sistema de forma continua.</p></details>
+      <details><summary>¿Por dónde empiezo?</summary><p>Por una consulta gratuita y sin compromiso: analizamos tu negocio y te decimos exactamente qué automatizar primero.</p></details>
+      <details><summary>¿Dónde trabajáis?</summary><p>Con empresas de España y Francia. Trabajamos en remoto y, en persona, en Canarias, donde tenemos nuestra base.</p></details>
     </div>
-    <div class="pg-faq-list" data-reveal="fade">
-        <details><summary>¿Qué puede automatizar la inteligencia artificial en mi empresa?</summary><p>La atención al cliente, la cualificación de los contactos que llegan, la gestión de documentos como facturas, contratos y formularios, los informes y, en general, cualquier tarea que tu equipo repite cada día copiando datos de una herramienta a otra.</p></details>
-        <details><summary>¿Tengo que cambiar las herramientas que ya uso?</summary><p>No. Integramos el sistema en tus herramientas actuales y formamos a tu equipo para usarlo.</p></details>
-        <details><summary>¿Las soluciones son a medida?</summary><p>Sí. Nada de plantillas: diseñamos para tu negocio concreto y, una vez en marcha, medimos los resultados y mejoramos el sistema de forma continua.</p></details>
-        <details><summary>¿Por dónde empiezo?</summary><p>Por una consulta gratuita y sin compromiso: analizamos tu negocio y te decimos exactamente qué automatizar primero.</p></details>
-        <details><summary>¿Dónde trabajáis?</summary><p>Con empresas de España y Francia. Trabajamos en remoto y, en persona, en Canarias, donde tenemos nuestra base.</p></details>
-    </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<section class="contact pg-final" id="contacto" data-escena="7" aria-labelledby="contact-title">
-  <div class="wrap">
-    <div class="contact-head">
-      <p class="label"><span class="label-n">05</span>Contacto</p>
-      <h2 id="contact-title" class="h2 h2-xl" data-reveal="lines">¿Hablamos de tu proyecto?</h2>
-      <p class="lead" data-reveal="fade">Consulta gratuita y sin compromiso: analizamos tu caso y te decimos qué te conviene hacer primero.</p>
-      <div class="contact-ctas" data-reveal="fade">
-        <a href="/#contacto" class="btn">Solicitar una consulta gratuita<svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a data-umami-event="whatsapp" href="https://wa.me/34624504004" class="btn btn-ghost" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+<section class="cierre pg-final" id="contacto" aria-labelledby="final-t">
+  <div class="gigante" id="gigante" aria-hidden="true">AVAI</div>
+  <div class="pg-final-g">
+    <div>
+      <p class="mono">Contacto</p>
+      <h2 id="final-t">¿Hablamos de tu proyecto?</h2>
+      <p class="lead">Consulta gratuita y sin compromiso: analizamos tu caso y te decimos qué te conviene hacer primero.</p>
+      <div class="ctas">
+        <a href="/#contacto" class="pill">Solicitar una consulta gratuita <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a data-umami-event="whatsapp" href="https://wa.me/34624504004" class="pill linea" target="_blank" rel="noopener">Escribir por WhatsApp</a>
       </div>
     </div>
     <nav class="pg-rel" aria-label="También te puede interesar">
-      <span>También te puede interesar</span>
-      <a href="/chatbot-whatsapp-empresas/">Chatbots de WhatsApp con IA <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a href="/marketing-digital/">Marketing digital <svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <p class="mono">También te puede interesar</p>
+      <a href="/chatbot-whatsapp-empresas/">Chatbots de WhatsApp con IA</a>
+      <a href="/marketing-digital/">Marketing digital</a>
     </nav>
   </div>
 </section>
 
 </main>
 
-<footer class="footer">
-  <div class="wrap">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <picture><source srcset="/assets/logo-avai.webp" type="image/webp"><img src="/assets/logo-avai-sm.png" alt="AVAI Labs — Agencia de inteligencia artificial y marketing digital" class="logo-img" width="320" height="128" loading="lazy"></picture>
-        <p>Agencia de inteligencia artificial y marketing digital para empresas de España y Francia. IA y automatización, marketing, web y producción audiovisual.</p>
-      </div>
-      <div class="foot-cols">
-        <div class="foot-col">
-          <h2 class="foot-h">Soluciones</h2>
-          <a href="/agencia-inteligencia-artificial/">Inteligencia artificial y automatización</a>
-          <a href="/chatbot-whatsapp-empresas/">Chatbots de WhatsApp con IA</a>
-          <a href="/marketing-digital/">Marketing digital</a>
-          <a href="/diseno-web/">Diseño de páginas web</a>
-          <a href="/fotografia-video-eventos/">Producción audiovisual y eventos</a>
-        </div>
-        <div class="foot-col">
-          <h2 class="foot-h">Empresa</h2>
-          <a href="/#nosotros">Sobre nosotros</a>
-          <a href="/#proceso">Proceso</a>
-          <a href="/#casos">Casos de uso</a>
-          <a href="/blog/">Blog</a>
-          <a href="/#contacto">Contacto</a>
-          <a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a>
-          <a href="/privacidad.html">Política de privacidad</a>
-        </div>
-        <div class="foot-col">
-          <h2 class="foot-h">Contacto</h2>
-          <a href="mailto:info@avai-labs.com">info@avai-labs.com</a>
-          <a href="tel:+34624504004">+34 624 50 40 04</a>
-          <a data-umami-event="whatsapp" href="https://wa.me/34624504004" target="_blank" rel="noopener">WhatsApp +34 624 50 40 04</a>
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a>
-        </div>
-      </div>
+<footer class="cierre pie">
+  <div class="pie-top">
+    <div class="pie-marca">
+      <img src="/assets/logo-avai-claro.svg" alt="AVAI Labs — Agencia de diseño web e inteligencia artificial" width="268" height="64" loading="lazy">
+      <p>Agencia de diseño web e inteligencia artificial para empresas de España y Francia. Webs, chatbots y automatizaciones a medida.</p>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 AVAI Labs. Todos los derechos reservados.</span>
-      <span><a href="/privacidad.html">Política de privacidad</a> · <a href="/fr/agence-intelligence-artificielle/" hreflang="fr" lang="fr">Français</a> · Hecho con IA</span>
+    <div class="pie-cols">
+      <div class="pie-col"><h2>Soluciones</h2><a href="/agencia-inteligencia-artificial/">Inteligencia artificial y automatización</a><a href="/chatbot-whatsapp-empresas/">Chatbots de WhatsApp con IA</a><a href="/marketing-digital/">Marketing digital</a><a href="/diseno-web/">Diseño de páginas web</a><a href="/fotografia-video-eventos/">Producción audiovisual y eventos</a></div>
+      <div class="pie-col"><h2>Empresa</h2><a href="/#nosotros">Sobre nosotros</a><a href="/#portafolio">Portafolio</a><a href="/#proceso">Proceso</a><a href="/#casos">Casos de uso</a><a href="/blog/">Blog</a><a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a><a href="/privacidad.html">Política de privacidad</a></div>
+      <div class="pie-col"><h2>Contacto</h2><a href="mailto:info@avai-labs.com">info@avai-labs.com</a><a href="tel:+34624504004">+34 624 50 40 04</a><a data-umami-event="whatsapp" href="https://wa.me/34624504004" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/avai.labs/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@atlanticvisionai" target="_blank" rel="noopener">YouTube</a><a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a></div>
     </div>
   </div>
+  <div class="pie-bajo"><span>© 2026 AVAI Labs. Todos los derechos reservados.</span><span><a href="/privacidad.html">Política de privacidad</a> · <a href="/fr/agence-intelligence-artificielle/" hreflang="fr" lang="fr">Français</a> · Hecho con IA</span></div>
 </footer>
 
 <script>

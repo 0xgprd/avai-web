@@ -11,7 +11,8 @@ export function iniciarSuave() {
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
-  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  // Los enlaces con onclick propio (abrir el chat) no desplazan: su href solo es la alternativa sin JavaScript.
+  document.querySelectorAll('a[href^="#"]:not([onclick])').forEach(a => a.addEventListener('click', e => {
     const id = a.getAttribute('href');
     if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); lenis.scrollTo(id); }
   }));

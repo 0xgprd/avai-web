@@ -3,7 +3,7 @@
 //   node tools/construir.js
 //
 // Historia: 29-oct-2026 primeras páginas de servicio y blog; 30-oct-2026 todo inmersivo (mismo recorrido 3D
-// que la portada) y bilingüe español/francés.
+// que la portada) y bilingüe español/francés; 19-nov-2026 diseño «Fusión», el mismo de la portada.
 //
 // Fuentes:
 //   index.html                    portada española, hecha a mano (la experiencia 3D original)
@@ -15,10 +15,9 @@
 // Salida (se sube a git tal cual: el Dockerfile copia lo generado): las carpetas anteriores, fr/index.html,
 // sitemap.xml y llms.txt.
 //
-// Cada página generada es un recorrido 3D: sus secciones llevan data-escena="N" (fotograma de
-// js/scroll/keyframes.js) y js/main.js arma con ellas la historia de scroll. Se reutilizan las piezas de la
-// portada tal cual (hero, área, proceso fijo, casos con diagrama de flujo, contacto), y el respaldo SVG y el
-// diagrama se copian de index.html para que sean idénticos.
+// Cada página generada usa el diseño de la portada «Fusión»: haces de luz (WebGL), cabecera, menú, cierre y pie de
+// css/portada.css, lo propio en css/paginas.css y el movimiento en js/paginas.js. Las páginas de servicio de web y de
+// chatbots enseñan además el portafolio (datos de js/portada/portafolio.js, los mismos de la portada).
 
 const fs = require('fs');
 const path = require('path');
@@ -31,7 +30,7 @@ const WA = 'https://wa.me/34624504004';
 // Analítica sin cookies (Umami en nuestro VPS): solo cuenta en avai-labs.com, no en local ni en vistas previas.
 const UMAMI = '<script defer src="https://avai-umami.ig2tl9.easypanel.host/avai.js" data-website-id="144366c2-f015-485c-bd7f-9285b163c8cc" data-domains="avai-labs.com"></script>';
 const ORG_ID = SITE + '/#organizacion';
-const V = '20261030'; // versión de css/js en las URL (el servidor los revalida igualmente)
+const V = '20261120'; // versión de css/js en las URL (el servidor los revalida igualmente)
 const IDIOMAS = ['es', 'fr'];
 
 const T = require(path.join(ROOT, 'contenido', 'i18n', 'comun.js'));
@@ -51,8 +50,6 @@ SERV.es.forEach((s, i) => {
 });
 const porId = lang => Object.fromEntries(SERV[lang].map(s => [s.id, s]));
 const urlServ = (lang, id) => `${T[lang].base}/${porId(lang)[id].slug}/`;
-const ESCENA = { ia: 1, chatbot: 1, mkt: 2, web: 3, av: 3 }; // sistema 3D de cada servicio
-const LADO = { 1: 'left', 2: 'right', 3: 'left' };            // el texto, en el lado contrario a la estructura
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const jsonLd = obj => '<script type="application/ld+json">\n' + JSON.stringify(obj).replace(/</g, '\\u003c') + '\n</script>';
@@ -60,13 +57,12 @@ const flecha = '<svg class="ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><pa
 const n2 = i => String(i).padStart(2, '0');
 const DEMO_ATTR = 'onclick="if(window.abrirChatAVAI){abrirChatAVAI();return false;}" data-umami-event="demo-agente"';
 
-// Piezas comunes de las páginas generadas (escena 3D de respaldo, diagrama de flujo, estado inicial y función que
-// abre el chat). Hasta el 19-nov-2026 se copiaban de la portada; desde la portada «Fusión» están en contenido/piezas/.
+// Función que abre el chat oficial (la misma de la portada), en contenido/piezas/.
 const pieza = f => fs.readFileSync(path.join(ROOT, 'contenido', 'piezas', f), 'utf8').replace(/\r\n/g, '\n').trim();
-const STAGE = pieza("escena-3d.html");
-const FLOW_SVG = pieza("flujo.svg");
-const HEAD_ANIM = pieza("estado-inicial.html");
-const ABRIR_CHAT = pieza("abrir-chat.html");
+const ABRIR_CHAT = pieza('abrir-chat.html');
+// Portafolio de la portada (módulo ES de la web; Node lo carga con require).
+const PORT = require(path.join(ROOT, 'js', 'portada', 'portafolio.js'));
+const CON_PORTAFOLIO = new Set(['web', 'chatbot']);
 
 // ---------- Artículos del blog ----------
 function leerArticulos(lang) {
@@ -87,7 +83,9 @@ const ART = { es: leerArticulos('es'), fr: leerArticulos('fr') };
 const hayBlog = lang => ART[lang].length > 0;
 const fechaLarga = (lang, f) => { const [a, m, d] = f.split('-').map(Number); return T[lang].blog.fecha(d, T[lang].blog.meses[m - 1], a); };
 
-// ---------- Piezas comunes ----------
+// ---------- Piezas comunes (diseño «Fusión», 19-nov-2026) ----------
+// Cabecera, menú móvil, cierre y pie son los de la portada (css/portada.css); lo propio de estas páginas está en
+// css/paginas.css y el movimiento en js/paginas.js (haces de luz, scroll suave y revelados).
 // alternos: { es: url, fr: url } cuando la página existe en los dos idiomas.
 function head(lang, { title, description, url, alternos, tipoOg = 'website', ld }) {
   const t = T[lang];
@@ -96,7 +94,7 @@ function head(lang, { title, description, url, alternos, tipoOg = 'website', ld 
     : '';
   const otroLocale = lang === 'es' ? 'fr_FR' : 'es_ES';
   return `<!DOCTYPE html>
-<html lang="${lang}" class="no-js">
+<html lang="${lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,7 +102,8 @@ function head(lang, { title, description, url, alternos, tipoOg = 'website', ld 
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${url}">
 ${hreflang}<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#050914">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/svg+xml" href="/assets/simbolo-avai.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -114,66 +113,58 @@ ${hreflang}<meta name="robots" content="index, follow">
 ${alternos ? `<meta property="og:locale:alternate" content="${otroLocale}">\n` : ''}<meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE}/assets/og-avai.jpg">
+<meta property="og:image" content="${SITE}/assets/${t.og}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
-<meta name="twitter:image" content="${SITE}/assets/og-avai.jpg">
+<meta name="twitter:image" content="${SITE}/assets/${t.og}">
 ${ld.map(jsonLd).join('\n')}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/main.css?v=${V}">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/portada.css?v=${V}">
 <link rel="stylesheet" href="/css/paginas.css?v=${V}">
-${HEAD_ANIM}
 <script defer src="/assets/vendor/gsap-3.15.0.min.js"></script>
 <script defer src="/assets/vendor/ScrollTrigger-3.15.0.min.js"></script>
 <script defer src="/assets/vendor/SplitText-3.15.0.min.js"></script>
-<script type="module" src="/js/main.js?v=${V}"></script>
+<script defer src="/assets/vendor/lenis-1.3.27.min.js"></script>
+<script type="module" src="/js/paginas.js?v=${V}"></script>
 ${UMAMI}
 </head>
 <body class="pg">
-
 <a class="skip" href="#contenido">${esc(t.skip)}</a>
+<canvas id="gl" aria-hidden="true"></canvas>
 `;
 }
 
-// otraUrl: la página equivalente en el otro idioma (o su portada si no existe).
-function nav(lang, otraUrl) {
+// otraUrl: la página equivalente en el otro idioma (o su portada si no existe). actual: 'blog' marca el enlace.
+function nav(lang, otraUrl, actual = '') {
   const t = T[lang];
   const home = `${t.base}/`;
   const otro = lang === 'es' ? 'fr' : 'es';
+  const blog = hayBlog(lang) ? `<a href="${t.base}/blog/"${actual === 'blog' ? ' aria-current="page"' : ''}>${esc(t.nav.blog)}</a>` : '';
+  const enlaces = `<a href="${home}#portafolio">${esc(t.nav.portafolio)}</a>
+    <a href="${home}#servicios">${esc(t.nav.servicios)}</a>
+    <a href="${home}#proceso">${esc(t.nav.proceso)}</a>
+    ${blog}
+    <a href="${home}#contacto">${esc(t.nav.contacto)}</a>`;
   return `
-<header class="nav" id="nav">
-  <div class="nav-in">
-    <a href="${home}" class="brand" aria-label="${esc(t.marcaAria)}">
-      <picture><source srcset="/assets/logo-avai.webp" type="image/webp"><img src="/assets/logo-avai-sm.png" alt="${esc(t.logoAlt)}" class="logo-img" width="320" height="128"></picture>
-    </a>
-    <nav class="nav-links" id="navLinks" aria-label="${esc(t.navAria)}">
-      <div class="nav-drop">
-        <a href="${home}#servicios" class="nav-drop-t">${esc(t.nav.soluciones)}</a>
-        <div class="nav-sub">
-          ${SERV[lang].map(x => `<a href="${urlServ(lang, x.id)}">${esc(x.menu)}</a>`).join('\n          ')}
-        </div>
-      </div>
-      <a href="${home}#proceso">${esc(t.nav.proceso)}</a>
-      <a href="${home}#casos">${esc(t.nav.casos)}</a>
-      <a href="${home}#nosotros">${esc(t.nav.nosotros)}</a>
-      ${hayBlog(lang) ? `<a href="${t.base}/blog/">${esc(t.nav.blog)}</a>` : ""}
-      <a href="${home}#contacto">${esc(t.nav.contacto)}</a>
-      <a href="${otraUrl}" class="nav-lang" hreflang="${otro}" lang="${otro}" aria-label="${esc(t.otroIdioma.aria)}">${t.otroIdioma.corto}</a>
-      <a href="https://app.avai-labs.com/" rel="noopener" class="nav-app">AVAI App</a>
-      <a href="${home}#contacto" class="btn btn-sm nav-cta">${esc(t.nav.cta)}</a>
-    </nav>
-    <button class="burger" id="burger" type="button" aria-label="${esc(t.menuAria)}" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
-  </div>
+<header class="cab-web">
+  <a class="logo" href="${home}" aria-label="${esc(t.marcaAria)}"><img src="/assets/logo-avai.svg" alt="${esc(t.logoAlt)}" width="268" height="64"></a>
+  <nav class="nav mono" aria-label="${esc(t.navAria)}">
+    ${enlaces}
+    <a href="${otraUrl}" class="lang" hreflang="${otro}" lang="${otro}" aria-label="${esc(t.otroIdioma.aria)}">${t.otroIdioma.corto}</a>
+  </nav>
+  <a class="btn-esq mono" href="${home}#contacto">${esc(t.nav.cta)} →</a>
+  <button class="burger" id="burger" type="button" aria-label="${esc(t.menuAria)}" aria-expanded="false" aria-controls="menuMovil"><span></span><span></span></button>
 </header>
-
-${STAGE}
-
-<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+<nav class="menu-movil" id="menuMovil" aria-label="${esc(t.menuMovilAria)}">
+    ${enlaces}
+  <a href="${otraUrl}" hreflang="${otro}" lang="${otro}">${t.otroIdioma.largo}</a>
+  <a class="pill" href="${home}#contacto">${esc(t.nav.cta)}</a>
+</nav>
 `;
 }
 
@@ -181,27 +172,29 @@ function migas(lang, items, enlazarUltimo = false) {
   const li = items.map((it, i) => i < items.length - 1 || enlazarUltimo
     ? `<li><a href="${it.href}">${esc(it.t)}</a></li>`
     : `<li aria-current="page">${esc(it.t)}</li>`).join('');
-  return `<nav class="pg-migas" aria-label="${esc(T[lang].migas)}"><ol>${li}</ol></nav>`;
+  return `<nav class="migas" aria-label="${esc(T[lang].migas)}"><ol class="mono">${li}</ol></nav>`;
 }
 const migasLd = items => ({
   '@context': 'https://schema.org', '@type': 'BreadcrumbList',
   itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.t, item: SITE + it.href })),
 });
+const rotulo = (n, txt) => `<p class="mono pg-rot"><span>${n2(n)}</span>${esc(txt)}</p>`;
 
-// Llamada final: núcleo luminoso (fotograma 7).
-function final(lang, { h, n, demo, rel = '' }) {
+// Llamada final: el «AVAI» gigante de la portada, la consulta (formulario de la portada), el agente y WhatsApp.
+function final(lang, { h, demo, rel = '' }) {
   const t = T[lang];
-  const demoBtn = demo ? `\n        <a href="#contacto" class="btn btn-ghost" ${DEMO_ATTR}>${esc(t.demo)}</a>` : '';
+  const demoBtn = demo ? `\n        <a href="#contacto" class="pill linea" ${DEMO_ATTR}>${esc(t.demo)}</a>` : '';
   return `
-<section class="contact pg-final" id="contacto" data-escena="7" aria-labelledby="contact-title">
-  <div class="wrap">
-    <div class="contact-head">
-      <p class="label"><span class="label-n">${n2(n)}</span>${esc(t.rotulos.contacto)}</p>
-      <h2 id="contact-title" class="h2 h2-xl" data-reveal="lines">${esc(h)}</h2>
-      <p class="lead" data-reveal="fade">${esc(t.final.lead)}</p>
-      <div class="contact-ctas" data-reveal="fade">
-        <a href="${t.base}/#contacto" class="btn">${esc(t.consulta)}${flecha}</a>${demoBtn}
-        <a data-umami-event="whatsapp" href="${WA}" class="btn btn-ghost" target="_blank" rel="noopener">${esc(t.final.wa)}</a>
+<section class="cierre pg-final" id="contacto" aria-labelledby="final-t">
+  <div class="gigante" id="gigante" aria-hidden="true">AVAI</div>
+  <div class="pg-final-g">
+    <div>
+      <p class="mono">${esc(t.rotulos.contacto)}</p>
+      <h2 id="final-t">${esc(h)}</h2>
+      <p class="lead">${esc(t.final.lead)}</p>
+      <div class="ctas">
+        <a href="${t.base}/#contacto" class="pill">${esc(t.consulta)} ${flecha}</a>${demoBtn}
+        <a data-umami-event="whatsapp" href="${WA}" class="pill linea" target="_blank" rel="noopener">${esc(t.final.wa)}</a>
       </div>
     </div>${rel}
   </div>
@@ -212,51 +205,43 @@ function pie(lang, otraUrl) {
   const t = T[lang];
   const home = `${t.base}/`;
   const otro = lang === 'es' ? 'fr' : 'es';
-  const sol = SERV[lang].map(s => `<a href="${urlServ(lang, s.id)}">${esc(s.menu)}</a>`).join('\n          ');
+  const sol = SERV[lang].map(s => `<a href="${urlServ(lang, s.id)}">${esc(s.menu)}</a>`).join('');
   return `
 </main>
 
-<footer class="footer">
-  <div class="wrap">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <picture><source srcset="/assets/logo-avai.webp" type="image/webp"><img src="/assets/logo-avai-sm.png" alt="${esc(t.logoAlt)}" class="logo-img" width="320" height="128" loading="lazy"></picture>
-        <p>${esc(t.pie.marca)}</p>
-      </div>
-      <div class="foot-cols">
-        <div class="foot-col">
-          <h2 class="foot-h">${esc(t.pie.soluciones)}</h2>
-          ${sol}
-        </div>
-        <div class="foot-col">
-          <h2 class="foot-h">${esc(t.pie.empresa)}</h2>
-          <a href="${home}#nosotros">${esc(t.pie.sobre)}</a>
-          <a href="${home}#proceso">${esc(t.pie.proceso)}</a>
-          <a href="${home}#casos">${esc(t.pie.casos)}</a>
-          ${hayBlog(lang) ? `<a href="${t.base}/blog/">${esc(t.pie.blog)}</a>\n          ` : ''}<a href="${home}#contacto">${esc(t.pie.contactar)}</a>
-          <a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a>
-          <a href="${t.privacidad}">${esc(t.pie.privacidad)}</a>
-        </div>
-        <div class="foot-col">
-          <h2 class="foot-h">${esc(t.pie.contacto)}</h2>
-          <a href="mailto:info@avai-labs.com">info@avai-labs.com</a>
-          <a href="tel:+34624504004">+34 624 50 40 04</a>
-          <a data-umami-event="whatsapp" href="${WA}" target="_blank" rel="noopener">WhatsApp +34 624 50 40 04</a>
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a>
-        </div>
-      </div>
+<footer class="cierre pie">
+  <div class="pie-top">
+    <div class="pie-marca">
+      <img src="/assets/logo-avai-claro.svg" alt="${esc(t.logoAlt)}" width="268" height="64" loading="lazy">
+      <p>${esc(t.pie.marca)}</p>
     </div>
-    <div class="foot-bottom">
-      <span>${esc(t.pie.derechos)}</span>
-      <span><a href="${t.privacidad}">${esc(t.pie.privacidad)}</a> · <a href="${otraUrl}" hreflang="${otro}" lang="${otro}">${t.otroIdioma.largo}</a> · ${esc(t.pie.hecho)}</span>
+    <div class="pie-cols">
+      <div class="pie-col"><h2>${esc(t.pie.soluciones)}</h2>${sol}</div>
+      <div class="pie-col"><h2>${esc(t.pie.empresa)}</h2><a href="${home}#nosotros">${esc(t.pie.sobre)}</a><a href="${home}#portafolio">${esc(t.pie.portafolio)}</a><a href="${home}#proceso">${esc(t.pie.proceso)}</a><a href="${home}#casos">${esc(t.pie.casos)}</a>${hayBlog(lang) ? `<a href="${t.base}/blog/">${esc(t.pie.blog)}</a>` : ''}<a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a><a href="${t.privacidad}">${esc(t.pie.privacidad)}</a></div>
+      <div class="pie-col"><h2>${esc(t.pie.contacto)}</h2><a href="mailto:info@avai-labs.com">info@avai-labs.com</a><a href="tel:+34624504004">+34 624 50 40 04</a><a data-umami-event="whatsapp" href="${WA}" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/avai.labs/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@atlanticvisionai" target="_blank" rel="noopener">YouTube</a><a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a></div>
     </div>
   </div>
+  <div class="pie-bajo"><span>${esc(t.pie.derechos)}</span><span><a href="${t.privacidad}">${esc(t.pie.privacidad)}</a> · <a href="${otraUrl}" hreflang="${otro}" lang="${otro}">${t.otroIdioma.largo}</a> · ${esc(t.pie.hecho)}</span></div>
 </footer>
 
 ${ABRIR_CHAT}
 ${WIDGET}
 </body>
 </html>
+`;
+}
+
+// Portafolio (servicios de web y de chatbots): la fila de mini-webs se desliza de lado al pasar.
+function portafolio(lang) {
+  const t = T[lang];
+  const webs = PORT.PROYECTOS.map(p => `
+      <a class="pg-pw" href="${PORT.urlProyecto(p)}" data-cursor data-umami-event="portafolio-${p.slug}"><span class="nb"><i></i><i></i><i></i></span><img src="${PORT.foto(p.img)}" alt="${esc(`${p.marca}, ${p[lang].tipo}`)}" loading="lazy" decoding="async"><span class="t"><b>${esc(p.marca)}</b><span class="mono">${esc(`${p[lang].sector} · ${p[lang].hace}`)}</span></span></a>`).join('');
+  return `
+<section class="pg-port" id="portafolio" aria-labelledby="port-t">
+  <div class="cab"><h2 id="port-t">${esc(t.portafolio.h)} <span class="serif">${esc(t.portafolio.hs)}</span></h2><span class="mono">${esc(t.portafolio.pulsa)}</span></div>
+  <div class="pg-port-g">${webs}
+  </div>
+</section>
 `;
 }
 
@@ -267,7 +252,6 @@ function paginaServicio(lang, s) {
   const url = SITE + urlServ(lang, s.id);
   const alternos = { es: SITE + urlServ('es', s.id), fr: SITE + urlServ('fr', s.id) };
   const ruta = [{ t: t.inicio, href: `${t.base}/` }, { t: s.menu, href: urlServ(lang, s.id) }];
-  const escena = ESCENA[s.id];
   const ld = [
     {
       '@context': 'https://schema.org', '@type': 'Service', name: s.servicio, serviceType: s.servicio,
@@ -283,116 +267,86 @@ function paginaServicio(lang, s) {
     migasLd(ruta),
   ];
   const enlace = it => it.href ? `<a href="${urlServ(lang, it.href)}">${esc(it.t)}</a>` : esc(it.t);
-  const area = s.area.items.map(it => `
-          <li><h3>${enlace(it)}</h3><p>${esc(it.p)}</p></li>`).join('');
+  const area = s.area.items.map((it, i) => `
+      <li><span class="mono">${n2(i + 1)}</span><h3>${enlace(it)}</h3><p>${esc(it.p)}</p></li>`).join('');
   const fases = s.proceso.fases.map((f, i) => `
-          <li class="step${i === 0 ? ' is-active' : ''}"><span class="step-n">${n2(i + 1)}</span><div><h3>${esc(f.t)}</h3><p>${esc(f.p)}</p></div></li>`).join('');
+      <li><span class="mono">${n2(i + 1)}</span><h3>${esc(f.t)}</h3><p>${esc(f.p)}</p></li>`).join('');
   const casos = s.casos.items.map((c, i) => `
-        <li class="case${i === 0 ? ' is-active' : ''}" data-in="${esc(c.in.join('|'))}" data-hub="${esc(c.hub)}" data-out="${esc(c.out.join('|'))}">
-          <span class="case-n">${n2(i + 1)}</span>
+      <li class="caso hud">
+        <div class="caso-txt">
+          <span class="mono caso-n">${n2(i + 1)}</span>
           <h3>${esc(c.t)}</h3>
           <p>${esc(c.p)}</p>${c.antes ? `
-          <p class="case-shift"><span class="case-before">${esc(c.antes)}</span><span class="case-after">${esc(c.despues)}</span></p>` : ''}
-        </li>`).join('');
-  const c0 = s.casos.items[0];
+          <p class="cambio"><span>${esc(c.antes)}</span><span class="mono">→ ${esc(c.despues)}</span></p>` : ''}
+        </div>
+        <div class="caso-flujo" aria-hidden="true">
+          <ul class="f-in mono">${c.in.map(x => `<li>${esc(x)}</li>`).join('')}</ul><span class="hilo"></span>
+          <span class="f-hub">${esc(c.hub)}</span><span class="hilo"></span>
+          <ul class="f-out mono">${c.out.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+        </div>
+      </li>`).join('');
   const faq = s.faq.map(f => `
-        <details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('');
+      <details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('');
   const rel = `
     <nav class="pg-rel" aria-label="${esc(t.relacionados)}">
-      <span>${esc(t.relacionados)}</span>
-      ${s.relacionados.map(r => `<a href="${urlServ(lang, r)}">${esc(porId(lang)[r].menu)} ${flecha}</a>`).join('\n      ')}
+      <p class="mono">${esc(t.relacionados)}</p>
+      ${s.relacionados.map(r => `<a href="${urlServ(lang, r)}">${esc(porId(lang)[r].menu)}</a>`).join('\n      ')}
     </nav>`;
   const ctaPrincipal = s.demo
-    ? `<a href="#contacto" class="btn" ${DEMO_ATTR}>${esc(t.demo)}${flecha}</a>
-      <a href="${t.base}/#contacto" class="btn btn-ghost">${esc(t.consulta)}</a>`
-    : `<a href="${t.base}/#contacto" class="btn">${esc(t.consulta)}${flecha}</a>
-      <a href="#que" class="btn btn-ghost">${esc(t.explorar)}</a>`;
+    ? `<a href="#contacto" class="pill" ${DEMO_ATTR}>${esc(t.demo)} ${flecha}</a>
+      <a href="${t.base}/#contacto" class="pill linea">${esc(t.consulta)}</a>`
+    : `<a href="${t.base}/#contacto" class="pill">${esc(t.consulta)} ${flecha}</a>
+      <a href="#que" class="pill linea">${esc(t.explorar)}</a>`;
 
   return head(lang, { title: s.title, description: s.description, url, alternos, ld }) + nav(lang, urlServ(otro, s.id)) + `
 <main id="contenido">
 
-<section class="hero" id="inicio" data-escena="0" aria-labelledby="hero-title">
-  <div class="wrap hero-in">
+<section class="pg-hero" id="inicio" aria-labelledby="h1">
+  <div class="pg-hero-in">
     ${migas(lang, ruta)}
-    <p class="kicker" data-reveal="fade"><span class="kicker-dot"></span>${esc(s.kicker)}</p>
-    <h1 id="hero-title" class="hero-title pg-hero-title" data-reveal="hero">${esc(s.h1)} <span class="grad">${esc(s.h1grad)}</span></h1>
-    <p class="hero-sub" data-reveal="fade">${esc(s.sub)}</p>
-    <div class="hero-ctas" data-reveal="fade">
+    <p class="kick mono">[ ${esc(s.kicker)} ]</p>
+    <h1 id="h1">${esc(s.h1)} <span class="serif">${esc(s.h1grad)}</span></h1>
+    <p class="pg-sub">${esc(s.sub)}</p>
+    <div class="ctas">
       ${ctaPrincipal}
     </div>
-    <ul class="hero-tags" data-reveal="fade" aria-label="${esc(t.tagsAria)}">
-      ${s.tags.map(x => `<li>${esc(x)}</li>`).join('')}
-    </ul>
   </div>
-  <a class="scroll-cue" href="#que" data-reveal="fade"><span>${esc(t.desliza)}</span><i aria-hidden="true"></i></a>
+  <div class="hero-pie"><ul class="pg-tags mono" aria-label="${esc(t.tagsAria)}">${s.tags.map(x => `<li>${esc(x)}</li>`).join('')}</ul><a class="mono" href="#que">${esc(t.desliza)} ↓</a></div>
 </section>
 
-<article class="area" id="que" data-escena="${escena}" data-side="${LADO[escena]}" aria-labelledby="que-t">
-  <div class="wrap area-in">
-    <div class="area-copy">
-      <p class="label"><span class="label-n">01</span>${esc(t.rotulos.que)}</p>
-      <h2 id="que-t" class="h3" data-reveal="lines">${esc(s.area.h)}</h2>
-      <p class="area-lead" data-reveal="fade">${esc(s.area.lead)}</p>
-      <ul class="svc-list" data-reveal="list">${area}
-      </ul>
-    </div>
+<section class="pg-que" id="que" aria-labelledby="que-t">
+  <div class="pg-cab">
+    ${rotulo(1, t.rotulos.que)}
+    <h2 id="que-t">${esc(s.area.h)}</h2>
+    <p class="pg-lead">${esc(s.area.lead)}</p>
   </div>
-</article>
-
-<section class="process" id="proceso" data-escena="4" aria-labelledby="proc-title">
-  <div class="process-pin">
-    <div class="wrap process-in">
-      <div class="process-head">
-        <p class="label"><span class="label-n">02</span>${esc(t.rotulos.como)}</p>
-        <h2 id="proc-title" class="h2" data-reveal="lines">${esc(s.proceso.h)}</h2>
-        <p class="lead" data-reveal="fade">${esc(s.proceso.lead)}</p>
-      </div>
-      <div class="process-body">
-        <div class="process-meter" aria-hidden="true"><i id="procMeter"></i></div>
-        <ol class="steps" id="steps">${fases}
-        </ol>
-      </div>
-      <p class="process-count" aria-hidden="true">${esc(t.fase)} <span id="procNow">01</span> / ${n2(s.proceso.fases.length)}</p>
-    </div>
+  <ol class="pg-items">${area}
+  </ol>
+</section>
+${CON_PORTAFOLIO.has(s.id) ? portafolio(lang) : ''}
+<section class="pg-casos" id="casos" aria-labelledby="casos-t">
+  <div class="cab-c">
+    ${rotulo(2, t.rotulos.casos)}
+    <h2 id="casos-t">${esc(s.casos.h)}</h2>
+    <p class="pg-lead">${esc(s.casos.lead)}</p>
   </div>
+  <ol class="pg-casos-l">${casos}
+  </ol>
 </section>
 
-<section class="cases" id="casos" data-escena="5" aria-labelledby="cases-title">
-  <div class="wrap">
-    <div class="cases-head">
-      <p class="label"><span class="label-n">03</span>${esc(t.rotulos.casos)}</p>
-      <h2 id="cases-title" class="h2" data-reveal="lines">${esc(s.casos.h)}</h2>
-      <p class="lead" data-reveal="fade">${esc(s.casos.lead)}</p>
+<div class="claro">
+  <section class="proc pg-proc" id="proceso" aria-labelledby="proc-t">
+    <div class="cab"><div>${rotulo(3, t.rotulos.como)}<h2 id="proc-t">${esc(s.proceso.h)}</h2></div><p class="pg-lead">${esc(s.proceso.lead)}</p></div>
+    <ol class="linea-t">${fases}
+    </ol>
+  </section>
+  <section class="pg-faq" id="preguntas" aria-labelledby="faq-t">
+    <div>${rotulo(4, t.rotulos.faq)}<h2 id="faq-t">${esc(t.faqH)}</h2></div>
+    <div class="pg-faq-l">${faq}
     </div>
-    <div class="cases-grid">
-      <ol class="case-list" id="caseList">${casos}
-      </ol>
-
-      <figure class="flow" id="flow" aria-hidden="true">
-        <div class="flow-top"><span class="flow-tag"><i></i>${esc(t.flujo.tag)}</span><span class="flow-case" id="flowCase">01 · ${esc(c0.t)}</span></div>
-        <div class="flow-body">
-          ${FLOW_SVG}
-          <ul class="flow-nodes flow-in">${c0.in.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
-          <div class="flow-hub"><span class="flow-hub-ring"></span><span id="flowHub">${esc(c0.hub)}</span></div>
-          <ul class="flow-nodes flow-out">${c0.out.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
-        </div>
-        <figcaption class="flow-cap"><span>${esc(t.flujo.entradas)}</span><span>${esc(t.flujo.sistema)}</span><span>${esc(t.flujo.resultados)}</span></figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<section class="about pg-faq" id="preguntas" data-escena="6" aria-labelledby="faq-t">
-  <div class="wrap pg-faq-in">
-    <div class="pg-faq-head">
-      <p class="label"><span class="label-n">04</span>${esc(t.rotulos.faq)}</p>
-      <h2 id="faq-t" class="h2" data-reveal="lines">${esc(t.faqH)}</h2>
-    </div>
-    <div class="pg-faq-list" data-reveal="fade">${faq}
-    </div>
-  </div>
-</section>
-${final(lang, { h: t.final.h, n: 5, demo: s.demo, rel })}
+  </section>
+</div>
+${final(lang, { h: t.final.h, demo: s.demo, rel })}
 ` + pie(lang, urlServ(otro, s.id));
 }
 
@@ -406,35 +360,35 @@ function paginaArticulo(a) {
   const ld = [{
     '@context': 'https://schema.org', '@type': 'BlogPosting', headline: a.titulo, description: a.descripcion,
     datePublished: a.fecha, dateModified: a.modificado || a.fecha, inLanguage: lang, url, mainEntityOfPage: url,
-    image: SITE + '/assets/og-avai.jpg',
+    image: SITE + '/assets/' + t.og,
     author: { '@type': 'Organization', '@id': ORG_ID, name: 'AVAI Labs', url: SITE + '/' },
-    publisher: { '@type': 'Organization', '@id': ORG_ID, name: 'AVAI Labs', logo: { '@type': 'ImageObject', url: SITE + '/assets/logo-avai.png' } },
+    publisher: { '@type': 'Organization', '@id': ORG_ID, name: 'AVAI Labs', logo: { '@type': 'ImageObject', url: SITE + '/assets/logo-avai-claro.png' } },
     citation: a.fuentes.map(f => f.href),
   }, migasLd(ruta)];
   const resumen = a.resumen.map(r => `<li>${esc(r)}</li>`).join('');
   const fuentes = a.fuentes.map(f => `<li><a href="${esc(f.href)}" target="_blank" rel="noopener">${esc(f.t)}</a></li>`).join('');
   const otraUrl = `${T[otro].base}/${hayBlog(otro) ? 'blog/' : ''}`;
-  return head(lang, { title: `${a.titulo} · AVAI Labs`, description: a.descripcion, url, tipoOg: 'article', ld }) + nav(lang, otraUrl) + `
+  return head(lang, { title: `${a.titulo} · AVAI Labs`, description: a.descripcion, url, tipoOg: 'article', ld }) + nav(lang, otraUrl, 'blog') + `
 <main id="contenido">
 
-<section class="hero pg-hero-art" id="inicio" data-escena="0" aria-labelledby="hero-title">
-  <div class="wrap hero-in">
-    ${migas(lang, ruta.slice(0, 2), true)}
-    <p class="kicker" data-reveal="fade"><span class="kicker-dot"></span><time datetime="${a.fecha}">${fechaLarga(lang, a.fecha)}</time></p>
-    <h1 id="hero-title" class="hero-title pg-h1-art" data-reveal="hero">${esc(a.titulo)}</h1>
-    <aside class="pg-resumen" data-reveal="fade" aria-label="${esc(t.blog.resumen)}"><h2>${esc(t.blog.resumen)}</h2><ul>${resumen}</ul></aside>
+<section class="pg-hero pg-hero-art" id="inicio" aria-labelledby="h1">
+  <div class="pg-art-g">
+    <div class="pg-hero-in">
+      ${migas(lang, ruta.slice(0, 2), true)}
+      <p class="kick mono"><time datetime="${a.fecha}">${fechaLarga(lang, a.fecha)}</time></p>
+      <h1 id="h1">${esc(a.titulo)}</h1>
+    </div>
+    <aside class="pg-resumen hud" aria-label="${esc(t.blog.resumen)}"><h2 class="mono">${esc(t.blog.resumen)}</h2><ul>${resumen}</ul></aside>
   </div>
 </section>
 
-<section class="pg-lectura" id="articulo" data-escena="6" aria-label="${esc(t.blog.articulo)}">
-  <div class="wrap">
-    <article class="pg-panel pg-cuerpo">
+<div class="claro">
+  <article class="pg-cuerpo" id="articulo" aria-label="${esc(t.blog.articulo)}">
 ${a.cuerpo}
-      <footer class="pg-fuentes"><h2>${esc(t.blog.fuentes)}</h2><ul>${fuentes}</ul></footer>
-    </article>
-  </div>
-</section>
-${final(lang, { h: t.blog.final, n: 1 })}
+    <footer class="pg-fuentes"><h2>${esc(t.blog.fuentes)}</h2><ul>${fuentes}</ul></footer>
+  </article>
+</div>
+${final(lang, { h: t.blog.final })}
 ` + pie(lang, otraUrl);
 }
 
@@ -446,35 +400,30 @@ function indiceBlog(lang) {
   const alternos = ambos ? { es: `${SITE}/blog/`, fr: `${SITE}/fr/blog/` } : undefined;
   const ruta = [{ t: t.inicio, href: `${t.base}/` }, { t: t.nav.blog, href: `${t.base}/blog/` }];
   const items = ART[lang].map(a => `
-        <li><a href="${t.base}/blog/${a.slug}/"><time datetime="${a.fecha}">${fechaLarga(lang, a.fecha)}</time><h3>${esc(a.titulo)}</h3><p>${esc(a.descripcion)}</p><span class="pg-leer">${esc(t.blog.leer)} ${flecha}</span></a></li>`).join('');
+      <li><a class="pg-art" href="${t.base}/blog/${a.slug}/"><time class="mono" datetime="${a.fecha}">${fechaLarga(lang, a.fecha)}</time><h3>${esc(a.titulo)}</h3><p>${esc(a.descripcion)}</p><span class="mono pg-leer">${esc(t.blog.leer)} →</span></a></li>`).join('');
   const ld = [{
     '@context': 'https://schema.org', '@type': 'Blog', name: t.blog.nombre, url, inLanguage: lang, description: t.blog.description,
     publisher: { '@type': 'Organization', '@id': ORG_ID, name: 'AVAI Labs' },
   }, migasLd(ruta)];
   const otraUrl = `${T[otro].base}/${hayBlog(otro) ? 'blog/' : ''}`;
-  return head(lang, { title: t.blog.title, description: t.blog.description, url, alternos, ld }) + nav(lang, otraUrl) + `
+  return head(lang, { title: t.blog.title, description: t.blog.description, url, alternos, ld }) + nav(lang, otraUrl, 'blog') + `
 <main id="contenido">
 
-<section class="hero pg-hero-blog" id="inicio" data-escena="0" aria-labelledby="hero-title">
-  <div class="wrap hero-in">
+<section class="pg-hero pg-hero-blog" id="inicio" aria-labelledby="h1">
+  <div class="pg-hero-in">
     ${migas(lang, ruta)}
-    <p class="kicker" data-reveal="fade"><span class="kicker-dot"></span>${esc(t.blog.kicker)}</p>
-    <h1 id="hero-title" class="hero-title" data-reveal="hero">${esc(t.blog.h1)} <span class="grad">${esc(t.blog.h1grad)}</span></h1>
-    <p class="hero-sub" data-reveal="fade">${esc(t.blog.lead)}</p>
+    <p class="kick mono">[ ${esc(t.blog.kicker)} ]</p>
+    <h1 id="h1">${esc(t.blog.h1)} <span class="serif">${esc(t.blog.h1grad)}</span></h1>
+    <p class="pg-sub">${esc(t.blog.lead)}</p>
   </div>
 </section>
 
-<section class="pg-lectura" id="articulos" data-escena="6" aria-labelledby="lista-t">
-  <div class="wrap">
-    <div class="pg-panel">
-      <p class="label"><span class="label-n">01</span>${esc(t.blog.lista)}</p>
-      <h2 id="lista-t" class="sr-only">${esc(t.blog.lista)}</h2>
-      <ul class="pg-lista">${items}
-      </ul>
-    </div>
-  </div>
+<section class="pg-blog" id="articulos" aria-labelledby="lista-t">
+  ${rotulo(1, t.blog.lista).replace('<p class="mono pg-rot">', '<h2 class="mono pg-rot" id="lista-t">').replace(/<\/p>$/, '</h2>')}
+  <ol class="pg-arts">${items}
+  </ol>
 </section>
-${final(lang, { h: t.blog.final, n: 2 })}
+${final(lang, { h: t.blog.final })}
 ` + pie(lang, otraUrl);
 }
 
@@ -498,6 +447,7 @@ function portadaFrancesa() {
   s = s.replace(/(<meta property="og:description" content=")[^"]*"/, `$1${esc(P.head.social)}"`);
   s = s.replace(/(<meta name="twitter:description" content=")[^"]*"/, `$1${esc(P.head.social)}"`);
   s = s.replace(/(<meta property="og:image:alt" content=")[^"]*"/, `$1${esc(P.head.imageAlt)}"`);
+  s = s.split('https://avai-labs.com/assets/og-avai.jpg').join('https://avai-labs.com/assets/og-avai-fr.jpg'); // imagen para redes en francés
   sustituir('<link rel="canonical" href="https://avai-labs.com/">', '<link rel="canonical" href="https://avai-labs.com/fr/">');
   sustituir('<meta property="og:url" content="https://avai-labs.com/">', '<meta property="og:url" content="https://avai-labs.com/fr/">');
   sustituir('<meta property="og:locale" content="es_ES">\n<meta property="og:locale:alternate" content="fr_FR">', '<meta property="og:locale" content="fr_FR">\n<meta property="og:locale:alternate" content="es_ES">');
@@ -610,17 +560,23 @@ function vaciar(rel) {
   if (fs.existsSync(d)) fs.rmSync(d, { recursive: true, force: true });
 }
 
+// Tipografía francesa: espacio fino irrompible antes de : ; ? ! » y después de «, para que al partir la línea no
+// quede el signo solo («On parle de votre projet / ?»). Solo en el texto visible: ni atributos ni scripts.
+const fino = t => t.replace(/ ([:;!?»])/g, ' $1').replace(/« /g, '« ');
+const tipografia = (lang, html) => lang !== 'fr' ? html : html.split(/(<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>)/)
+  .map((parte, i) => i % 2 ? parte : parte.replace(/>([^<]+)</g, (m, t) => '>' + fino(t) + '<')).join('');
+
 console.log('Generando:');
 for (const lang of IDIOMAS) {
   const base = lang === 'es' ? '' : 'fr/';
-  for (const s of SERV[lang]) escribir(`${base}${s.slug}/index.html`, paginaServicio(lang, s));
+  for (const s of SERV[lang]) escribir(`${base}${s.slug}/index.html`, tipografia(lang, paginaServicio(lang, s)));
   vaciar(`${base}blog`);
   if (hayBlog(lang)) {
-    escribir(`${base}blog/index.html`, indiceBlog(lang));
-    for (const a of ART[lang]) escribir(`${base}blog/${a.slug}/index.html`, paginaArticulo(a));
+    escribir(`${base}blog/index.html`, tipografia(lang, indiceBlog(lang)));
+    for (const a of ART[lang]) escribir(`${base}blog/${a.slug}/index.html`, tipografia(lang, paginaArticulo(a)));
   }
 }
-escribir('fr/index.html', portadaFrancesa());
+escribir('fr/index.html', tipografia('fr', portadaFrancesa()));
 escribir('sitemap.xml', sitemap());
 escribir('llms.txt', llms());
 console.log(`Listo: ${SERV.es.length} servicios × 2 idiomas, ${ART.es.length} artículos en español y ${ART.fr.length} en francés.`);

@@ -7,7 +7,8 @@
 //   - un solo <h1>, canonical igual a su URL, description y og presentes, <html lang> correcto;
 //   - JSON-LD legible; la página está en sitemap.xml;
 //   - hreflang recíproco: si A dice que su versión francesa es B, B dice que su versión española es A;
-//   - recorrido 3D: cada data-escena es un fotograma 0-7 en una sección con id, sin ids repetidos;
+//   - diseño «Fusión» (19-nov-2026): haces de luz, cabecera y menú de la portada, sus hojas y su módulo, y
+//     ningún resto del recorrido 3D anterior; sin ids repetidos;
 //   - enlaces internos que llevan a un fichero que existe;
 //   - imagen internacional: ni title, ni H1, ni description dicen «Tenerife» o «Canarias»;
 //   - el chat oficial (widget.js) y la función que lo abre.
@@ -81,18 +82,16 @@ for (const p of paginas) {
     }
   }
 
-  // Recorrido 3D
+  // Diseño «Fusión» y ids únicos
   const lista = ids(html);
   const repetidos = lista.filter((x, i) => lista.indexOf(x) !== i);
   if (repetidos.length) errores.push('ids repetidos: ' + [...new Set(repetidos)].join(', '));
   if (!p.portada) {
-    const escenas = [...html.matchAll(/<[a-z]+ [^>]*data-escena="([^"]*)"[^>]*>/g)];
-    if (escenas.length < 3) errores.push('el recorrido 3D tiene menos de 3 secciones con data-escena');
-    for (const m of escenas) {
-      if (!/^[0-7]$/.test(m[1])) errores.push(`data-escena «${m[1]}» no es un fotograma 0-7`);
-      if (!/\sid="[^"]+"/.test(m[0])) errores.push('una sección con data-escena no tiene id');
+    for (const k of ['<canvas id="gl"', 'class="cab-web"', 'id="menuMovil"', 'id="burger"', 'id="contenido"', 'id="contacto"', 'href="/css/portada.css', 'href="/css/paginas.css', 'src="/js/paginas.js', 'src="/assets/vendor/lenis-']) {
+      if (!html.includes(k)) errores.push('falta ' + k);
     }
-    for (const k of ['id="stage"', 'id="scene"', 'id="progressBar"', 'src="/js/main.js']) if (!html.includes(k)) errores.push('falta ' + k);
+    for (const k of ['data-escena', 'src="/js/main.js', 'href="/css/main.css', 'id="stage"']) if (html.includes(k)) errores.push('queda el diseño anterior: ' + k);
+    if (/<form[s>]/.test(html)) errores.push('no debe haber formularios: el único es el de la portada');
   }
 
   // Portada francesa: mismas secciones que la española y formulario intacto

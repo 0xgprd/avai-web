@@ -1,14 +1,17 @@
-// Textos comunes de las páginas generadas (servicios y blog), en español y en francés (30-oct-2026).
+// Textos comunes de las páginas generadas (servicios y blog), en español y en francés (30-oct-2026; con el diseño
+// «Fusión» desde el 19-nov-2026: cabecera, menú y pie iguales a los de la portada).
 // La portada no usa este fichero: la española es index.html y la francesa sale de portada.fr.js.
 
 module.exports = {
   es: {
-    lang: 'es', ogLocale: 'es_ES', base: '', privacidad: '/privacidad.html',
+    lang: 'es', ogLocale: 'es_ES', og: 'og-avai.jpg', base: '', privacidad: '/privacidad.html',
     skip: 'Saltar al contenido',
-    nav: { soluciones: 'Soluciones', proceso: 'Proceso', casos: 'Casos de uso', nosotros: 'Nosotros', contacto: 'Contacto', blog: 'Blog', cta: 'Consulta gratuita' },
+    nav: { portafolio: 'Portafolio', servicios: 'Servicios', proceso: 'Proceso', casos: 'Casos de uso', nosotros: 'Nosotros', contacto: 'Contacto', blog: 'Blog', cta: 'Consulta gratuita' },
     marcaAria: 'AVAI Labs, ir a la portada',
-    logoAlt: 'AVAI Labs — Agencia de inteligencia artificial y marketing digital',
-    menuAria: 'Abrir menú', navAria: 'Principal',
+    logoAlt: 'AVAI Labs — Agencia de diseño web e inteligencia artificial',
+    menuAria: 'Abrir menú', menuMovilAria: 'Menú', navAria: 'Principal',
+    verWeb: 'Ver la web',
+    portafolio: { h: 'Nuestro', hs: 'portafolio.', pulsa: 'Pulsa una web para verla' },
     otroIdioma: { corto: 'FR', largo: 'Français', aria: 'Version française' },
     migas: 'Estás en', inicio: 'Inicio',
     consulta: 'Solicitar una consulta gratuita',
@@ -23,9 +26,9 @@ module.exports = {
     final: { h: '¿Hablamos de tu proyecto?', lead: 'Consulta gratuita y sin compromiso: analizamos tu caso y te decimos qué te conviene hacer primero.', wa: 'Escribir por WhatsApp' },
     relacionados: 'También te puede interesar',
     pie: {
-      marca: 'Agencia de inteligencia artificial y marketing digital para empresas de España y Francia. IA y automatización, marketing, web y producción audiovisual.',
+      marca: 'Agencia de diseño web e inteligencia artificial para empresas de España y Francia. Webs, chatbots y automatizaciones a medida.',
       soluciones: 'Soluciones', empresa: 'Empresa', contacto: 'Contacto',
-      sobre: 'Sobre nosotros', proceso: 'Proceso', casos: 'Casos de uso', blog: 'Blog', contactar: 'Contacto',
+      sobre: 'Sobre nosotros', portafolio: 'Portafolio', proceso: 'Proceso', casos: 'Casos de uso', blog: 'Blog', contactar: 'Contacto',
       privacidad: 'Política de privacidad', derechos: '© 2026 AVAI Labs. Todos los derechos reservados.', hecho: 'Hecho con IA',
     },
     blog: {
@@ -43,12 +46,14 @@ module.exports = {
     },
   },
   fr: {
-    lang: 'fr', ogLocale: 'fr_FR', base: '/fr', privacidad: '/fr/confidentialite.html',
+    lang: 'fr', ogLocale: 'fr_FR', og: 'og-avai-fr.jpg', base: '/fr', privacidad: '/fr/confidentialite.html',
     skip: 'Aller au contenu',
-    nav: { soluciones: 'Solutions', proceso: 'Processus', casos: 'Cas d’usage', nosotros: 'À propos', contacto: 'Contact', blog: 'Blog', cta: 'Consultation gratuite' },
+    nav: { portafolio: 'Portfolio', servicios: 'Services', proceso: 'Méthode', casos: 'Cas d’usage', nosotros: 'À propos', contacto: 'Contact', blog: 'Blog', cta: 'Consultation gratuite' },
     marcaAria: 'AVAI Labs, aller à l’accueil',
-    logoAlt: 'AVAI Labs — Agence d’intelligence artificielle et de marketing digital',
-    menuAria: 'Ouvrir le menu', navAria: 'Principal',
+    logoAlt: 'AVAI Labs — Agence de création de sites web et d’intelligence artificielle',
+    menuAria: 'Ouvrir le menu', menuMovilAria: 'Menu', navAria: 'Principal',
+    verWeb: 'Voir le site',
+    portafolio: { h: 'Notre', hs: 'portfolio.', pulsa: 'Cliquez sur un site pour le découvrir' },
     otroIdioma: { corto: 'ES', largo: 'Español', aria: 'Versión en español' },
     migas: 'Vous êtes ici', inicio: 'Accueil',
     consulta: 'Demander une consultation gratuite',
@@ -63,9 +68,9 @@ module.exports = {
     final: { h: 'On parle de votre projet ?', lead: 'Consultation gratuite et sans engagement : nous analysons votre situation et vous disons par quoi commencer.', wa: 'Écrire sur WhatsApp' },
     relacionados: 'À découvrir aussi',
     pie: {
-      marca: 'Agence d’intelligence artificielle et de marketing digital pour les entreprises en France et en Espagne. IA et automatisation, marketing, web et production audiovisuelle.',
+      marca: 'Agence de création de sites web et d’intelligence artificielle pour les entreprises en France et en Espagne. Sites, chatbots et automatisations sur mesure.',
       soluciones: 'Solutions', empresa: 'Entreprise', contacto: 'Contact',
-      sobre: 'À propos', proceso: 'Processus', casos: 'Cas d’usage', blog: 'Blog', contactar: 'Contact',
+      sobre: 'À propos', portafolio: 'Portfolio', proceso: 'Méthode', casos: 'Cas d’usage', blog: 'Blog', contactar: 'Contact',
       privacidad: 'Politique de confidentialité', derechos: '© 2026 AVAI Labs. Tous droits réservés.', hecho: 'Fait avec l’IA',
     },
     blog: {
