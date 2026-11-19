@@ -1,4 +1,4 @@
-// Textos comunes de las páginas generadas (servicios y blog), en español y en francés (30-oct-2026; con el diseño
+// Textos comunes de las páginas generadas (servicios), en español y en francés (30-oct-2026; con el diseño
 // «Fusión» desde el 19-nov-2026: cabecera, menú y pie iguales a los de la portada).
 // La portada no usa este fichero: la española es index.html y la francesa sale de portada.fr.js.
 
@@ -6,7 +6,8 @@ module.exports = {
   es: {
     lang: 'es', ogLocale: 'es_ES', og: 'og-avai.jpg', base: '', privacidad: '/privacidad.html',
     skip: 'Saltar al contenido',
-    nav: { portafolio: 'Portafolio', servicios: 'Servicios', proceso: 'Proceso', casos: 'Casos de uso', nosotros: 'Nosotros', contacto: 'Contacto', blog: 'Blog', cta: 'Consulta gratuita' },
+    nav: { portafolio: 'Portafolio', servicios: 'Servicios', proceso: 'Proceso', casos: 'Casos de uso', nosotros: 'Nosotros', contacto: 'Contacto', acceso: 'Acceso clientes', cta: 'Consulta gratuita' },
+    acceso: 'https://app.avai-labs.com/login',
     marcaAria: 'AVAI Labs, ir a la portada',
     logoAlt: 'AVAI Labs — Agencia de diseño web e inteligencia artificial',
     menuAria: 'Abrir menú', menuMovilAria: 'Menú', navAria: 'Principal',
@@ -28,27 +29,15 @@ module.exports = {
     pie: {
       marca: 'Agencia de diseño web e inteligencia artificial para empresas de España y Francia. Webs, chatbots y automatizaciones a medida.',
       soluciones: 'Soluciones', empresa: 'Empresa', contacto: 'Contacto',
-      sobre: 'Sobre nosotros', portafolio: 'Portafolio', proceso: 'Proceso', casos: 'Casos de uso', blog: 'Blog', contactar: 'Contacto',
+      sobre: 'Sobre nosotros', portafolio: 'Portafolio', proceso: 'Proceso', casos: 'Casos de uso', acceso: 'Acceso clientes', contactar: 'Contacto',
       privacidad: 'Política de privacidad', derechos: '© 2026 AVAI Labs. Todos los derechos reservados.', hecho: 'Hecho con IA',
-    },
-    blog: {
-      title: 'Blog: actualidad de la inteligencia artificial para empresas · AVAI Labs',
-      description: 'Noticias de inteligencia artificial explicadas para empresas: qué está pasando, qué significa para tu negocio y por qué tu empresa no puede quedarse atrás.',
-      kicker: 'Blog de AVAI Labs',
-      h1: 'Actualidad de la IA', h1grad: 'para empresas.',
-      lead: 'Lo que está pasando en inteligencia artificial, qué significa para tu negocio y por qué tu empresa no puede quedarse atrás.',
-      lista: 'Últimos artículos', leer: 'Leer el artículo',
-      resumen: 'En resumen', fuentes: 'Fuentes', articulo: 'Artículo',
-      final: '¿Lo aplicamos en tu empresa?',
-      nombre: 'Blog de AVAI Labs',
-      meses: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
-      fecha: (d, m, a) => `${d} de ${m} de ${a}`,
     },
   },
   fr: {
     lang: 'fr', ogLocale: 'fr_FR', og: 'og-avai-fr.jpg', base: '/fr', privacidad: '/fr/confidentialite.html',
     skip: 'Aller au contenu',
-    nav: { portafolio: 'Portfolio', servicios: 'Services', proceso: 'Méthode', casos: 'Cas d’usage', nosotros: 'À propos', contacto: 'Contact', blog: 'Blog', cta: 'Consultation gratuite' },
+    nav: { portafolio: 'Portfolio', servicios: 'Services', proceso: 'Méthode', casos: 'Cas d’usage', nosotros: 'À propos', contacto: 'Contact', acceso: 'Espace clients', cta: 'Consultation gratuite' },
+    acceso: 'https://app.avai-labs.com/login?lang=fr',
     marcaAria: 'AVAI Labs, aller à l’accueil',
     logoAlt: 'AVAI Labs — Agence de création de sites web et d’intelligence artificielle',
     menuAria: 'Ouvrir le menu', menuMovilAria: 'Menu', navAria: 'Principal',
@@ -70,21 +59,8 @@ module.exports = {
     pie: {
       marca: 'Agence de création de sites web et d’intelligence artificielle pour les entreprises en France et en Espagne. Sites, chatbots et automatisations sur mesure.',
       soluciones: 'Solutions', empresa: 'Entreprise', contacto: 'Contact',
-      sobre: 'À propos', portafolio: 'Portfolio', proceso: 'Méthode', casos: 'Cas d’usage', blog: 'Blog', contactar: 'Contact',
+      sobre: 'À propos', portafolio: 'Portfolio', proceso: 'Méthode', casos: 'Cas d’usage', acceso: 'Espace clients', contactar: 'Contact',
       privacidad: 'Politique de confidentialité', derechos: '© 2026 AVAI Labs. Tous droits réservés.', hecho: 'Fait avec l’IA',
-    },
-    blog: {
-      title: 'Blog : l’actualité de l’intelligence artificielle pour les entreprises · AVAI Labs',
-      description: 'L’actualité de l’intelligence artificielle expliquée aux entreprises : ce qui se passe, ce que cela change pour votre activité et pourquoi votre entreprise ne peut pas rester à la traîne.',
-      kicker: 'Le blog d’AVAI Labs',
-      h1: 'L’actualité de l’IA', h1grad: 'pour les entreprises.',
-      lead: 'Ce qui se passe en intelligence artificielle, ce que cela change pour votre activité et pourquoi votre entreprise ne peut pas rester à la traîne.',
-      lista: 'Derniers articles', leer: 'Lire l’article',
-      resumen: 'En bref', fuentes: 'Sources', articulo: 'Article',
-      final: 'On l’applique à votre entreprise ?',
-      nombre: 'Le blog d’AVAI Labs',
-      meses: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
-      fecha: (d, m, a) => `${d === 1 ? '1er' : d} ${m} ${a}`,
     },
   },
 };

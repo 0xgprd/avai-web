@@ -18,7 +18,7 @@ module.exports = {
   },
 
   // Textos que se quedan igual en francés (marcas, datos de contacto, palabras idénticas).
-  mismos: ['AVAI App', 'WhatsApp', 'Instagram', 'YouTube', 'Blog', 'Marketing digital', 'AVAI Labs', 'Base', 'AVAI', 'Marvesa',
+  mismos: ['AVAI App', 'WhatsApp', 'Instagram', 'YouTube', 'Marketing digital', 'AVAI Labs', 'Base', 'AVAI', 'Marvesa',
     'info@avai-labs.com', '+34 624 50 40 04', 'C.C. Radazul Bajo, 38109 · El Rosario, Tenerife',
     'Web', 'SEO', 'Motion', 'CRM', 'Principal', 'ES', 'Español', 'Contact', 'Menu', 'Services', 'Documents', 'Agenda', 'Motion design', 'PDF', 'REC', '4K · 25 fps'],
 
@@ -186,6 +186,7 @@ module.exports = {
     ['href="/privacidad.html"', 'href="/fr/confidentialite.html"'],
     ['© 2026 AVAI Labs. Todos los derechos reservados.', '© 2026 AVAI Labs. Tous droits réservés.'],
     ['· Hecho con IA', '· Fait avec l’IA'],
-    ['href="/blog/"', 'href="/fr/blog/"'],
+    ['href="https://app.avai-labs.com/login"', 'href="https://app.avai-labs.com/login?lang=fr"'],
+    ['>Acceso clientes<', '>Espace clients<'],
   ],
 };

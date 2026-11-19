@@ -3,7 +3,7 @@
 //   node tools/verificar-paginas.js
 //
 // La portada española tiene su propio control: .claude/verificar-propuestas.js index.html --publicar.
-// Aquí, por cada página generada (servicios y blog en los dos idiomas, y la portada francesa):
+// Aquí, por cada página generada (servicios en los dos idiomas y la portada francesa):
 //   - un solo <h1>, canonical igual a su URL, description y og presentes, <html lang> correcto;
 //   - JSON-LD legible; la página está en sitemap.xml;
 //   - hreflang recíproco: si A dice que su versión francesa es B, B dice que su versión española es A;
@@ -11,7 +11,8 @@
 //     ningún resto del recorrido 3D anterior; sin ids repetidos;
 //   - enlaces internos que llevan a un fichero que existe;
 //   - imagen internacional: ni title, ni H1, ni description dicen «Tenerife» o «Canarias»;
-//   - el chat oficial (widget.js) y la función que lo abre.
+//   - el chat oficial (widget.js) y la función que lo abre;
+//   - sin blog (19-nov-2026): ningún enlace a /blog/ y el acceso de clientes a AVAI App en la cabecera.
 // Para fr/index.html, además: mismos ids que la portada española y el formulario intacto (campos, origen,
 // envío a /enviar-lead.php).
 const fs = require('fs');
@@ -25,11 +26,6 @@ const enSitemap = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m =>
 const paginas = [];
 for (const [lang, fichero, base] of [['es', 'servicios.es.js', ''], ['fr', 'servicios.fr.js', 'fr/']]) {
   for (const s of require(path.join(ROOT, 'contenido', fichero))) paginas.push({ rel: `${base}${s.slug}/index.html`, lang });
-  const blog = path.join(ROOT, base, 'blog');
-  if (fs.existsSync(blog)) {
-    paginas.push({ rel: `${base}blog/index.html`, lang });
-    for (const d of fs.readdirSync(blog, { withFileTypes: true })) if (d.isDirectory()) paginas.push({ rel: `${base}blog/${d.name}/index.html`, lang });
-  }
 }
 paginas.push({ rel: 'fr/index.html', lang: 'fr', portada: true });
 
@@ -68,6 +64,8 @@ for (const p of paginas) {
   }
   if (!html.includes('https://app.avai-labs.com/widget.js')) errores.push('falta el chat oficial (widget.js)');
   if (!html.includes('window.abrirChatAVAI=function')) errores.push('falta la función abrirChatAVAI');
+  if (/href="(\/fr)?\/blog\//.test(html)) errores.push('queda un enlace al blog, que ya no existe');
+  if (!html.includes('href="https://app.avai-labs.com/login')) errores.push('falta el acceso de clientes (AVAI App)');
 
   // hreflang recíproco
   const alt = alternos(html);

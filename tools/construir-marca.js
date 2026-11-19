@@ -6,6 +6,8 @@
 //   node tools/construir-marca.js --png    → además los PNG/WebP del logo y los favicons (necesita Chrome)
 //   node tools/construir-marca.js --og     → además las imágenes para redes, og-avai.jpg y og-avai-fr.jpg (necesita
 //                                            Chrome y la vista local `node server.js`, de la que toma los haces de luz)
+//   node tools/construir-marca.js --paquete <carpeta>
+//                                          → el paquete de logos (color y una tinta, SVG y PNG) en esa carpeta
 //
 // El símbolo se calcó del original (el antiguo assets/favicon-ojo.png) midiendo sus bandas en radios desde el centro:
 // todo es concéntrico, la cresta aguamarina sigue el borde del círculo y los azules siguen la curva de abajo del ojo.
@@ -115,6 +117,22 @@ function simbolo(pref = 's') {
   <circle cx="270" cy="231" r="7" fill="#fff"/>`;
 }
 
+// Versión a una tinta (impresión, grabado, vinilo): la silueta del círculo con el ojo hueco y unas líneas finas que
+// separan las bandas de la ola; el iris, macizo, con el anillo de la pupila y los brillos calados.
+function simboloMono(color, pref = 'u') {
+  const id = k => pref + k;
+  const cortes = [[rA, 186, 309], [rB, 146, 313], [rD, 44, 187], [r2, 17, 152]];
+  return `<defs>
+    <clipPath id="${id('c')}"><circle cx="${C}" cy="${C}" r="${R}"/></clipPath>
+    <mask id="${id('m')}" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><path d="${OJO}" fill="#000"/>
+      ${cortes.map(([f, g0, g1]) => `<path d="${suave(muestras(f, g0, g1))}" fill="none" stroke="#000" stroke-width="8"/>`).join('')}</mask>
+    <mask id="${id('i')}" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/>
+      <circle cx="245" cy="228" r="58" fill="none" stroke="#000" stroke-width="8"/><circle cx="287" cy="204" r="17" fill="#000"/><circle cx="270" cy="231" r="7" fill="#000"/></mask>
+  </defs>
+  <g clip-path="url(#${id('c')})" mask="url(#${id('m')})"><circle cx="${C}" cy="${C}" r="${R}" fill="${color}"/></g>
+  <circle cx="262" cy="241" r="76" fill="${color}" mask="url(#${id('i')})"/>`;
+}
+
 // =================================================================================================================
 // Letras (propuesta 02 · Haz): trazo 4 y altura 44; la A y la V se solapan; el travesaño de la primera A es el haz.
 // «LABS» va dibujado a trazo, sin depender de ninguna fuente.
@@ -161,6 +179,23 @@ const simboloSvg = () => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${C -
   ${simbolo('s')}
 </svg>
 `;
+// A una tinta: el haz es el travesaño macizo de la A con una cola que se afila hacia el símbolo
+const palabraMono = color => `<defs><clipPath id="wc"><rect x="-6" y="0" width="124" height="44"/></clipPath></defs>
+  <g clip-path="url(#wc)" fill="none" stroke="${color}" stroke-width="4" stroke-miterlimit="10">${['M-1.36 47L20 0L41.36 47', 'M27.7 -3L48 44L68.3 -3', 'M55.64 47L77 0L98.36 47', 'M109 -3V47'].map(d => `<path d="${d}"/>`).join('')}</g>
+  <path d="M62.1 28H91.9" stroke="${color}" stroke-width="4"/>
+  <path d="M-12 28L8 26.2H33V29.8H8Z" fill="${color}"/>
+  <path d="M126 7V37" stroke="${color}" stroke-width="1.2"/>${labs(137, color)}`;
+const logoMono = color => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${ANCHO} ${ALTO}" width="${ANCHO}" height="${ALTO}">
+  <title>AVAI Labs</title>
+  <g transform="translate(${f1(32 - C * S)} ${f1(32 - C * S)}) scale(${S.toFixed(6)})">${simboloMono(color, 'u')}</g>
+  <g transform="translate(78 10)">${palabraMono(color)}</g>
+</svg>
+`;
+const simboloMonoSvg = color => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${C - R - 1} ${C - R - 1} ${2 * R + 2} ${2 * R + 2}" width="512" height="512">
+  <title>AVAI Labs</title>
+  ${simboloMono(color, 'u')}
+</svg>
+`;
 
 // =================================================================================================================
 // Rasterizado con Chrome sin ventana
@@ -182,12 +217,15 @@ async function chrome() {
   const evalua = async e => (await send('Runtime.evaluate', { expression: e, returnByValue: true, awaitPromise: true })).result?.result?.value;
   await send('Page.enable');
   // Captura `html` (o `url`) a W×H px; formato png, webp o jpeg; con `transparente`, el fondo queda vacío.
-  async function captura({ html, url, W, H, formato = 'png', calidad = 92, transparente = false, espera = 600, css = '' }) {
+  // Con `url`, `css` se inyecta en la página y `antes` (una expresión JS, por ejemplo un scrollTo) se ejecuta antes.
+  async function captura({ html, url, W, H, formato = 'png', calidad = 92, transparente = false, espera = 600, css = '', antes = '' }) {
     await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false });
     await send('Emulation.setDefaultBackgroundColorOverride', transparente ? { color: { r: 0, g: 0, b: 0, a: 0 } } : {});
+    let y = 0;
     if (url) {
       await send('Page.navigate', { url }); await dormir(espera);
       if (css) await evalua(`(() => { const s = document.createElement('style'); s.textContent = ${JSON.stringify(css)}; document.head.append(s); })()`);
+      if (antes) { await evalua(antes); await dormir(2500); y = (await evalua('scrollY')) || 0; }
       await dormir(400);
     } else {
       await send('Page.navigate', { url: 'about:blank' }); await dormir(150);
@@ -196,11 +234,21 @@ async function chrome() {
       await evalua('document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.decode().catch(() => {}))))');
       await dormir(espera);
     }
-    const r = await send('Page.captureScreenshot', { format: formato, quality: formato === 'png' ? undefined : calidad, clip: { x: 0, y: 0, width: W, height: H, scale: 1 } });
+    const r = await send('Page.captureScreenshot', { format: formato, quality: formato === 'png' ? undefined : calidad, clip: { x: 0, y, width: W, height: H, scale: 1 } });
+    return Buffer.from(r.result.data, 'base64');
+  }
+  // Imprime a PDF una página (archivo local o URL) con su tamaño de @page y sus fondos
+  async function pdf({ url, espera = 1500 }) {
+    await send('Emulation.clearDeviceMetricsOverride');
+    await send('Emulation.setDefaultBackgroundColorOverride', {});
+    await send('Page.navigate', { url }); await dormir(espera);
+    await evalua('document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.decode().catch(() => {}))))');
+    const r = await send('Page.printToPDF', { printBackground: true, preferCSSPageSize: true, marginTop: 0, marginBottom: 0, marginLeft: 0, marginRight: 0 });
+    if (!r.result) throw new Error('printToPDF: ' + JSON.stringify(r.error));
     return Buffer.from(r.result.data, 'base64');
   }
   const cerrar = () => { ch.kill(); setTimeout(() => { try { fs.rmSync(perfil, { recursive: true, force: true }); } catch {} }, 500); };
-  return { captura, cerrar };
+  return { captura, pdf, cerrar };
 }
 const dataSvg = svg => 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64');
 // El dibujo centrado en un lienzo W×H, con `ancho` px de ancho (o `alto` px de alto)
@@ -258,12 +306,43 @@ h1 span{color:#6b7285}
 }
 
 // =================================================================================================================
-(async () => {
+// Paquete de logos para el equipo y proveedores: cada versión en SVG y en PNG transparente de alta resolución
+// =================================================================================================================
+const PAQUETE = [
+  ['logo-color-letras-claras', () => logo('oscuro'), 2144, 512, 'logo'],
+  ['logo-color-letras-oscuras', () => logo('claro'), 2144, 512, 'logo'],
+  ['logo-una-tinta-blanco', () => logoMono('#ffffff'), 2144, 512, 'logo'],
+  ['logo-una-tinta-negro', () => logoMono('#0b0d12'), 2144, 512, 'logo'],
+  ['simbolo-color', () => simboloSvg(), 1024, 1024, 'simbolo'],
+  ['simbolo-una-tinta-blanco', () => simboloMonoSvg('#ffffff'), 1024, 1024, 'simbolo'],
+  ['simbolo-una-tinta-negro', () => simboloMonoSvg('#0b0d12'), 1024, 1024, 'simbolo'],
+];
+async function paquete(dir) {
+  fs.mkdirSync(dir, { recursive: true });
+  const { captura, cerrar } = await chrome();
+  try {
+    for (const [nombre, svg, W, H] of PAQUETE) {
+      fs.writeFileSync(path.join(dir, nombre + '.svg'), svg());
+      fs.writeFileSync(path.join(dir, nombre + '.png'), await captura({ html: lienzo(svg(), W, H, { ancho: W }), W, H, transparente: true }));
+      console.log('  ' + nombre + ' (.svg, .png)');
+    }
+    // Icono de app y avatar de redes: el símbolo sobre negro, cuadrado y opaco
+    fs.writeFileSync(path.join(dir, 'avatar-simbolo-sobre-negro.png'), await captura({ html: lienzo(simboloSvg(), 1024, 1024, { ancho: 820, fondo: '#05070c' }), W: 1024, H: 1024 }));
+    console.log('  avatar-simbolo-sobre-negro.png');
+  } finally { cerrar(); }
+}
+
+module.exports = { simbolo, simboloMono, logo, logoMono, simboloSvg, simboloMonoSvg, OJO, TEMAS, ANCHO, ALTO, chrome, dataSvg, lienzo };
+
+// =================================================================================================================
+if (require.main === module) (async () => {
   fs.writeFileSync(path.join(ASSETS, 'simbolo-avai.svg'), simboloSvg());
   fs.writeFileSync(path.join(ASSETS, 'logo-avai.svg'), logo('oscuro', { anima: true }));
   fs.writeFileSync(path.join(ASSETS, 'logo-avai-claro.svg'), logo('claro', { anima: true }));
   console.log('  assets/simbolo-avai.svg, logo-avai.svg, logo-avai-claro.svg');
   if (process.argv.includes('--png')) await rasterizar();
   if (process.argv.includes('--og')) await imagenesOg();
+  const i = process.argv.indexOf('--paquete');
+  if (i > 0) await paquete(process.argv[i + 1]);
   process.exit(0);
 })().catch(e => { console.error(e); process.exit(1); });

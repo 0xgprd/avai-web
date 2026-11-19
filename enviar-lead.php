@@ -67,8 +67,9 @@ $crmOk   = $crmCode >= 200 && $crmCode < 300;
 $crmJson = json_decode($crmRes, true);
 if (is_array($crmJson) && (($crmJson['ok'] ?? null) === false)) { $crmOk = false; }
 
-// (2) Webhook de n8n: SOLO el formulario de contacto. El chat de la web tambien pasa por este proxy
-//     (origen 'chat-web', reenvia la conversacion tras cada respuesta) y eso NO se manda al webhook.
+// (2) Webhook de n8n: SOLO el formulario de contacto (origen 'web-formulario'). El chat de la web es el
+//     widget oficial de AVAI App y ya no pasa por este proxy. n8n guarda en Airtable y manda la confirmacion
+//     al cliente (flujo «AVAI Labs · Formulario web → Airtable y confirmación»).
 //     Van todos los campos del formulario, en plano y con nombres en castellano, para mapearlos en n8n.
 $n8nCode = null;
 if ($origen === 'web-formulario') {
@@ -83,6 +84,8 @@ if ($origen === 'web-formulario') {
     'mensaje'  => $msg,       // el mensaje tal cual (la empresa ya va en su propio campo)
     'rgpd'     => $rgpd,      // true = acepto la politica de privacidad
     'pagina'   => $_SERVER['HTTP_REFERER'] ?? '',
+    // 19-nov-2026: si AVAI App no confirmo la recepcion, n8n avisa a Gabriel para que no se pierda el contacto.
+    'crm_ok'   => $crmOk,
   ];
   [$n8nCode] = postJson($N8N_URL, $formulario, [], 10);
 }

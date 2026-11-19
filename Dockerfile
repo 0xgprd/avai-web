@@ -1,5 +1,5 @@
 # Web Atlantic Vision AI / AVAI Labs — imagen para desplegar en EasyPanel (VPS).
-# php:8.3-apache sirve el HTML estatico Y ejecuta enviar-lead.php (proxy del formulario -> Airtable).
+# php:8.3-apache sirve el HTML estatico Y ejecuta enviar-lead.php (proxy del formulario -> AVAI App y n8n).
 # La extension curl (que usa enviar-lead.php) viene incluida por defecto en la imagen oficial de PHP.
 FROM php:8.3-apache
 
@@ -13,15 +13,15 @@ COPY assets/         /var/www/html/assets/
 # Experiencia 3D (oct-2026): hoja de estilos y módulos JavaScript de la web. Three.js y GSAP van en assets/vendor/.
 COPY css/            /var/www/html/css/
 COPY js/             /var/www/html/js/
-# SEO (29-oct-2026) y versión francesa (30-oct-2026): páginas de servicio, blog, portada francesa, llms.txt
-# y la clave de IndexNow. Casi todo lo genera tools/construir.js; se sube a git ya generado. fr/ y blog/ se
-# copian enteros: añadir un artículo o una página francesa no toca este fichero.
+# SEO (29-oct-2026) y versión francesa (30-oct-2026): páginas de servicio, portada francesa, llms.txt
+# y la clave de IndexNow. Casi todo lo genera tools/construir.js; se sube a git ya generado. fr/ se copia
+# entero: añadir una página francesa no toca este fichero. El blog se quitó el 19-nov-2026 (ver las
+# redirecciones más abajo).
 COPY agencia-inteligencia-artificial/ /var/www/html/agencia-inteligencia-artificial/
 COPY chatbot-whatsapp-empresas/       /var/www/html/chatbot-whatsapp-empresas/
 COPY marketing-digital/               /var/www/html/marketing-digital/
 COPY diseno-web/                      /var/www/html/diseno-web/
 COPY fotografia-video-eventos/        /var/www/html/fotografia-video-eventos/
-COPY blog/                            /var/www/html/blog/
 COPY fr/                              /var/www/html/fr/
 # Portafolio (19-nov-2026): las mini-webs de AVAI Labs, generadas por tools/construir-portafolio.js (noindex).
 COPY portafolio/                      /var/www/html/portafolio/
@@ -70,6 +70,8 @@ RUN a2enmod headers \
 #   para cargarse DESPUÉS del security.conf de Debian, que si no vuelve a poner "ServerTokens OS".
 # - Carpetas sin barra final (30-oct-2026): /diseno-web → /diseno-web/ directamente en https. Sin esta
 #   regla, Apache (detrás de Traefik, que le habla en http) redirigía a http:// y luego Traefik a https://.
+# - Sin blog (19-nov-2026): sus URL redirigen (301) para no dejar enlaces rotos ni páginas de error en Google.
+#   Los artículos, todos de IA, van a la página de IA de su idioma; el índice y lo demás, a la portada.
 RUN a2enmod rewrite \
  && printf '%s\n' \
     'ServerTokens Prod' \
@@ -81,6 +83,10 @@ RUN a2enmod rewrite \
     '  RewriteEngine On' \
     '  RewriteCond %{HTTP_HOST} ^www\.avai-labs\.com$ [NC]' \
     '  RewriteRule ^(.*)$ https://avai-labs.com/$1 [R=301,L]' \
+    '  RewriteRule ^blog/.+ https://avai-labs.com/agencia-inteligencia-artificial/ [R=301,L]' \
+    '  RewriteRule ^blog/?$ https://avai-labs.com/ [R=301,L]' \
+    '  RewriteRule ^fr/blog/.+ https://avai-labs.com/fr/agence-intelligence-artificielle/ [R=301,L]' \
+    '  RewriteRule ^fr/blog/?$ https://avai-labs.com/fr/ [R=301,L]' \
     '  RewriteCond %{REQUEST_FILENAME} -d' \
     '  RewriteCond %{REQUEST_URI} !/$' \
     '  RewriteRule ^(.*)$ https://avai-labs.com/$1/ [R=301,L]' \

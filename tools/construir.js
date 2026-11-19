@@ -1,17 +1,17 @@
-// construir.js — genera las páginas de servicio, el blog, la portada francesa, sitemap.xml y llms.txt.
+// construir.js — genera las páginas de servicio, la portada francesa, sitemap.xml y llms.txt.
 //
 //   node tools/construir.js
 //
 // Historia: 29-oct-2026 primeras páginas de servicio y blog; 30-oct-2026 todo inmersivo (mismo recorrido 3D
-// que la portada) y bilingüe español/francés; 19-nov-2026 diseño «Fusión», el mismo de la portada.
+// que la portada) y bilingüe español/francés; 19-nov-2026 diseño «Fusión», el mismo de la portada, y fuera el blog
+// (Gabriel no lo va a mantener: sus URL redirigen con un 301 desde el Dockerfile).
 //
 // Fuentes:
-//   index.html                    portada española, hecha a mano (la experiencia 3D original)
+//   index.html                    portada española, hecha a mano (diseño «Fusión»)
 //   contenido/i18n/portada.fr.js  traducción de la portada → fr/index.html
 //   contenido/i18n/comun.js       textos de interfaz de las páginas generadas
 //   contenido/servicios.es.js     5 páginas de servicio en español   → /<slug>/
 //   contenido/servicios.fr.js     las mismas en francés              → /fr/<slug>/
-//   contenido/blog/es|fr/*.html   artículos (formato en contenido/blog/LEEME.md) → /blog/ y /fr/blog/
 // Salida (se sube a git tal cual: el Dockerfile copia lo generado): las carpetas anteriores, fr/index.html,
 // sitemap.xml y llms.txt.
 //
@@ -63,25 +63,6 @@ const ABRIR_CHAT = pieza('abrir-chat.html');
 // Portafolio de la portada (módulo ES de la web; Node lo carga con require).
 const PORT = require(path.join(ROOT, 'js', 'portada', 'portafolio.js'));
 const CON_PORTAFOLIO = new Set(['web', 'chatbot']);
-
-// ---------- Artículos del blog ----------
-function leerArticulos(lang) {
-  const dir = path.join(ROOT, 'contenido', 'blog', lang);
-  if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).filter(f => f.endsWith('.html')).map(f => {
-    const txt = fs.readFileSync(path.join(dir, f), 'utf8').replace(/\r\n/g, '\n');
-    const m = txt.match(/^<!--\s*(\{[\s\S]*?\})\s*-->\n?/);
-    if (!m) throw new Error(`${lang}/${f}: falta la cabecera <!-- {json} --> (ver contenido/blog/LEEME.md)`);
-    const meta = JSON.parse(m[1]);
-    for (const k of ['titulo', 'descripcion', 'fecha', 'resumen', 'fuentes']) if (!meta[k]) throw new Error(`${lang}/${f}: falta «${k}»`);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(meta.fecha)) throw new Error(`${lang}/${f}: la fecha debe ser AAAA-MM-DD`);
-    if (!meta.fuentes.length) throw new Error(`${lang}/${f}: cada artículo necesita al menos una fuente enlazada`);
-    return { ...meta, lang, slug: f.replace(/\.html$/, ''), cuerpo: txt.slice(m[0].length).trim() };
-  }).sort((a, b) => b.fecha.localeCompare(a.fecha) || a.slug.localeCompare(b.slug));
-}
-const ART = { es: leerArticulos('es'), fr: leerArticulos('fr') };
-const hayBlog = lang => ART[lang].length > 0;
-const fechaLarga = (lang, f) => { const [a, m, d] = f.split('-').map(Number); return T[lang].blog.fecha(d, T[lang].blog.meses[m - 1], a); };
 
 // ---------- Piezas comunes (diseño «Fusión», 19-nov-2026) ----------
 // Cabecera, menú móvil, cierre y pie son los de la portada (css/portada.css); lo propio de estas páginas está en
@@ -139,16 +120,15 @@ ${UMAMI}
 `;
 }
 
-// otraUrl: la página equivalente en el otro idioma (o su portada si no existe). actual: 'blog' marca el enlace.
-function nav(lang, otraUrl, actual = '') {
+// otraUrl: la página equivalente en el otro idioma (o su portada si no existe).
+function nav(lang, otraUrl) {
   const t = T[lang];
   const home = `${t.base}/`;
   const otro = lang === 'es' ? 'fr' : 'es';
-  const blog = hayBlog(lang) ? `<a href="${t.base}/blog/"${actual === 'blog' ? ' aria-current="page"' : ''}>${esc(t.nav.blog)}</a>` : '';
   const enlaces = `<a href="${home}#portafolio">${esc(t.nav.portafolio)}</a>
     <a href="${home}#servicios">${esc(t.nav.servicios)}</a>
     <a href="${home}#proceso">${esc(t.nav.proceso)}</a>
-    ${blog}
+    <a href="${t.acceso}" rel="noopener">${esc(t.nav.acceso)}</a>
     <a href="${home}#contacto">${esc(t.nav.contacto)}</a>`;
   return `
 <header class="cab-web">
@@ -217,7 +197,7 @@ function pie(lang, otraUrl) {
     </div>
     <div class="pie-cols">
       <div class="pie-col"><h2>${esc(t.pie.soluciones)}</h2>${sol}</div>
-      <div class="pie-col"><h2>${esc(t.pie.empresa)}</h2><a href="${home}#nosotros">${esc(t.pie.sobre)}</a><a href="${home}#portafolio">${esc(t.pie.portafolio)}</a><a href="${home}#proceso">${esc(t.pie.proceso)}</a><a href="${home}#casos">${esc(t.pie.casos)}</a>${hayBlog(lang) ? `<a href="${t.base}/blog/">${esc(t.pie.blog)}</a>` : ''}<a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a><a href="${t.privacidad}">${esc(t.pie.privacidad)}</a></div>
+      <div class="pie-col"><h2>${esc(t.pie.empresa)}</h2><a href="${home}#nosotros">${esc(t.pie.sobre)}</a><a href="${home}#portafolio">${esc(t.pie.portafolio)}</a><a href="${home}#proceso">${esc(t.pie.proceso)}</a><a href="${home}#casos">${esc(t.pie.casos)}</a><a href="${t.acceso}" rel="noopener">${esc(t.pie.acceso)}</a><a href="https://app.avai-labs.com/" rel="noopener">AVAI App</a><a href="${t.privacidad}">${esc(t.pie.privacidad)}</a></div>
       <div class="pie-col"><h2>${esc(t.pie.contacto)}</h2><a href="mailto:info@avai-labs.com">info@avai-labs.com</a><a href="tel:+34624504004">+34 624 50 40 04</a><a data-umami-event="whatsapp" href="${WA}" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/avai.labs/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@atlanticvisionai" target="_blank" rel="noopener">YouTube</a><a href="https://www.google.com/maps/search/?api=1&amp;query=C.C.+Radazul+Bajo+38109+El+Rosario+Tenerife" target="_blank" rel="noopener">C.C. Radazul Bajo, 38109 · El Rosario, Tenerife</a></div>
     </div>
   </div>
@@ -350,83 +330,6 @@ ${final(lang, { h: t.final.h, demo: s.demo, rel })}
 ` + pie(lang, urlServ(otro, s.id));
 }
 
-// ---------- Blog ----------
-function paginaArticulo(a) {
-  const lang = a.lang;
-  const t = T[lang];
-  const otro = lang === 'es' ? 'fr' : 'es';
-  const url = `${SITE}${t.base}/blog/${a.slug}/`;
-  const ruta = [{ t: t.inicio, href: `${t.base}/` }, { t: t.nav.blog, href: `${t.base}/blog/` }, { t: a.titulo, href: `${t.base}/blog/${a.slug}/` }];
-  const ld = [{
-    '@context': 'https://schema.org', '@type': 'BlogPosting', headline: a.titulo, description: a.descripcion,
-    datePublished: a.fecha, dateModified: a.modificado || a.fecha, inLanguage: lang, url, mainEntityOfPage: url,
-    image: SITE + '/assets/' + t.og,
-    author: { '@type': 'Organization', '@id': ORG_ID, name: 'AVAI Labs', url: SITE + '/' },
-    publisher: { '@type': 'Organization', '@id': ORG_ID, name: 'AVAI Labs', logo: { '@type': 'ImageObject', url: SITE + '/assets/logo-avai-claro.png' } },
-    citation: a.fuentes.map(f => f.href),
-  }, migasLd(ruta)];
-  const resumen = a.resumen.map(r => `<li>${esc(r)}</li>`).join('');
-  const fuentes = a.fuentes.map(f => `<li><a href="${esc(f.href)}" target="_blank" rel="noopener">${esc(f.t)}</a></li>`).join('');
-  const otraUrl = `${T[otro].base}/${hayBlog(otro) ? 'blog/' : ''}`;
-  return head(lang, { title: `${a.titulo} · AVAI Labs`, description: a.descripcion, url, tipoOg: 'article', ld }) + nav(lang, otraUrl, 'blog') + `
-<main id="contenido">
-
-<section class="pg-hero pg-hero-art" id="inicio" aria-labelledby="h1">
-  <div class="pg-art-g">
-    <div class="pg-hero-in">
-      ${migas(lang, ruta.slice(0, 2), true)}
-      <p class="kick mono"><time datetime="${a.fecha}">${fechaLarga(lang, a.fecha)}</time></p>
-      <h1 id="h1">${esc(a.titulo)}</h1>
-    </div>
-    <aside class="pg-resumen hud" aria-label="${esc(t.blog.resumen)}"><h2 class="mono">${esc(t.blog.resumen)}</h2><ul>${resumen}</ul></aside>
-  </div>
-</section>
-
-<div class="claro">
-  <article class="pg-cuerpo" id="articulo" aria-label="${esc(t.blog.articulo)}">
-${a.cuerpo}
-    <footer class="pg-fuentes"><h2>${esc(t.blog.fuentes)}</h2><ul>${fuentes}</ul></footer>
-  </article>
-</div>
-${final(lang, { h: t.blog.final })}
-` + pie(lang, otraUrl);
-}
-
-function indiceBlog(lang) {
-  const t = T[lang];
-  const otro = lang === 'es' ? 'fr' : 'es';
-  const url = `${SITE}${t.base}/blog/`;
-  const ambos = hayBlog('es') && hayBlog('fr');
-  const alternos = ambos ? { es: `${SITE}/blog/`, fr: `${SITE}/fr/blog/` } : undefined;
-  const ruta = [{ t: t.inicio, href: `${t.base}/` }, { t: t.nav.blog, href: `${t.base}/blog/` }];
-  const items = ART[lang].map(a => `
-      <li><a class="pg-art" href="${t.base}/blog/${a.slug}/"><time class="mono" datetime="${a.fecha}">${fechaLarga(lang, a.fecha)}</time><h3>${esc(a.titulo)}</h3><p>${esc(a.descripcion)}</p><span class="mono pg-leer">${esc(t.blog.leer)} →</span></a></li>`).join('');
-  const ld = [{
-    '@context': 'https://schema.org', '@type': 'Blog', name: t.blog.nombre, url, inLanguage: lang, description: t.blog.description,
-    publisher: { '@type': 'Organization', '@id': ORG_ID, name: 'AVAI Labs' },
-  }, migasLd(ruta)];
-  const otraUrl = `${T[otro].base}/${hayBlog(otro) ? 'blog/' : ''}`;
-  return head(lang, { title: t.blog.title, description: t.blog.description, url, alternos, ld }) + nav(lang, otraUrl, 'blog') + `
-<main id="contenido">
-
-<section class="pg-hero pg-hero-blog" id="inicio" aria-labelledby="h1">
-  <div class="pg-hero-in">
-    ${migas(lang, ruta)}
-    <p class="kick mono">[ ${esc(t.blog.kicker)} ]</p>
-    <h1 id="h1">${esc(t.blog.h1)} <span class="serif">${esc(t.blog.h1grad)}</span></h1>
-    <p class="pg-sub">${esc(t.blog.lead)}</p>
-  </div>
-</section>
-
-<section class="pg-blog" id="articulos" aria-labelledby="lista-t">
-  ${rotulo(1, t.blog.lista).replace('<p class="mono pg-rot">', '<h2 class="mono pg-rot" id="lista-t">').replace(/<\/p>$/, '</h2>')}
-  <ol class="pg-arts">${items}
-  </ol>
-</section>
-${final(lang, { h: t.blog.final })}
-` + pie(lang, otraUrl);
-}
-
 // ---------- Portada francesa ----------
 function portadaFrancesa() {
   let s = portadaEs;
@@ -493,14 +396,6 @@ function sitemap() {
   };
   par(`${SITE}/`, `${SITE}/fr/`, PORTADA_MODIFICADA, '1.0');
   for (const s of SERV.es) par(SITE + urlServ('es', s.id), SITE + urlServ('fr', s.id), PORTADA_MODIFICADA, '0.8');
-  for (const lang of IDIOMAS) {
-    if (!hayBlog(lang)) continue;
-    const base = `${SITE}${T[lang].base}/blog/`;
-    if (hayBlog('es') && hayBlog('fr')) {
-      if (lang === 'es') par(`${SITE}/blog/`, `${SITE}/fr/blog/`, [ART.es[0].fecha, ART.fr[0].fecha].sort().pop(), '0.6');
-    } else urls.push({ loc: base, mod: ART[lang][0].fecha, pri: '0.6', alt: '' });
-    for (const a of ART[lang]) urls.push({ loc: `${base}${a.slug}/`, mod: a.modificado || a.fecha, pri: '0.5', alt: '' });
-  }
   return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' +
     urls.map(u => `  <url>\n    <loc>${u.loc}</loc>${u.alt}\n    <lastmod>${u.mod}</lastmod>\n    <priority>${u.pri}</priority>\n  </url>`).join('\n') +
     '\n</urlset>\n';
@@ -508,7 +403,6 @@ function sitemap() {
 
 function llms() {
   const servicios = lang => SERV[lang].map(s => `- [${s.menu}](${SITE}${urlServ(lang, s.id)}): ${s.description}`).join('\n');
-  const blog = lang => hayBlog(lang) ? `\n### ${lang === 'es' ? 'Blog' : 'Blog (français)'}\n\n${ART[lang].map(a => `- [${a.titulo}](${SITE}${T[lang].base}/blog/${a.slug}/): ${a.descripcion}`).join('\n')}\n` : '';
   return `# AVAI Labs
 
 > Agencia de inteligencia artificial y marketing digital para empresas de España y Francia. / Agence d'intelligence artificielle et de marketing digital pour les entreprises en France et en Espagne.
@@ -522,7 +416,7 @@ AVAI Labs combina en un solo equipo la inteligencia artificial, el marketing dig
 ### Servicios
 
 ${servicios('es')}
-${blog('es')}
+
 ## Français
 
 AVAI Labs réunit dans une seule équipe l'intelligence artificielle, le marketing digital et la production audiovisuelle, pour les entreprises en France et en Espagne. Première consultation gratuite.
@@ -532,7 +426,7 @@ AVAI Labs réunit dans une seule équipe l'intelligence artificielle, le marketi
 ### Services
 
 ${servicios('fr')}
-${blog('fr')}
+
 ## Producto / Produit
 
 - [AVAI App](https://app.avai-labs.com/): agente de IA que atiende WhatsApp, Instagram, teléfono y la web 24/7, agenda citas, envía recordatorios y rellena el CRM.
@@ -554,12 +448,6 @@ function escribir(rel, contenido) {
   fs.writeFileSync(f, contenido);
   console.log('  ' + rel);
 }
-function vaciar(rel) {
-  // Borra solo lo que genera este script (páginas de servicio y blog), para que no queden páginas viejas.
-  const d = path.join(ROOT, rel);
-  if (fs.existsSync(d)) fs.rmSync(d, { recursive: true, force: true });
-}
-
 // Tipografía francesa: espacio fino irrompible antes de : ; ? ! » y después de «, para que al partir la línea no
 // quede el signo solo («On parle de votre projet / ?»). Solo en el texto visible: ni atributos ni scripts.
 const fino = t => t.replace(/ ([:;!?»])/g, ' $1').replace(/« /g, '« ');
@@ -570,13 +458,8 @@ console.log('Generando:');
 for (const lang of IDIOMAS) {
   const base = lang === 'es' ? '' : 'fr/';
   for (const s of SERV[lang]) escribir(`${base}${s.slug}/index.html`, tipografia(lang, paginaServicio(lang, s)));
-  vaciar(`${base}blog`);
-  if (hayBlog(lang)) {
-    escribir(`${base}blog/index.html`, tipografia(lang, indiceBlog(lang)));
-    for (const a of ART[lang]) escribir(`${base}blog/${a.slug}/index.html`, tipografia(lang, paginaArticulo(a)));
-  }
 }
 escribir('fr/index.html', tipografia('fr', portadaFrancesa()));
 escribir('sitemap.xml', sitemap());
 escribir('llms.txt', llms());
-console.log(`Listo: ${SERV.es.length} servicios × 2 idiomas, ${ART.es.length} artículos en español y ${ART.fr.length} en francés.`);
+console.log(`Listo: ${SERV.es.length} servicios × 2 idiomas y la portada francesa.`);
